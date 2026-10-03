@@ -1,0 +1,32 @@
+{
+  "name": "covert",
+  "private": true,
+  "description": "COVERT — turn documents into structured, usable data.",
+  "workspaces": [
+    "apps/*",
+    "services/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:api": "npm run dev -w @covert/api",
+    "dev:web": "npm run dev -w @covert/web",
+    "dev:mobile": "npm run start -w @covert/mobile",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "build": "npm run build -w @covert/api -w @covert/web",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "devDependencies": {
+    "prettier": "^3.9.9",
+    "typescript": "~6.0.3"
+  },
+  "overrides": {
+    "react": "19.2.3",
+    "react-dom": "19.2.3"
+  },
+  "engines": {
+    "node": ">=22.12"
+  }
+}

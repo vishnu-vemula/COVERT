@@ -1,0 +1,41 @@
+# Dependencies
+node_modules/
+
+# Builds
+dist/
+.next/
+out/
+web-build/
+*.tsbuildinfo
+next-env.d.ts
+
+# Expo
+.expo/
+expo-env.d.ts
+apps/mobile/ios/
+apps/mobile/android/
+.metro-health-check*
+
+# Environment — never commit real credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.p8
+*.p12
+*.key
+*.jks
+*.mobileprovision
+service-account*.json
+
+# Firebase
+.firebase/
+firebase-debug.log
+firestore-debug.log
+ui-debug.log
+
+# Logs and OS files
+npm-debug.log*
+coverage/
+.DS_Store
+Thumbs.db
