@@ -1,0 +1,21 @@
+rules_version = '2';
+
+// COVERT stores one Firestore document per conversion in `documents`, each
+// carrying the Firebase UID of its owner in `ownerUid`.
+//
+// All writes go through the COVERT API, which verifies the caller's ID token and
+// uses the Admin SDK (not subject to these rules). Client SDKs may at most read
+// their own records; everything else is closed.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /documents/{documentId} {
+      allow read: if request.auth != null
+        && request.auth.uid == resource.data.ownerUid;
+      allow create, update, delete: if false;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

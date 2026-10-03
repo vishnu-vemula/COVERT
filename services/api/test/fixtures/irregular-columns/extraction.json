@@ -1,0 +1,27 @@
+{
+  "title": "Inventory count — Warehouse B",
+  "summary": "Inventory count of six items in Warehouse B with bin locations and quantities.",
+  "tables": [
+    {
+      "id": "t1",
+      "title": "Inventory",
+      "columns": [
+        { "id": "sku", "label": "SKU" },
+        { "id": "item", "label": "Item" },
+        { "id": "bin", "label": "Bin" },
+        { "id": "qty", "label": "Qty" },
+        { "id": "notes", "label": "Notes" }
+      ],
+      "rows": [
+        { "id": "r1", "cells": [{ "columnId": "sku", "value": "B-1001", "uncertain": false, "sourceText": null }, { "columnId": "item", "value": "Steel bracket 40mm", "uncertain": false, "sourceText": null }, { "columnId": "bin", "value": "A3", "uncertain": false, "sourceText": null }, { "columnId": "qty", "value": "120", "uncertain": false, "sourceText": null }, { "columnId": "notes", "value": "", "uncertain": false, "sourceText": null }] },
+        { "id": "r2", "cells": [{ "columnId": "sku", "value": "B-1002", "uncertain": false, "sourceText": null }, { "columnId": "item", "value": "Hinge, brass", "uncertain": false, "sourceText": null }, { "columnId": "bin", "value": "A3", "uncertain": false, "sourceText": null }, { "columnId": "qty", "value": "85", "uncertain": false, "sourceText": null }, { "columnId": "notes", "value": "reorder", "uncertain": false, "sourceText": null }] },
+        { "id": "r3", "cells": [{ "columnId": "sku", "value": "B-1007", "uncertain": false, "sourceText": null }, { "columnId": "item", "value": "Wall plug 8mm", "uncertain": false, "sourceText": null }, { "columnId": "bin", "value": "C1", "uncertain": false, "sourceText": null }, { "columnId": "notes", "value": "missing label", "uncertain": false, "sourceText": null }] },
+        { "id": "r4", "cells": [{ "columnId": "sku", "value": "B-1010", "uncertain": false, "sourceText": null }, { "columnId": "item", "value": "Wood screw 4x30", "uncertain": false, "sourceText": null }, { "columnId": "bin", "value": "C1", "uncertain": false, "sourceText": null }, { "columnId": "qty", "value": "1,450", "uncertain": false, "sourceText": null }, { "columnId": "notes", "value": "", "uncertain": false, "sourceText": null }] },
+        { "id": "r5", "cells": [{ "columnId": "item", "value": "Rubber washer (no SKU)", "uncertain": false, "sourceText": null }, { "columnId": "qty", "value": "30", "uncertain": true, "sourceText": null }] },
+        { "id": "r6", "cells": [{ "columnId": "sku", "value": "", "uncertain": false, "sourceText": null }, { "columnId": "item", "value": "", "uncertain": false, "sourceText": null }] },
+        { "id": "r7", "cells": [{ "columnId": "sku", "value": "B-1013", "uncertain": false, "sourceText": null }, { "columnId": "item", "value": "Cable tie 200mm", "uncertain": false, "sourceText": null }, { "columnId": "bin", "value": "D4", "uncertain": false, "sourceText": null }, { "columnId": "qty", "value": "600", "uncertain": false, "sourceText": null }, { "columnId": "note", "value": "checked 02/10", "uncertain": false, "sourceText": null }, { "columnId": "qty", "value": "  ", "uncertain": false, "sourceText": null }] }
+      ]
+    }
+  ],
+  "warnings": []
+}

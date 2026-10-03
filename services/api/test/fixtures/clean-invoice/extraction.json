@@ -1,0 +1,51 @@
+{
+  "title": "Northwind Studio Supply — Invoice INV-2024-0193",
+  "summary": "Tax invoice dated 03/10/2024 for four art supply items, totalling ₹2,737.60 including 18% GST.",
+  "tables": [
+    {
+      "id": "t1",
+      "title": "Invoice details",
+      "columns": [
+        { "id": "field", "label": "Field" },
+        { "id": "value", "label": "Value" }
+      ],
+      "rows": [
+        { "id": "r1", "cells": [{ "columnId": "field", "value": "Invoice No", "uncertain": false, "sourceText": null }, { "columnId": "value", "value": "INV-2024-0193", "uncertain": false, "sourceText": null }] },
+        { "id": "r2", "cells": [{ "columnId": "field", "value": "Date", "uncertain": false, "sourceText": null }, { "columnId": "value", "value": "03/10/2024", "uncertain": false, "sourceText": null }] },
+        { "id": "r3", "cells": [{ "columnId": "field", "value": "Bill To", "uncertain": false, "sourceText": null }, { "columnId": "value", "value": "Meera Pillai", "uncertain": false, "sourceText": null }] },
+        { "id": "r4", "cells": [{ "columnId": "field", "value": "GSTIN", "uncertain": false, "sourceText": null }, { "columnId": "value", "value": "32ABCDE1234F1Z5", "uncertain": false, "sourceText": null }] }
+      ]
+    },
+    {
+      "id": "t2",
+      "title": "Line items",
+      "columns": [
+        { "id": "no", "label": "#" },
+        { "id": "description", "label": "Description" },
+        { "id": "qty", "label": "Qty" },
+        { "id": "unit_price", "label": "Unit Price" },
+        { "id": "amount", "label": "Amount" }
+      ],
+      "rows": [
+        { "id": "r1", "cells": [{ "columnId": "no", "value": "1", "uncertain": false, "sourceText": null }, { "columnId": "description", "value": "A4 Sketch Pad (120 gsm)", "uncertain": false, "sourceText": null }, { "columnId": "qty", "value": "4", "uncertain": false, "sourceText": null }, { "columnId": "unit_price", "value": "₹180.00", "uncertain": false, "sourceText": null }, { "columnId": "amount", "value": "₹720.00", "uncertain": false, "sourceText": null }] },
+        { "id": "r2", "cells": [{ "columnId": "no", "value": "2", "uncertain": false, "sourceText": null }, { "columnId": "description", "value": "Graphite Pencil Set", "uncertain": false, "sourceText": null }, { "columnId": "qty", "value": "2", "uncertain": false, "sourceText": null }, { "columnId": "unit_price", "value": "₹350.00", "uncertain": false, "sourceText": null }, { "columnId": "amount", "value": "₹700.00", "uncertain": false, "sourceText": null }] },
+        { "id": "r3", "cells": [{ "columnId": "no", "value": "3", "uncertain": false, "sourceText": null }, { "columnId": "description", "value": "Kneaded Eraser", "uncertain": false, "sourceText": null }, { "columnId": "qty", "value": "6", "uncertain": false, "sourceText": null }, { "columnId": "unit_price", "value": "₹45.00", "uncertain": false, "sourceText": null }, { "columnId": "amount", "value": "₹270.00", "uncertain": false, "sourceText": null }] },
+        { "id": "r4", "cells": [{ "columnId": "no", "value": "4", "uncertain": false, "sourceText": null }, { "columnId": "description", "value": "Archival Ink Pen 0.3mm", "uncertain": false, "sourceText": null }, { "columnId": "qty", "value": "3", "uncertain": false, "sourceText": null }, { "columnId": "unit_price", "value": "₹210.00", "uncertain": false, "sourceText": null }, { "columnId": "amount", "value": "₹630.00", "uncertain": false, "sourceText": null }] }
+      ]
+    },
+    {
+      "id": "t3",
+      "title": "Totals",
+      "columns": [
+        { "id": "label", "label": "Item" },
+        { "id": "amount", "label": "Amount" }
+      ],
+      "rows": [
+        { "id": "r1", "cells": [{ "columnId": "label", "value": "Subtotal", "uncertain": false, "sourceText": null }, { "columnId": "amount", "value": "₹2,320.00", "uncertain": false, "sourceText": null }] },
+        { "id": "r2", "cells": [{ "columnId": "label", "value": "GST 18%", "uncertain": false, "sourceText": null }, { "columnId": "amount", "value": "₹417.60", "uncertain": false, "sourceText": null }] },
+        { "id": "r3", "cells": [{ "columnId": "label", "value": "Total", "uncertain": false, "sourceText": null }, { "columnId": "amount", "value": "₹2,737.60", "uncertain": false, "sourceText": null }] }
+      ]
+    }
+  ],
+  "warnings": []
+}

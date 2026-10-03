@@ -1,0 +1,41 @@
+{
+  "title": "City Union Bank statement — August 2024",
+  "summary": "Account statement for 01-Aug-2024 to 31-Aug-2024 with seven entries, from an opening balance of 45,210.50 to a closing balance of 82,806.50.",
+  "tables": [
+    {
+      "id": "t1",
+      "title": "Account",
+      "columns": [
+        { "id": "field", "label": "Field" },
+        { "id": "value", "label": "Value" }
+      ],
+      "rows": [
+        { "id": "r1", "cells": [{ "columnId": "field", "value": "Account No", "uncertain": false, "sourceText": null }, { "columnId": "value", "value": "5012 0098 4471", "uncertain": false, "sourceText": null }] },
+        { "id": "r2", "cells": [{ "columnId": "field", "value": "Period", "uncertain": false, "sourceText": null }, { "columnId": "value", "value": "01-Aug-2024 to 31-Aug-2024", "uncertain": false, "sourceText": null }] },
+        { "id": "r3", "cells": [{ "columnId": "field", "value": "Name", "uncertain": false, "sourceText": null }, { "columnId": "value", "value": "A. Raghavan", "uncertain": false, "sourceText": null }] }
+      ]
+    },
+    {
+      "id": "t2",
+      "title": "Transactions",
+      "columns": [
+        { "id": "date", "label": "Date" },
+        { "id": "narration", "label": "Narration" },
+        { "id": "ref", "label": "Ref No" },
+        { "id": "debit", "label": "Debit" },
+        { "id": "credit", "label": "Credit" },
+        { "id": "balance", "label": "Balance" }
+      ],
+      "rows": [
+        { "id": "r1", "cells": [{ "columnId": "date", "value": "01-08-2024", "uncertain": false, "sourceText": null }, { "columnId": "narration", "value": "Opening Balance", "uncertain": false, "sourceText": null }, { "columnId": "ref", "value": "", "uncertain": false, "sourceText": null }, { "columnId": "debit", "value": "", "uncertain": false, "sourceText": null }, { "columnId": "credit", "value": "", "uncertain": false, "sourceText": null }, { "columnId": "balance", "value": "45,210.50", "uncertain": false, "sourceText": null }] },
+        { "id": "r2", "cells": [{ "columnId": "date", "value": "03-08-2024", "uncertain": false, "sourceText": null }, { "columnId": "narration", "value": "UPI/RENT/AUG", "uncertain": false, "sourceText": null }, { "columnId": "ref", "value": "UPI4419027", "uncertain": false, "sourceText": null }, { "columnId": "debit", "value": "18,000.00", "uncertain": false, "sourceText": null }, { "columnId": "credit", "value": "", "uncertain": false, "sourceText": null }, { "columnId": "balance", "value": "27,210.50", "uncertain": false, "sourceText": null }] },
+        { "id": "r3", "cells": [{ "columnId": "date", "value": "07-08-2024", "uncertain": false, "sourceText": null }, { "columnId": "narration", "value": "NEFT SALARY ACME TECH", "uncertain": false, "sourceText": null }, { "columnId": "ref", "value": "N22100457", "uncertain": false, "sourceText": null }, { "columnId": "debit", "value": "", "uncertain": false, "sourceText": null }, { "columnId": "credit", "value": "62,500.00", "uncertain": false, "sourceText": null }, { "columnId": "balance", "value": "89,710.50", "uncertain": false, "sourceText": null }] },
+        { "id": "r4", "cells": [{ "columnId": "date", "value": "12-08-2024", "uncertain": false, "sourceText": null }, { "columnId": "narration", "value": "ATM WDL KOCHI MG RD", "uncertain": false, "sourceText": null }, { "columnId": "ref", "value": "ATM88213", "uncertain": false, "sourceText": null }, { "columnId": "debit", "value": "5,000.00", "uncertain": false, "sourceText": null }, { "columnId": "credit", "value": "", "uncertain": false, "sourceText": null }, { "columnId": "balance", "value": "84,710.50", "uncertain": false, "sourceText": null }] },
+        { "id": "r5", "cells": [{ "columnId": "date", "value": "19-08-2024", "uncertain": false, "sourceText": null }, { "columnId": "narration", "value": "ELECTRICITY KSEB", "uncertain": false, "sourceText": null }, { "columnId": "ref", "value": "BBPS77120", "uncertain": false, "sourceText": null }, { "columnId": "debit", "value": "2,316.00", "uncertain": false, "sourceText": null }, { "columnId": "credit", "value": "", "uncertain": false, "sourceText": null }, { "columnId": "balance", "value": "82,394.50", "uncertain": false, "sourceText": null }] },
+        { "id": "r6", "cells": [{ "columnId": "date", "value": "28-08-2024", "uncertain": false, "sourceText": null }, { "columnId": "narration", "value": "INTEREST CREDIT", "uncertain": false, "sourceText": null }, { "columnId": "ref", "value": "", "uncertain": false, "sourceText": null }, { "columnId": "debit", "value": "", "uncertain": false, "sourceText": null }, { "columnId": "credit", "value": "412.00", "uncertain": false, "sourceText": null }, { "columnId": "balance", "value": "82,806.50", "uncertain": false, "sourceText": null }] },
+        { "id": "r7", "cells": [{ "columnId": "date", "value": "31-08-2024", "uncertain": false, "sourceText": null }, { "columnId": "narration", "value": "Closing Balance", "uncertain": false, "sourceText": null }, { "columnId": "ref", "value": "", "uncertain": false, "sourceText": null }, { "columnId": "debit", "value": "", "uncertain": false, "sourceText": null }, { "columnId": "credit", "value": "", "uncertain": false, "sourceText": null }, { "columnId": "balance", "value": "82,806.50", "uncertain": false, "sourceText": null }] }
+      ]
+    }
+  ],
+  "warnings": []
+}

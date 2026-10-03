@@ -1,0 +1,15 @@
+NORTHWIND STUDIO SUPPLY
+42 Harbour Road, Kochi 682001
+GSTIN 32ABCDE1234F1Z5
+TAX INVOICE
+Invoice No: INV-2024-0193   Date: 03/10/2024
+Bill To: Meera Pillai
+#   Description   Qty   Unit Price   Amount
+1   A4 Sketch Pad (120 gsm)   4   ₹180.00   ₹720.00
+2   Graphite Pencil Set   2   ₹350.00   ₹700.00
+3   Kneaded Eraser   6   ₹45.00   ₹270.00
+4   Archival Ink Pen 0.3mm   3   ₹210.00   ₹630.00
+Subtotal   ₹2,320.00
+GST 18%   ₹417.60
+Total   ₹2,737.60
+Thank you for your business!

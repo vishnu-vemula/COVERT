@@ -1,0 +1,8 @@
+INVENTORY COUNT   Warehouse B
+SKU   Item   Bin   Qty   Notes
+B-1001   Steel bracket 40mm   A3   120
+B-1002   Hinge, brass   A3   85   reorder
+B-1007   Wall plug 8mm   C1   missing label
+B-1010   Wood screw 4x30   C1   1,450
+Rubber washer (no SKU)   30
+B-1013   Cable tie 200mm   D4   600   checked 02/10

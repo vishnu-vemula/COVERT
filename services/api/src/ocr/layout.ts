@@ -146,8 +146,7 @@ function groupIntoLines(words: PlacedWord[]): PlacedWord[][] {
     let best: (typeof lines)[number] | undefined;
     let bestOverlap = 0;
     // Only recent lines can overlap because words are sorted by vertical centre.
-    for (let i = lines.length - 1; i >= Math.max(0, lines.length - 4); i -= 1) {
-      const line = lines[i]!;
+    for (const line of lines.slice(-4)) {
       const overlap = Math.min(line.y1, word.y1) - Math.max(line.y0, word.y0);
       const smaller = Math.min(line.y1 - line.y0, word.y1 - word.y0);
       if (smaller > 0 && overlap / smaller >= 0.5 && overlap > bestOverlap) {

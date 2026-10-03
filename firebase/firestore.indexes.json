@@ -1,0 +1,24 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "documents",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "ownerUid", "order": "ASCENDING" },
+        { "fieldPath": "createdAt", "order": "DESCENDING" }
+      ]
+    }
+  ],
+  "fieldOverrides": [
+    {
+      "collectionGroup": "documents",
+      "fieldPath": "tables",
+      "indexes": []
+    },
+    {
+      "collectionGroup": "documents",
+      "fieldPath": "ocrText",
+      "indexes": []
+    }
+  ]
+}

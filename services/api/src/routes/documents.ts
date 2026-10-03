@@ -18,6 +18,10 @@ import type { ConversionLimiter } from '../pipeline/conversion-limiter';
 import { processDocument } from '../pipeline/process-document';
 import { validateUpload } from '../upload/file-type';
 
+// Route patterns; clients build concrete URLs with API_PATHS.
+const DOCUMENT_ROUTE = `${API_PATHS.documents}/:id`;
+const CELLS_ROUTE = `${DOCUMENT_ROUTE}/cells`;
+
 const IdParams = z.object({ id: z.string().min(1) });
 const ListQuery = z.object({ limit: z.coerce.number().int().min(1).max(100).default(50) });
 
@@ -33,14 +37,14 @@ export const documentRoutes: FastifyPluginAsync<{ deps: AppDeps; limiter: Conver
     return { documents: await deps.documents.list(currentUid(request), limit) };
   });
 
-  app.get(API_PATHS.document(':id'), async (request) => {
+  app.get(DOCUMENT_ROUTE, async (request) => {
     const { id } = parse(IdParams, request.params);
     const document = await deps.documents.get(currentUid(request), id);
     if (!document) throw new AppError('NOT_FOUND');
     return { document };
   });
 
-  app.patch(API_PATHS.document(':id'), async (request) => {
+  app.patch(DOCUMENT_ROUTE, async (request) => {
     const { id } = parse(IdParams, request.params);
     const { title } = parse(RenameRequestSchema, request.body);
     const document = await deps.documents.rename(currentUid(request), id, title);
@@ -48,7 +52,7 @@ export const documentRoutes: FastifyPluginAsync<{ deps: AppDeps; limiter: Conver
     return { document };
   });
 
-  app.patch(API_PATHS.cells(':id'), async (request) => {
+  app.patch(CELLS_ROUTE, async (request) => {
     const { id } = parse(IdParams, request.params);
     const { value, ...target } = parse(UpdateCellRequestSchema, request.body);
     const result = await deps.documents.updateCell(currentUid(request), id, target, value);
@@ -56,7 +60,7 @@ export const documentRoutes: FastifyPluginAsync<{ deps: AppDeps; limiter: Conver
     return result;
   });
 
-  app.delete(API_PATHS.document(':id'), async (request, reply) => {
+  app.delete(DOCUMENT_ROUTE, async (request, reply) => {
     const { id } = parse(IdParams, request.params);
     const deleted = await deps.documents.delete(currentUid(request), id);
     if (!deleted) throw new AppError('NOT_FOUND');

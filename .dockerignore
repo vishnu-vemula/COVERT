@@ -1,0 +1,10 @@
+**/node_modules
+**/dist
+**/.next
+**/.expo
+**/.env
+**/.env.*
+.git
+# The API image only needs the other workspaces' manifests so the lockfile stays consistent.
+apps/**
+!apps/*/package.json

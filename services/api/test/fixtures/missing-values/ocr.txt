@@ -1,0 +1,7 @@
+CLASS SCHEDULE - TERM 2
+Day   Time   Subject   Room   Teacher
+Monday   09:00-10:00   Mathematics   204   Mr. Iyer
+Monday   10:15-11:15   Physics   Ms. Das
+Tuesday   09:00-10:00   Chemistry   Lab 2
+Wednesday   Library   —
+Thursday   11:30-12:30   English   108   Mrs. Rao

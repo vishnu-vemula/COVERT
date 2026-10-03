@@ -1,0 +1,23 @@
+{
+  "title": "Grocery list — week 41",
+  "summary": "A grocery list of six items, three with quantities.",
+  "tables": [
+    {
+      "id": "t1",
+      "title": "Grocery list",
+      "columns": [
+        { "id": "item", "label": "Item" },
+        { "id": "quantity", "label": "Quantity" }
+      ],
+      "rows": [
+        { "id": "r1", "cells": [{ "columnId": "item", "value": "Basmati rice", "uncertain": false, "sourceText": null }, { "columnId": "quantity", "value": "5kg", "uncertain": false, "sourceText": null }] },
+        { "id": "r2", "cells": [{ "columnId": "item", "value": "Toor dal", "uncertain": false, "sourceText": null }, { "columnId": "quantity", "value": "1kg", "uncertain": false, "sourceText": null }] },
+        { "id": "r3", "cells": [{ "columnId": "item", "value": "Coconut oil", "uncertain": false, "sourceText": null }, { "columnId": "quantity", "value": "", "uncertain": false, "sourceText": null }] },
+        { "id": "r4", "cells": [{ "columnId": "item", "value": "Curry leaves", "uncertain": false, "sourceText": null }, { "columnId": "quantity", "value": "", "uncertain": false, "sourceText": null }] },
+        { "id": "r5", "cells": [{ "columnId": "item", "value": "Green chillies", "uncertain": false, "sourceText": null }, { "columnId": "quantity", "value": "250g", "uncertain": false, "sourceText": null }] },
+        { "id": "r6", "cells": [{ "columnId": "item", "value": "Yogurt", "uncertain": false, "sourceText": null }, { "columnId": "quantity", "value": "", "uncertain": false, "sourceText": null }] }
+      ]
+    }
+  ],
+  "warnings": []
+}

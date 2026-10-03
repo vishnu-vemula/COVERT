@@ -127,7 +127,7 @@ function clean(value: string, max: number = LIMITS.maxCellLength): string {
 
 function humanize(id: string): string {
   const words = id.replace(/[_-]+/g, ' ').trim();
-  return words ? words[0]!.toUpperCase() + words.slice(1) : 'Column';
+  return words ? words.charAt(0).toUpperCase() + words.slice(1) : 'Column';
 }
 
 function describe(tables: Table[]): string {

@@ -1,0 +1,37 @@
+{
+  "title": "Fresh Mart receipt — 12/09/24",
+  "summary": "Grocery receipt from Fresh Mart store #118 with five line items and a total of 219.00 paid in cash.",
+  "tables": [
+    {
+      "id": "t1",
+      "title": "Items",
+      "columns": [
+        { "id": "item", "label": "Item" },
+        { "id": "amount", "label": "Amount" }
+      ],
+      "rows": [
+        { "id": "r1", "cells": [{ "columnId": "item", "value": "Tomatoes 1kg", "uncertain": false, "sourceText": "TOMAT0ES 1kg" }, { "columnId": "amount", "value": "48.00", "uncertain": false, "sourceText": null }] },
+        { "id": "r2", "cells": [{ "columnId": "item", "value": "Bread WHT", "uncertain": false, "sourceText": "BREAD WHT" }, { "columnId": "amount", "value": "35.00", "uncertain": true, "sourceText": "3S.00" }] },
+        { "id": "r3", "cells": [{ "columnId": "item", "value": "Milk 1L x2", "uncertain": false, "sourceText": "MILK 1L x2" }, { "columnId": "amount", "value": "62.00", "uncertain": true, "sourceText": "62.OO" }] },
+        { "id": "r4", "cells": [{ "columnId": "item", "value": "Eggs 12", "uncertain": false, "sourceText": "EGGS 12" }, { "columnId": "amount", "value": "84.00", "uncertain": false, "sourceText": null }] },
+        { "id": "r5", "cells": [{ "columnId": "item", "value": "Discount", "uncertain": false, "sourceText": "D1SC0UNT" }, { "columnId": "amount", "value": "-10.00", "uncertain": false, "sourceText": null }] }
+      ]
+    },
+    {
+      "id": "t2",
+      "title": "Payment",
+      "columns": [
+        { "id": "field", "label": "Field" },
+        { "id": "value", "label": "Value" }
+      ],
+      "rows": [
+        { "id": "r1", "cells": [{ "columnId": "field", "value": "Total", "uncertain": false, "sourceText": null }, { "columnId": "value", "value": "219.00", "uncertain": true, "sourceText": "2l9.00" }] },
+        { "id": "r2", "cells": [{ "columnId": "field", "value": "Cash", "uncertain": false, "sourceText": null }, { "columnId": "value", "value": "500.00", "uncertain": false, "sourceText": null }] },
+        { "id": "r3", "cells": [{ "columnId": "field", "value": "Change", "uncertain": false, "sourceText": null }, { "columnId": "value", "value": "281.00", "uncertain": true, "sourceText": "28l.00" }] },
+        { "id": "r4", "cells": [{ "columnId": "field", "value": "Date", "uncertain": false, "sourceText": null }, { "columnId": "value", "value": "12/09/24 18:42", "uncertain": false, "sourceText": null }] },
+        { "id": "r5", "cells": [{ "columnId": "field", "value": "Cashier", "uncertain": true, "sourceText": null }, { "columnId": "value", "value": "R0S1E", "uncertain": true, "sourceText": null }] }
+      ]
+    }
+  ],
+  "warnings": ["Several characters were unclear on this receipt; amounts marked uncertain should be checked."]
+}

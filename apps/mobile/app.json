@@ -1,26 +1,30 @@
 {
   "expo": {
-    "name": "mobile",
-    "slug": "mobile",
+    "name": "COVERT",
+    "slug": "covert",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "mobile",
-    "userInterfaceStyle": "automatic",
+    "scheme": "covert",
+    "userInterfaceStyle": "light",
+    "backgroundColor": "#F6F5F0",
     "ios": {
-      "icon": "./assets/expo.icon"
+      "bundleIdentifier": "com.example.covert",
+      "supportsTablet": true,
+      "config": { "usesNonExemptEncryption": false }
     },
     "android": {
+      "package": "com.example.covert",
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
+        "backgroundColor": "#111311",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
-        "backgroundImage": "./assets/images/android-icon-background.png",
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
+      "blockedPermissions": ["android.permission.RECORD_AUDIO"],
       "predictiveBackGestureEnabled": false
     },
     "web": {
-      "output": "static",
+      "output": "single",
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
@@ -28,15 +32,30 @@
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#208AEF",
+          "backgroundColor": "#F6F5F0",
           "image": "./assets/images/splash-icon.png",
-          "imageWidth": 76
+          "imageWidth": 88
+        }
+      ],
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "COVERT uses the camera to photograph documents you choose to convert.",
+          "microphonePermission": false,
+          "recordAudioAndroid": false
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "COVERT opens the photos you choose so they can be converted into tables.",
+          "cameraPermission": false,
+          "microphonePermission": false
         }
       ],
       "expo-sharing"
     ],
     "experiments": {
-      "typedRoutes": true,
       "reactCompiler": true
     }
   }

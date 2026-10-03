@@ -2,7 +2,7 @@ import { ImageAnnotatorClient } from '@google-cloud/vision';
 
 import { LIMITS } from '@covert/shared';
 
-import { layoutText } from './layout';
+import { layoutText, type TextAnnotation } from './layout';
 import { OcrError, type OcrInput, type OcrPage, type OcrProvider, type OcrResult } from './types';
 
 const FEATURES = [{ type: 'DOCUMENT_TEXT_DETECTION' as const }];
@@ -18,7 +18,7 @@ interface VisionStatus {
 
 interface VisionImageResponse {
   error?: VisionStatus | null;
-  fullTextAnnotation?: unknown;
+  fullTextAnnotation?: TextAnnotation | null;
   context?: { pageNumber?: number | null } | null;
 }
 
@@ -41,10 +41,12 @@ export class GoogleVisionOcr implements OcrProvider {
     const pages: OcrPage[] = [];
     // Sequential keeps memory flat and stays well inside per-user quotas.
     for (const [index, content] of images.entries()) {
-      const [response] = await this.client.annotateImage(
-        { image: { content }, features: FEATURES },
+      const [batch] = await this.client.batchAnnotateImages(
+        { requests: [{ image: { content }, features: FEATURES }] },
         CALL_OPTIONS,
       );
+      const response = batch.responses?.[0];
+      if (!response) throw new OcrError('failed');
       pages.push({ pageNumber: index + 1, text: readResponse(response) });
     }
     return { pages, totalPages: images.length };
@@ -97,7 +99,7 @@ function readResponse(response: VisionImageResponse): string {
   if (response.error?.code) {
     throw new OcrError(response.error.code === INVALID_ARGUMENT ? 'corrupt' : 'failed');
   }
-  return layoutText(response.fullTextAnnotation ?? {});
+  return layoutText(response.fullTextAnnotation);
 }
 
 function statusCode(error: unknown): number | undefined {
