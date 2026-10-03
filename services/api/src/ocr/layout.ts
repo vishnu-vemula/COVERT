@@ -1,5 +1,3 @@
-import { z } from 'zod';
-
 /**
  * Rebuilds reading lines from word positions.
  *
@@ -9,36 +7,36 @@ import { z } from 'zod';
  * column boundaries survive into the structuring step.
  */
 
-const PointSchema = z.object({
-  x: z.number().nullish(),
-  y: z.number().nullish(),
-});
+interface VisionPoint {
+  x?: number | null;
+  y?: number | null;
+}
 
-const BoxSchema = z
-  .object({
-    vertices: z.array(PointSchema).nullish(),
-    normalizedVertices: z.array(PointSchema).nullish(),
-  })
-  .nullish();
+interface VisionBox {
+  vertices?: VisionPoint[] | null;
+  normalizedVertices?: VisionPoint[] | null;
+}
 
-const SymbolSchema = z.object({
-  text: z.string().nullish(),
-  property: z
-    .object({ detectedBreak: z.object({ type: z.union([z.string(), z.number()]).nullish() }).nullish() })
-    .nullish(),
-});
+interface VisionSymbol {
+  text?: string | null;
+  property?: { detectedBreak?: { type?: string | number | null } | null } | null;
+}
 
-const WordSchema = z.object({ boundingBox: BoxSchema, symbols: z.array(SymbolSchema).nullish() });
-const ParagraphSchema = z.object({ words: z.array(WordSchema).nullish() });
-const BlockSchema = z.object({ paragraphs: z.array(ParagraphSchema).nullish() });
-const PageSchema = z.object({ blocks: z.array(BlockSchema).nullish() });
-
-/** The subset of Cloud Vision's `TextAnnotation` that COVERT reads. */
-export const TextAnnotationSchema = z.object({
-  text: z.string().nullish(),
-  pages: z.array(PageSchema).nullish(),
-});
-export type TextAnnotation = z.infer<typeof TextAnnotationSchema>;
+/** The subset of Cloud Vision's `TextAnnotation` that COVERT reads. Every level may be missing. */
+export interface TextAnnotation {
+  text?: string | null;
+  pages?:
+    | {
+        blocks?:
+          | {
+              paragraphs?:
+                | { words?: { boundingBox?: VisionBox | null; symbols?: VisionSymbol[] | null }[] | null }[]
+                | null;
+            }[]
+          | null;
+      }[]
+    | null;
+}
 
 interface Point {
   x: number;
@@ -57,10 +55,8 @@ interface PlacedWord {
 
 const NO_SPACE_BREAKS = new Set(['UNKNOWN', 'HYPHEN', 0, 4]);
 
-export function layoutText(input: unknown): string {
-  const parsed = TextAnnotationSchema.safeParse(input);
-  if (!parsed.success) return '';
-  const annotation = parsed.data;
+export function layoutText(annotation: TextAnnotation | null | undefined): string {
+  if (!annotation || typeof annotation !== 'object') return '';
 
   const words = collectWords(annotation);
   if (words.length === 0) return (annotation.text ?? '').trim();
@@ -107,8 +103,8 @@ function collectWords(annotation: TextAnnotation): PlacedWord[] {
   });
 }
 
-function boxPoints(box: z.infer<typeof BoxSchema>): Point[] {
-  const toPoints = (list: z.infer<typeof PointSchema>[] | null | undefined) =>
+function boxPoints(box: VisionBox | null | undefined): Point[] {
+  const toPoints = (list: VisionPoint[] | null | undefined) =>
     (list ?? []).map((p) => ({ x: p.x ?? 0, y: p.y ?? 0 }));
   const vertices = toPoints(box?.vertices);
   if (vertices.length >= 4 && vertices.some((p) => p.x !== 0 || p.y !== 0)) return vertices;
