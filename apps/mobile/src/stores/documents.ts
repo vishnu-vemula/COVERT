@@ -81,7 +81,9 @@ export const useDocuments = create<DocumentsState>((set, get) => ({
       set((state) => {
         const current = state.documents[id];
         return {
-          documents: current ? { ...state.documents, [id]: { ...current, updatedAt } } : state.documents,
+          documents: current
+            ? { ...state.documents, [id]: { ...current, updatedAt } }
+            : state.documents,
           list: state.list.map((item) =>
             item.id === id ? { ...item, updatedAt, stats: optimistic.stats } : item,
           ),

@@ -56,7 +56,10 @@ async function send(path: string, init: RequestInit, timeoutMs: number, refresh:
   try {
     return await fetch(apiUrl(path), {
       ...init,
-      headers: { ...(init.headers as Record<string, string>), ...(await authorizedHeaders(refresh)) },
+      headers: {
+        ...(init.headers as Record<string, string>),
+        ...(await authorizedHeaders(refresh)),
+      },
       signal: controller.signal,
     });
   } catch (error) {

@@ -13,7 +13,10 @@ export async function shareCsv(table: Table, documentTitle: string): Promise<voi
   if (!(await Sharing.isAvailableAsync())) {
     throw new ExportError('Sharing isn’t available on this device. Copy the table instead.');
   }
-  const name = exportFileName(table.title === documentTitle ? documentTitle : `${documentTitle} ${table.title}`, 'csv');
+  const name = exportFileName(
+    table.title === documentTitle ? documentTitle : `${documentTitle} ${table.title}`,
+    'csv',
+  );
   let file: File;
   try {
     file = new File(Paths.cache, name);

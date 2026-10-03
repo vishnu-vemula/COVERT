@@ -83,10 +83,16 @@ export default function ProcessingScreen() {
   );
 
   const failed = status === 'error';
-  const title = failed ? 'Couldn’t convert this document' : stage === 'ready' ? 'Ready' : STAGE_LABELS[stage];
+  const title = failed
+    ? 'Couldn’t convert this document'
+    : stage === 'ready'
+      ? 'Ready'
+      : STAGE_LABELS[stage];
   const progress = upload && upload.total > 0 ? upload.sent / upload.total : null;
   const uploadDetail =
-    stage === 'uploading' && upload ? `${formatBytes(upload.sent)} of ${formatBytes(upload.total)}` : null;
+    stage === 'uploading' && upload
+      ? `${formatBytes(upload.sent)} of ${formatBytes(upload.total)}`
+      : null;
 
   return (
     <Screen
@@ -150,6 +156,11 @@ const styles = StyleSheet.create({
   content: { gap: space.xl, paddingTop: space.lg },
   heading: { gap: space.md, minHeight: 96 },
   title: { maxWidth: 420 },
-  track: { height: 4, borderRadius: radius.sm, backgroundColor: palette.canvasDeep, overflow: 'hidden' },
+  track: {
+    height: 4,
+    borderRadius: radius.sm,
+    backgroundColor: palette.canvasDeep,
+    overflow: 'hidden',
+  },
   fill: { height: 4, backgroundColor: palette.ink },
 });

@@ -131,7 +131,9 @@ export function ErrorBoundary({ retry }: ErrorBoundaryProps) {
       <Text variant="title" accessibilityRole="header">
         Something went wrong
       </Text>
-      <Text tone="secondary">COVERT hit an unexpected problem on this screen. Your saved documents are safe.</Text>
+      <Text tone="secondary">
+        COVERT hit an unexpected problem on this screen. Your saved documents are safe.
+      </Text>
     </Screen>
   );
 }

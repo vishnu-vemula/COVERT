@@ -35,8 +35,7 @@ export function SwitchRow({ label, description, value, onChange }: SwitchRowProp
         trackColor={{ true: palette.ink, false: palette.border }}
         thumbColor={palette.surface}
         ios_backgroundColor={palette.border}
-        accessibilityElementsHidden
-        importantForAccessibility="no-hide-descendants"
+        aria-hidden
       />
     </Pressable>
   );

@@ -2,13 +2,24 @@ import type { ApiError, ProcessingStage } from '@covert/shared';
 import { create } from 'zustand';
 
 import { toApiError } from '@/lib/api/client';
-import { CancelledError, processDocument, type ProcessJob, type UploadFile } from '@/lib/api/process';
+import {
+  CancelledError,
+  processDocument,
+  type ProcessJob,
+  type UploadFile,
+} from '@/lib/api/process';
 
 import { useCapture } from './capture';
 import { useDocuments } from './documents';
 
 export type JobStage = 'uploading' | ProcessingStage | 'ready';
-export const JOB_STAGES: readonly JobStage[] = ['uploading', 'reading', 'structuring', 'checking', 'ready'];
+export const JOB_STAGES: readonly JobStage[] = [
+  'uploading',
+  'reading',
+  'structuring',
+  'checking',
+  'ready',
+];
 
 interface ProcessingState {
   status: 'idle' | 'running' | 'ready' | 'error';

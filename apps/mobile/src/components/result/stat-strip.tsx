@@ -54,7 +54,12 @@ export function StatStrip({ stats, onReview }: StatStripProps) {
 }
 
 const styles = StyleSheet.create({
-  card: { backgroundColor: palette.paperLime, borderRadius: radius.lg, padding: space.md, gap: space.sm },
+  card: {
+    backgroundColor: palette.paperLime,
+    borderRadius: radius.lg,
+    padding: space.md,
+    gap: space.sm,
+  },
   stats: { flexDirection: 'row' },
   stat: { flex: 1, gap: space.xxs, paddingHorizontal: space.xs },
   divided: { borderLeftWidth: 1, borderLeftColor: 'rgba(17,19,17,0.12)' },

@@ -19,7 +19,10 @@ const EXTENSIONS: Record<string, AcceptedMimeType> = {
  * Resolves a picked file's type from its reported MIME type, falling back to
  * the extension. The API checks the real content again on upload.
  */
-export function resolveMimeType(reported: string | null | undefined, name: string): AcceptedMimeType {
+export function resolveMimeType(
+  reported: string | null | undefined,
+  name: string,
+): AcceptedMimeType {
   const normalized = (reported ?? '').toLowerCase().split(';')[0]?.trim() ?? '';
   const type = normalized === 'image/jpg' ? 'image/jpeg' : normalized;
   if (isAcceptedMimeType(type)) return type;

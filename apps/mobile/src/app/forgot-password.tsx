@@ -16,7 +16,11 @@ import { authErrorMessage } from '@/lib/auth-errors';
 import { palette, radius, space } from '@/theme/tokens';
 
 const ResetSchema = z.object({
-  email: z.string().trim().min(1, 'Enter your email address.').pipe(z.email('Enter a valid email address.')),
+  email: z
+    .string()
+    .trim()
+    .min(1, 'Enter your email address.')
+    .pipe(z.email('Enter a valid email address.')),
 });
 type ResetValues = z.infer<typeof ResetSchema>;
 

@@ -25,10 +25,7 @@ function Lines({ widths }: { widths: number[] }) {
 
 export function PaperStack() {
   return (
-    <View
-      style={styles.stage}
-      accessibilityElementsHidden
-      importantForAccessibility="no-hide-descendants">
+    <View style={styles.stage} aria-hidden>
       <View style={[styles.paper, styles.receipt]}>
         <Text variant="eyebrow" style={styles.paperLabel}>
           Receipt

@@ -32,7 +32,13 @@ export function StageList({ current, failed, detail }: StageListProps) {
     <View style={styles.list}>
       {ORDER.map((stage, index) => {
         const state: StageState =
-          index < position ? 'done' : index === position ? (failed ? 'failed' : 'active') : 'pending';
+          index < position
+            ? 'done'
+            : index === position
+              ? failed
+                ? 'failed'
+                : 'active'
+              : 'pending';
         return (
           <StageRow
             key={stage}
@@ -72,7 +78,10 @@ function StageRow({
         <Glyph state={state} />
         {!last ? (
           <View
-            style={[styles.connector, { backgroundColor: state === 'done' ? palette.ink : colors.border }]}
+            style={[
+              styles.connector,
+              { backgroundColor: state === 'done' ? palette.ink : colors.border },
+            ]}
           />
         ) : null}
       </View>
@@ -100,7 +109,12 @@ function Glyph({ state }: { state: StageState }) {
     if (state !== 'active' || reducedMotion) return;
     const loop = Animated.loop(
       Animated.sequence([
-        Animated.timing(pulse, { toValue: 1, duration: 900, easing: Easing.out(Easing.quad), useNativeDriver: true }),
+        Animated.timing(pulse, {
+          toValue: 1,
+          duration: 900,
+          easing: Easing.out(Easing.quad),
+          useNativeDriver: true,
+        }),
         Animated.timing(pulse, { toValue: 0, duration: 0, useNativeDriver: true }),
       ]),
     );
@@ -131,7 +145,9 @@ function Glyph({ state }: { state: StageState }) {
               styles.halo,
               {
                 opacity: pulse.interpolate({ inputRange: [0, 1], outputRange: [0.5, 0] }),
-                transform: [{ scale: pulse.interpolate({ inputRange: [0, 1], outputRange: [1, 1.9] }) }],
+                transform: [
+                  { scale: pulse.interpolate({ inputRange: [0, 1], outputRange: [1, 1.9] }) },
+                ],
               },
             ]}
           />

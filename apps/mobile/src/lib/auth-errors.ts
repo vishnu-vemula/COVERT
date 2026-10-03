@@ -17,6 +17,8 @@ const MESSAGES: Record<string, string> = {
 
 export function authErrorMessage(error: unknown): string {
   const code =
-    typeof error === 'object' && error && 'code' in error ? String((error as { code: unknown }).code) : '';
+    typeof error === 'object' && error && 'code' in error
+      ? String((error as { code: unknown }).code)
+      : '';
   return MESSAGES[code] ?? 'Something went wrong. Try again.';
 }

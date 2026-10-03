@@ -51,18 +51,27 @@ export function ExportSheet({ document, initialTableId, visible, onClose }: Expo
   };
 
   const actions: { action: Action; icon: IconName; title: string; detail: string }[] = [
-    { action: 'share', icon: 'share', title: 'Share CSV', detail: 'Send a .csv file to another app' },
-    { action: 'copy', icon: 'copy', title: 'Copy table', detail: 'Paste into a spreadsheet or note' },
+    {
+      action: 'share',
+      icon: 'share',
+      title: 'Share CSV',
+      detail: 'Send a .csv file to another app',
+    },
+    {
+      action: 'copy',
+      icon: 'copy',
+      title: 'Copy table',
+      detail: 'Paste into a spreadsheet or note',
+    },
   ];
 
   return (
-    <Sheet
-      visible={visible}
-      title="Export"
-      onClose={onClose}
-      onDismiss={onDismiss}>
+    <Sheet visible={visible} title="Export" onClose={onClose} onDismiss={onDismiss}>
       {document.tables.length > 1 ? (
-        <View style={styles.group} accessibilityRole="radiogroup" accessibilityLabel="Table to export">
+        <View
+          style={styles.group}
+          accessibilityRole="radiogroup"
+          accessibilityLabel="Table to export">
           <Text variant="eyebrow" tone="secondary">
             Table
           </Text>
@@ -102,7 +111,10 @@ export function ExportSheet({ document, initialTableId, visible, onClose }: Expo
             accessibilityLabel={`${item.title}. ${item.detail}`}
             style={({ pressed }) => [
               styles.option,
-              { borderColor: colors.border, backgroundColor: pressed ? palette.canvasDeep : palette.surface },
+              {
+                borderColor: colors.border,
+                backgroundColor: pressed ? palette.canvasDeep : palette.surface,
+              },
             ]}>
             <View style={styles.tile}>
               <Icon name={item.icon} />

@@ -113,7 +113,10 @@ export default function ReviewScreen() {
           </View>
 
           {pages.length > 1 || page.source === 'camera' ? (
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.strip}>
+            <ScrollView
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              contentContainerStyle={styles.strip}>
               {pages.map((item, position) => (
                 <Pressable
                   key={item.uri}
@@ -134,7 +137,11 @@ export default function ReviewScreen() {
                   accessibilityRole="button"
                   accessibilityLabel="Add page"
                   accessibilityHint="Opens the camera to photograph another page"
-                  style={({ pressed }) => [styles.thumb, styles.addPage, pressed && styles.addPagePressed]}>
+                  style={({ pressed }) => [
+                    styles.thumb,
+                    styles.addPage,
+                    pressed && styles.addPagePressed,
+                  ]}>
                   <Icon name="plus" size={20} />
                 </Pressable>
               ) : null}
@@ -142,13 +149,19 @@ export default function ReviewScreen() {
           ) : null}
 
           <View style={styles.tools}>
-            <ToolButton icon="rotate" label="Rotate" onPress={() => void edit('Rotating page', { rotate: 90 })} />
+            <ToolButton
+              icon="rotate"
+              label="Rotate"
+              onPress={() => void edit('Rotating page', { rotate: 90 })}
+            />
             <ToolButton icon="crop" label="Crop" onPress={() => setCropping(true)} />
             {page.source === 'camera' ? (
               <ToolButton
                 icon="camera"
                 label="Retake"
-                onPress={() => router.push({ pathname: '/capture', params: { retake: String(index) } })}
+                onPress={() =>
+                  router.push({ pathname: '/capture', params: { retake: String(index) } })
+                }
               />
             ) : null}
             {pages.length > 1 ? (
@@ -173,7 +186,7 @@ export default function ReviewScreen() {
         </>
       ) : null}
 
-      <BusyOverlay visible={working !== null} label={working ?? ''} />
+      <BusyOverlay visible={working !== null} label={working ?? 'Updating page'} />
     </Screen>
   );
 }

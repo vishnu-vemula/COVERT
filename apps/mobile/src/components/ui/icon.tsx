@@ -42,17 +42,15 @@ const paths = {
       <Path d="M12 8v4.2l2.8 1.8" />
     </>
   ),
-  settings: (
-    <Path d="M4 7h9M17 7h3M4 17h3M11 17h9M15 5v4M9 15v4" />
-  ),
+  settings: <Path d="M4 7h9M17 7h3M4 17h3M11 17h9M15 5v4M9 15v4" />,
   play: <Path d="M8 5.5v13l10.5-6.5z" fill="currentColor" />,
   stop: <Rect x={7} y={7} width={10} height={10} rx={1.5} fill="currentColor" />,
   previous: <Path d="M7 6v12M18 6l-8 6 8 6z" />,
   next: <Path d="M17 6v12M6 6l8 6-8 6z" />,
-  speaker: (
-    <Path d="M4.5 9.5h3l4.5-4v13l-4.5-4h-3zM15.5 9a4 4 0 010 6M18 6.5a7.5 7.5 0 010 11" />
+  speaker: <Path d="M4.5 9.5h3l4.5-4v13l-4.5-4h-3zM15.5 9a4 4 0 010 6M18 6.5a7.5 7.5 0 010 11" />,
+  share: (
+    <Path d="M12 3.5v11M8 7.5l4-4 4 4M6 11H5.5a1.5 1.5 0 00-1.5 1.5v6A1.5 1.5 0 005.5 20h13a1.5 1.5 0 001.5-1.5v-6a1.5 1.5 0 00-1.5-1.5H18" />
   ),
-  share: <Path d="M12 3.5v11M8 7.5l4-4 4 4M6 11H5.5a1.5 1.5 0 00-1.5 1.5v6A1.5 1.5 0 005.5 20h13a1.5 1.5 0 001.5-1.5v-6a1.5 1.5 0 00-1.5-1.5H18" />,
   copy: (
     <>
       <Rect x={8.5} y={8.5} width={11} height={11} rx={2} />
@@ -62,7 +60,9 @@ const paths = {
   check: <Path d="M5 12.5l4.5 4.5L19 7.5" />,
   rotate: <Path d="M19.5 12a7.5 7.5 0 11-2.2-5.3M19.5 4v4.5H15" />,
   crop: <Path d="M7 3.5V17h13.5M3.5 7H17v13.5" />,
-  trash: <Path d="M4.5 7h15M9.5 7V5a1.5 1.5 0 011.5-1.5h2A1.5 1.5 0 0114.5 5v2M6.5 7l1 12a1.5 1.5 0 001.5 1.4h6a1.5 1.5 0 001.5-1.4l1-12M10 11v6M14 11v6" />,
+  trash: (
+    <Path d="M4.5 7h15M9.5 7V5a1.5 1.5 0 011.5-1.5h2A1.5 1.5 0 0114.5 5v2M6.5 7l1 12a1.5 1.5 0 001.5 1.4h6a1.5 1.5 0 001.5-1.4l1-12M10 11v6M14 11v6" />
+  ),
   edit: <Path d="M4 20h4L19 9a2.8 2.8 0 00-4-4L4 16zM13.5 6.5l4 4" />,
   more: (
     <>
@@ -72,7 +72,9 @@ const paths = {
     </>
   ),
   flash: <Path d="M13 3L5.5 13.5H12L11 21l7.5-10.5H12z" />,
-  flashOff: <Path d="M13 3l-2.6 3.6M8.3 9.6l-2.8 3.9H12L11 21l3.6-5M16.4 13.2l2.1-2.7H14M4 4l16 16" />,
+  flashOff: (
+    <Path d="M13 3l-2.6 3.6M8.3 9.6l-2.8 3.9H12L11 21l3.6-5M16.4 13.2l2.1-2.7H14M4 4l16 16" />
+  ),
   plus: <Path d="M12 5v14M5 12h14" />,
   eye: (
     <>
@@ -89,7 +91,9 @@ const paths = {
       <Path d="M12 7.5v5.5M12 16.2v.3" />
     </>
   ),
-  offline: <Path d="M4 4l16 16M8.5 16a5 5 0 017 0M5 12.5a10 10 0 014.3-2.4M14.5 10a10 10 0 014.5 2.5M2 9a14 14 0 014.1-2.6M12 5.5a14 14 0 0110 3.5M12 19.5v.01" />,
+  offline: (
+    <Path d="M4 4l16 16M8.5 16a5 5 0 017 0M5 12.5a10 10 0 014.3-2.4M14.5 10a10 10 0 014.5 2.5M2 9a14 14 0 014.1-2.6M12 5.5a14 14 0 0110 3.5M12 19.5v.01" />
+  ),
 } as const;
 
 export type IconName = keyof typeof paths;
@@ -101,7 +105,12 @@ interface IconProps {
   strokeWidth?: number;
 }
 
-export function Icon({ name, color = palette.ink, size = sizes.icon, strokeWidth = 1.8 }: IconProps) {
+export function Icon({
+  name,
+  color = palette.ink,
+  size = sizes.icon,
+  strokeWidth = 1.8,
+}: IconProps) {
   return (
     <Svg
       width={size}

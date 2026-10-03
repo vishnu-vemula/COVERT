@@ -67,7 +67,11 @@ export default function HistoryScreen() {
       header={<TopBar label={list.length > 0 ? plural(list.length, 'document') : undefined} />}
       contentStyle={styles.content}
       refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={() => void refresh()} tintColor={palette.ink} />
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={() => void refresh()}
+          tintColor={palette.ink}
+        />
       }>
       <Text variant="title" accessibilityRole="header">
         History

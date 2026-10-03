@@ -17,16 +17,15 @@ export function usePick(onPicked?: () => void) {
     setBusy(source);
     try {
       const result = source === 'photos' ? await pickPhotos() : await pickFile();
-      console.log('DEBUG pick result', JSON.stringify(result).slice(0, 300));
       if (result.kind === 'cancelled') return;
       const capture = useCapture.getState();
       capture.reset();
       if (result.kind === 'pdf') capture.setPdf(result.pdf);
       else capture.setPages(result.pages);
+      setBusy(null);
       onPicked?.();
       router.push('/review');
     } catch (error) {
-      console.log('DEBUG pick error', String(error), (error as Error)?.stack);
       showToast(
         error instanceof FileRejectedError
           ? error.message

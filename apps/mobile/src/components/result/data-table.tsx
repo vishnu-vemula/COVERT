@@ -44,7 +44,10 @@ export function DataTable({ table, activeRow, onEdit, onRowLayout }: DataTablePr
   };
 
   // Keep the row being read rendered even if it is beyond the current page.
-  const visible = Math.max(limit, activeRow !== null ? Math.ceil((activeRow + 1) / PAGE) * PAGE : 0);
+  const visible = Math.max(
+    limit,
+    activeRow !== null ? Math.ceil((activeRow + 1) / PAGE) * PAGE : 0,
+  );
   const rows = table.rows.slice(0, visible);
 
   return (
@@ -70,7 +73,10 @@ export function DataTable({ table, activeRow, onEdit, onRowLayout }: DataTablePr
                       { width: layout?.width, borderBottomColor: palette.ink },
                       layout?.numeric && styles.alignEnd,
                     ]}>
-                    <Text variant="cellHead" numberOfLines={2} align={layout?.numeric ? 'right' : 'left'}>
+                    <Text
+                      variant="cellHead"
+                      numberOfLines={2}
+                      align={layout?.numeric ? 'right' : 'left'}>
                       {column.label}
                     </Text>
                   </View>
@@ -89,7 +95,11 @@ export function DataTable({ table, activeRow, onEdit, onRowLayout }: DataTablePr
               <View
                 key={row.id}
                 style={styles.row}
-                onLayout={onRowLayout ? (event) => onRowLayout(rowIndex, event.nativeEvent.layout.y) : undefined}>
+                onLayout={
+                  onRowLayout
+                    ? (event) => onRowLayout(rowIndex, event.nativeEvent.layout.y)
+                    : undefined
+                }>
                 {table.columns.map((column, index) => {
                   const cell = (
                     <DataCell

@@ -56,9 +56,15 @@ export function ReaderBar({ reader, table, onClose }: ReaderBarProps) {
           accessibilityLabel="Speech speed"
           accessibilityValue={{ text: rateLabel(reader.rate) }}
           accessibilityActions={[{ name: 'increment' }, { name: 'decrement' }]}
-          onAccessibilityAction={(event) => shiftRate(event.nativeEvent.actionName === 'increment' ? 1 : -1)}
+          onAccessibilityAction={(event) =>
+            shiftRate(event.nativeEvent.actionName === 'increment' ? 1 : -1)
+          }
           style={({ pressed }) => [styles.rate, pressed && styles.ratePressed]}>
-          <Text variant="footnote" tone="inverse" style={styles.rateText} maxFontSizeMultiplier={1.4}>
+          <Text
+            variant="footnote"
+            tone="inverse"
+            style={styles.rateText}
+            maxFontSizeMultiplier={1.4}>
             {rateLabel(reader.rate)}
           </Text>
         </Pressable>

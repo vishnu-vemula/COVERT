@@ -12,7 +12,12 @@ interface LinkButtonProps {
 }
 
 /** Text-only action with a full-size touch target and an underline, so it never relies on colour. */
-export function LinkButton({ label, onPress, accessibilityHint, tone = 'primary' }: LinkButtonProps) {
+export function LinkButton({
+  label,
+  onPress,
+  accessibilityHint,
+  tone = 'primary',
+}: LinkButtonProps) {
   return (
     <Pressable
       onPress={onPress}

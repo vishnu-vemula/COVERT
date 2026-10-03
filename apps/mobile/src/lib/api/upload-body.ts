@@ -6,7 +6,11 @@ import type { UploadFile } from './process';
 export async function buildUploadBody(files: UploadFile[]): Promise<FormData> {
   const form = new FormData();
   for (const file of files) {
-    form.append(UPLOAD_FIELD, { uri: file.uri, name: file.name, type: file.mimeType } as unknown as Blob);
+    form.append(UPLOAD_FIELD, {
+      uri: file.uri,
+      name: file.name,
+      type: file.mimeType,
+    } as unknown as Blob);
   }
   return form;
 }

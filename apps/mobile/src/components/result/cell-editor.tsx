@@ -27,13 +27,22 @@ export function CellEditor({ target, onClose, onSave }: CellEditorProps) {
   return (
     <Sheet visible={target !== null} title={target?.column.label || 'Edit value'} onClose={onClose}>
       {target ? (
-        <EditorBody key={`${target.rowId}-${target.column.id}`} target={target} onClose={onClose} onSave={onSave} />
+        <EditorBody
+          key={`${target.rowId}-${target.column.id}`}
+          target={target}
+          onClose={onClose}
+          onSave={onSave}
+        />
       ) : null}
     </Sheet>
   );
 }
 
-function EditorBody({ target, onClose, onSave }: { target: EditTarget } & Omit<CellEditorProps, 'target'>) {
+function EditorBody({
+  target,
+  onClose,
+  onSave,
+}: { target: EditTarget } & Omit<CellEditorProps, 'target'>) {
   const [value, setValue] = useState(target.cell.value);
   const changed = value !== target.cell.value;
   const { uncertain, sourceText } = target.cell;
@@ -53,7 +62,9 @@ function EditorBody({ target, onClose, onSave }: { target: EditTarget } & Omit<C
           <View style={styles.rule} />
           <Text variant="callout" style={styles.noteText}>
             COVERT wasn’t certain about this value.
-            {sourceText ? ` The document reads “${sourceText}”.` : ' Check it against the original.'}
+            {sourceText
+              ? ` The document reads “${sourceText}”.`
+              : ' Check it against the original.'}
           </Text>
         </View>
       ) : null}

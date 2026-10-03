@@ -69,7 +69,10 @@ export default function HomeScreen() {
           accessibilityHint="Choose photos or a PDF, JPG or PNG file"
           style={({ pressed }) => [
             styles.upload,
-            { borderColor: colors.border, backgroundColor: pressed ? palette.canvasDeep : palette.surface },
+            {
+              borderColor: colors.border,
+              backgroundColor: pressed ? palette.canvasDeep : palette.surface,
+            },
           ]}>
           <View style={styles.uploadTile}>
             <Icon name="upload" />

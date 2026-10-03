@@ -94,7 +94,11 @@ export function CropEditor({ page, visible, onCancel, onApply }: CropEditorProps
 
   return (
     <Modal visible={visible} animationType="fade" onRequestClose={onCancel} statusBarTranslucent>
-      <View style={[styles.root, { paddingTop: insets.top + space.md, paddingBottom: insets.bottom + space.md }]}>
+      <View
+        style={[
+          styles.root,
+          { paddingTop: insets.top + space.md, paddingBottom: insets.bottom + space.md },
+        ]}>
         <Text variant="headline" tone="inverse" align="center" accessibilityRole="header">
           Crop page
         </Text>
@@ -111,8 +115,8 @@ export function CropEditor({ page, visible, onCancel, onApply }: CropEditorProps
           ) : null}
         </View>
         <View style={styles.actions}>
-          <Button label="Cancel" variant="secondary" onPress={onCancel} style={styles.action} />
-          <Button label="Apply crop" onPress={apply} style={styles.action} />
+          <Button label="Cancel" variant="onDark" onPress={onCancel} style={styles.action} />
+          <Button label="Apply crop" variant="signal" onPress={apply} style={styles.action} />
         </View>
       </View>
     </Modal>
@@ -167,11 +171,13 @@ function CropSurface({
 
   return (
     <View style={bounds}>
-      <Image source={{ uri }} style={bounds} contentFit="fill" accessible={false} />
+      <Image source={{ uri }} style={bounds} contentFit="fill" aria-hidden />
       <View style={[styles.shade, { left: 0, top: 0, right: 0, height: rect.y }]} />
       <View style={[styles.shade, { left: 0, top: rect.y + rect.h, right: 0, bottom: 0 }]} />
       <View style={[styles.shade, { left: 0, top: rect.y, width: rect.x, height: rect.h }]} />
-      <View style={[styles.shade, { left: rect.x + rect.w, top: rect.y, right: 0, height: rect.h }]} />
+      <View
+        style={[styles.shade, { left: rect.x + rect.w, top: rect.y, right: 0, height: rect.h }]}
+      />
       <View
         style={[styles.frame, { left: rect.x, top: rect.y, width: rect.w, height: rect.h }]}
         pointerEvents="none"

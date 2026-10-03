@@ -14,7 +14,13 @@ interface ToolButtonProps {
 }
 
 /** Icon-over-label control for page tools (rotate, crop, retake, remove). */
-export function ToolButton({ icon, label, onPress, disabled = false, accessibilityHint }: ToolButtonProps) {
+export function ToolButton({
+  icon,
+  label,
+  onPress,
+  disabled = false,
+  accessibilityHint,
+}: ToolButtonProps) {
   const colors = useColors();
   return (
     <Pressable

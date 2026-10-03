@@ -10,7 +10,7 @@ export function Mark({ cell = 7, inverse = false }: { cell?: number; inverse?: b
   const ink = inverse ? palette.onInk : palette.ink;
   const cellStyle = { width: cell, height: cell, borderRadius: cell / 4 };
   return (
-    <View style={{ width: cell * 2 + gap, gap }} accessible={false}>
+    <View style={{ width: cell * 2 + gap, gap }} aria-hidden>
       <View style={[styles.row, { gap }]}>
         <View style={[cellStyle, { backgroundColor: palette.signal }]} />
         <View style={[cellStyle, { backgroundColor: ink }]} />
@@ -25,11 +25,7 @@ export function Mark({ cell = 7, inverse = false }: { cell?: number; inverse?: b
 
 export function Wordmark({ inverse = false }: { inverse?: boolean }) {
   return (
-    <View
-      style={styles.wordmark}
-      accessible
-      accessibilityRole="header"
-      accessibilityLabel="COVERT">
+    <View style={styles.wordmark} accessible accessibilityRole="header" accessibilityLabel="COVERT">
       <Mark inverse={inverse} />
       <Text
         variant="headline"

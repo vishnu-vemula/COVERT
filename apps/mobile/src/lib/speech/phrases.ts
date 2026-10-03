@@ -6,18 +6,18 @@ import { numberToWords } from './words';
 /** Column headers that speech engines would otherwise spell out letter by letter. */
 const LABELS: Record<string, string> = {
   '#': 'Number',
-  'no': 'Number',
+  no: 'Number',
   'no.': 'Number',
   'sl no': 'Number',
   'sl. no.': 'Number',
-  'qty': 'Quantity',
-  'amt': 'Amount',
-  'ref': 'Reference',
+  qty: 'Quantity',
+  amt: 'Amount',
+  ref: 'Reference',
   'ref no': 'Reference number',
-  'desc': 'Description',
-  'bal': 'Balance',
-  'dr': 'Debit',
-  'cr': 'Credit',
+  desc: 'Description',
+  bal: 'Balance',
+  dr: 'Debit',
+  cr: 'Credit',
 };
 
 export function speakableLabel(label: string): string {

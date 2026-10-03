@@ -40,7 +40,9 @@ export function fileTypeLabel(type: MimeType): string {
 }
 
 /** Groups items into "October 2026"-style sections, newest first, preserving order. */
-export function groupByMonth<T extends { createdAt: string }>(items: T[]): { label: string; items: T[] }[] {
+export function groupByMonth<T extends { createdAt: string }>(
+  items: T[],
+): { label: string; items: T[] }[] {
   const groups: { label: string; items: T[] }[] = [];
   for (const item of items) {
     const date = new Date(item.createdAt);

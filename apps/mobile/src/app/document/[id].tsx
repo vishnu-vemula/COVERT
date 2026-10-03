@@ -1,7 +1,7 @@
 import type { ApiError, Column, Row } from '@covert/shared';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { AccessibilityInfo, ActivityIndicator, findNodeHandle, ScrollView, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, ScrollView, StyleSheet, View } from 'react-native';
 
 import { CellEditor, type EditTarget } from '@/components/result/cell-editor';
 import { DataTable } from '@/components/result/data-table';
@@ -22,6 +22,7 @@ import { useToast } from '@/components/ui/toast';
 import { TopBar } from '@/components/ui/top-bar';
 import { useAfterDismiss } from '@/hooks/use-after-dismiss';
 import { useReader } from '@/hooks/use-reader';
+import { focusForAccessibility } from '@/lib/a11y';
 import { toApiError } from '@/lib/api/client';
 import { confirm } from '@/lib/confirm';
 import { fileTypeLabel, formatDateTime, plural } from '@/lib/format';
@@ -64,8 +65,7 @@ export default function DocumentScreen() {
   const hasDocument = document !== undefined;
   useEffect(() => {
     if (!hasDocument) return;
-    const node = findNodeHandle(titleRef.current);
-    if (node) AccessibilityInfo.setAccessibilityFocus(node);
+    focusForAccessibility(titleRef.current);
   }, [hasDocument]);
 
   // Keep the row being read in view.
@@ -73,7 +73,10 @@ export default function DocumentScreen() {
     if (!readerOpen || reader.mode !== 'table' || !reader.playing) return;
     const offset = rowOffsets.current[reader.row];
     if (offset === undefined) return;
-    scrollRef.current?.scrollTo({ y: Math.max(tableTop.current + offset - 160, 0), animated: true });
+    scrollRef.current?.scrollTo({
+      y: Math.max(tableTop.current + offset - 160, 0),
+      animated: true,
+    });
   }, [reader.row, reader.mode, reader.playing, readerOpen]);
 
   if (!document) {
@@ -128,7 +131,10 @@ export default function DocumentScreen() {
 
   /** Opens the next uncertain value, starting with the table on screen. */
   const reviewNext = () => {
-    const order = [tableIndex, ...tables.map((_, index) => index).filter((index) => index !== tableIndex)];
+    const order = [
+      tableIndex,
+      ...tables.map((_, index) => index).filter((index) => index !== tableIndex),
+    ];
     for (const index of order) {
       const candidate = tables[index];
       if (!candidate) continue;
@@ -170,7 +176,9 @@ export default function DocumentScreen() {
       header={
         <TopBar
           label={`${fileTypeLabel(document.fileType)}${document.pageCount > 1 ? ` · ${plural(document.pageCount, 'page')}` : ''}`}
-          right={<IconButton icon="more" label="Document actions" onPress={() => setMenuOpen(true)} />}
+          right={
+            <IconButton icon="more" label="Document actions" onPress={() => setMenuOpen(true)} />
+          }
         />
       }
       contentStyle={styles.content}
@@ -189,7 +197,11 @@ export default function DocumentScreen() {
       <OfflineBanner />
 
       <View style={styles.heading}>
-        <View ref={titleRef} accessible accessibilityRole="header" accessibilityLabel={document.title}>
+        <View
+          ref={titleRef}
+          accessible
+          accessibilityRole="header"
+          accessibilityLabel={document.title}>
           <Text variant="title">{document.title}</Text>
         </View>
         <Text variant="footnote" tone="secondary">

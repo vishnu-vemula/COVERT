@@ -16,7 +16,9 @@ export function OriginalText({ text }: { text: string }) {
         onPress={() => setOpen((value) => !value)}
         accessibilityRole="button"
         accessibilityLabel="Original text"
-        accessibilityHint={open ? 'Hides the recognized text' : 'Shows the text read from the document'}
+        accessibilityHint={
+          open ? 'Hides the recognized text' : 'Shows the text read from the document'
+        }
         accessibilityState={{ expanded: open }}
         style={({ pressed }) => [styles.toggle, pressed && styles.pressed]}>
         <Text variant="headline" style={styles.label}>
@@ -38,7 +40,12 @@ export function OriginalText({ text }: { text: string }) {
 }
 
 const styles = StyleSheet.create({
-  box: { borderWidth: 1, borderRadius: radius.md, backgroundColor: palette.surface, overflow: 'hidden' },
+  box: {
+    borderWidth: 1,
+    borderRadius: radius.md,
+    backgroundColor: palette.surface,
+    overflow: 'hidden',
+  },
   toggle: {
     minHeight: size.buttonLarge,
     flexDirection: 'row',

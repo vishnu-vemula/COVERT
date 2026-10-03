@@ -8,7 +8,13 @@ import type { PickSource } from '@/hooks/use-pick';
 import { useColors } from '@/theme/contrast';
 import { palette, radius, space } from '@/theme/tokens';
 
-const OPTIONS: { source: PickSource; title: string; detail: string; icon: IconName; tint: string }[] = [
+const OPTIONS: {
+  source: PickSource;
+  title: string;
+  detail: string;
+  icon: IconName;
+  tint: string;
+}[] = [
   {
     source: 'photos',
     title: 'Photos',
@@ -41,11 +47,7 @@ export function UploadSheet({ visible, onClose, onChoose }: UploadSheetProps) {
   };
 
   return (
-    <Sheet
-      visible={visible}
-      title="Upload a file"
-      onClose={onClose}
-      onDismiss={onDismiss}>
+    <Sheet visible={visible} title="Upload a file" onClose={onClose} onDismiss={onDismiss}>
       <View style={styles.list}>
         {OPTIONS.map((option) => (
           <Pressable
@@ -55,7 +57,10 @@ export function UploadSheet({ visible, onClose, onChoose }: UploadSheetProps) {
             accessibilityLabel={`${option.title}. ${option.detail}`}
             style={({ pressed }) => [
               styles.option,
-              { borderColor: colors.border, backgroundColor: pressed ? palette.canvasDeep : palette.surface },
+              {
+                borderColor: colors.border,
+                backgroundColor: pressed ? palette.canvasDeep : palette.surface,
+              },
             ]}>
             <View style={[styles.tile, { backgroundColor: option.tint }]}>
               <Icon name={option.icon} />

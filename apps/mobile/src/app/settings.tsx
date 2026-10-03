@@ -29,7 +29,8 @@ export default function SettingsScreen() {
   const clearHistory = async () => {
     const confirmed = await confirm({
       title: 'Clear history?',
-      message: 'Every saved conversion and its tables will be deleted from your account. This can’t be undone.',
+      message:
+        'Every saved conversion and its tables will be deleted from your account. This can’t be undone.',
       confirmLabel: 'Clear history',
       destructive: true,
     });
@@ -69,7 +70,13 @@ export default function SettingsScreen() {
           <Text selectable>{user?.email ?? '—'}</Text>
         </View>
         <View style={styles.row}>
-          <Button label="Sign out" variant="secondary" size="medium" loading={signingOut} onPress={() => void leave()} />
+          <Button
+            label="Sign out"
+            variant="secondary"
+            size="medium"
+            loading={signingOut}
+            onPress={() => void leave()}
+          />
         </View>
       </Section>
 

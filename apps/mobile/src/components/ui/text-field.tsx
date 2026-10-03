@@ -33,7 +33,7 @@ export function TextField({
 
   return (
     <View style={styles.field}>
-      <Text variant="footnote" tone="secondary" importantForAccessibility="no" accessibilityElementsHidden>
+      <Text variant="footnote" tone="secondary" aria-hidden>
         {label}
       </Text>
       <View style={[styles.box, { borderColor, borderWidth: focused || error ? 1.5 : 1 }]}>
@@ -65,7 +65,11 @@ export function TextField({
         ) : null}
       </View>
       {error ? (
-        <Text variant="footnote" tone="danger" accessibilityRole="alert" accessibilityLiveRegion="polite">
+        <Text
+          variant="footnote"
+          tone="danger"
+          accessibilityRole="alert"
+          accessibilityLiveRegion="polite">
           {error}
         </Text>
       ) : hint ? (

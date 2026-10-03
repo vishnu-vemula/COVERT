@@ -2,7 +2,14 @@ import { CameraView, useCameraPermissions, type FlashMode } from 'expo-camera';
 import * as Haptics from 'expo-haptics';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useRef, useState } from 'react';
-import { ActivityIndicator, Linking, Pressable, StyleSheet, View, useWindowDimensions } from 'react-native';
+import {
+  ActivityIndicator,
+  Linking,
+  Pressable,
+  StyleSheet,
+  View,
+  useWindowDimensions,
+} from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Button } from '@/components/ui/button';
@@ -17,7 +24,11 @@ import { useCapture } from '@/stores/capture';
 import { palette, radius, space } from '@/theme/tokens';
 
 const FLASH_ORDER: FlashMode[] = ['off', 'auto', 'on'];
-const FLASH_LABEL: Record<string, string> = { off: 'Flash off', auto: 'Flash auto', on: 'Flash on' };
+const FLASH_LABEL: Record<string, string> = {
+  off: 'Flash off',
+  auto: 'Flash auto',
+  on: 'Flash on',
+};
 
 export default function CaptureScreen() {
   const params = useLocalSearchParams<{ retake?: string }>();
@@ -33,10 +44,7 @@ export default function CaptureScreen() {
   }
   if (!permission.granted) {
     return (
-      <PermissionNeeded
-        canAsk={permission.canAskAgain}
-        onAllow={() => void requestPermission()}
-      />
+      <PermissionNeeded canAsk={permission.canAskAgain} onAllow={() => void requestPermission()} />
     );
   }
   return <Camera retakeIndex={retakeIndex} />;
@@ -78,7 +86,9 @@ function Camera({ retakeIndex }: { retakeIndex: number | null }) {
       }
     } catch (error) {
       showToast(
-        error instanceof FileRejectedError ? error.message : 'The photo couldn’t be taken. Try again.',
+        error instanceof FileRejectedError
+          ? error.message
+          : 'The photo couldn’t be taken. Try again.',
         'error',
       );
     } finally {
@@ -87,7 +97,9 @@ function Camera({ retakeIndex }: { retakeIndex: number | null }) {
   };
 
   const cycleFlash = () =>
-    setFlash((current) => FLASH_ORDER[(FLASH_ORDER.indexOf(current) + 1) % FLASH_ORDER.length] ?? 'off');
+    setFlash(
+      (current) => FLASH_ORDER[(FLASH_ORDER.indexOf(current) + 1) % FLASH_ORDER.length] ?? 'off',
+    );
 
   // Page-shaped guide (A4 proportions) that fits between the controls.
   const frameWidth = Math.min(width - space.xl * 2, 520);
@@ -102,15 +114,16 @@ function Camera({ retakeIndex }: { retakeIndex: number | null }) {
         facing="back"
         flash={flash}
         onCameraReady={() => setReady(true)}
-        accessibilityElementsHidden
-        importantForAccessibility="no-hide-descendants"
+        aria-hidden
       />
 
       <View style={[styles.top, { paddingTop: insets.top + space.xs }]}>
         <IconButton icon="close" label="Close camera" variant="glass" onPress={leave} />
         <View style={styles.hint}>
           <Text variant="footnote" tone="inverse" maxFontSizeMultiplier={1.4}>
-            {retakeIndex !== null ? `Retake page ${retakeIndex + 1}` : 'Fit the page inside the frame'}
+            {retakeIndex !== null
+              ? `Retake page ${retakeIndex + 1}`
+              : 'Fit the page inside the frame'}
           </Text>
         </View>
         <IconButton
@@ -195,8 +208,20 @@ const styles = StyleSheet.create({
   },
   frameArea: { ...StyleSheet.absoluteFill, alignItems: 'center', justifyContent: 'center' },
   corner: { position: 'absolute', width: CORNER, height: CORNER, borderColor: palette.signal },
-  topLeft: { top: 0, left: 0, borderTopWidth: STROKE, borderLeftWidth: STROKE, borderTopLeftRadius: 6 },
-  topRight: { top: 0, right: 0, borderTopWidth: STROKE, borderRightWidth: STROKE, borderTopRightRadius: 6 },
+  topLeft: {
+    top: 0,
+    left: 0,
+    borderTopWidth: STROKE,
+    borderLeftWidth: STROKE,
+    borderTopLeftRadius: 6,
+  },
+  topRight: {
+    top: 0,
+    right: 0,
+    borderTopWidth: STROKE,
+    borderRightWidth: STROKE,
+    borderTopRightRadius: 6,
+  },
   bottomLeft: {
     bottom: 0,
     left: 0,

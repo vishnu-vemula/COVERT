@@ -43,7 +43,8 @@ export function Segmented<T extends string | number>({
           styles.item,
           !scrollable && styles.equal,
           selected && { backgroundColor: dark ? palette.signal : palette.ink },
-          !selected && pressed && { backgroundColor: dark ? 'rgba(255,255,255,0.08)' : palette.border },
+          !selected &&
+            pressed && { backgroundColor: dark ? 'rgba(255,255,255,0.08)' : palette.border },
         ]}>
         <Text
           variant="footnote"
@@ -51,7 +52,15 @@ export function Segmented<T extends string | number>({
           maxFontSizeMultiplier={1.4}
           style={[
             styles.label,
-            { color: selected ? (dark ? palette.ink : palette.onInk) : dark ? palette.onInk : palette.ink },
+            {
+              color: selected
+                ? dark
+                  ? palette.ink
+                  : palette.onInk
+                : dark
+                  ? palette.onInk
+                  : palette.ink,
+            },
           ]}>
           {option.label}
         </Text>
@@ -59,7 +68,10 @@ export function Segmented<T extends string | number>({
     );
   });
 
-  const container = [styles.track, { backgroundColor: dark ? 'rgba(255,255,255,0.08)' : palette.canvasDeep }];
+  const container = [
+    styles.track,
+    { backgroundColor: dark ? 'rgba(255,255,255,0.08)' : palette.canvasDeep },
+  ];
 
   if (scrollable) {
     return (

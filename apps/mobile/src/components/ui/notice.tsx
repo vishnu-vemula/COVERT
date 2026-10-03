@@ -16,7 +16,14 @@ interface NoticeProps {
 }
 
 /** Inline message for empty, offline and failure states. */
-export function Notice({ title, message, icon, tone = 'neutral', actionLabel, onAction }: NoticeProps) {
+export function Notice({
+  title,
+  message,
+  icon,
+  tone = 'neutral',
+  actionLabel,
+  onAction,
+}: NoticeProps) {
   return (
     <View
       style={[styles.box, tone === 'error' ? styles.error : styles.neutral]}

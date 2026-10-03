@@ -68,10 +68,16 @@ function speakDate(value: string): string | null {
     return name ? formatDate(name, iso[3] ?? '', iso[1]) : null;
   }
 
-  const dayFirst = new RegExp(`^(\\d{1,2})[\\s-]+(${MONTH_PATTERN})\\.?(?:[\\s-]+(\\d{2,4}))?$`, 'i').exec(value);
+  const dayFirst = new RegExp(
+    `^(\\d{1,2})[\\s-]+(${MONTH_PATTERN})\\.?(?:[\\s-]+(\\d{2,4}))?$`,
+    'i',
+  ).exec(value);
   if (dayFirst) return formatDate(dayFirst[2] ?? '', dayFirst[1] ?? '', dayFirst[3]);
 
-  const monthFirst = new RegExp(`^(${MONTH_PATTERN})\\.?\\s+(\\d{1,2}),?(?:\\s+(\\d{4}))?$`, 'i').exec(value);
+  const monthFirst = new RegExp(
+    `^(${MONTH_PATTERN})\\.?\\s+(\\d{1,2}),?(?:\\s+(\\d{4}))?$`,
+    'i',
+  ).exec(value);
   if (monthFirst) return formatDate(monthFirst[1] ?? '', monthFirst[2] ?? '', monthFirst[3]);
 
   const monthOnly = new RegExp(`^(${MONTH_PATTERN})\\.?$`, 'i').exec(value);

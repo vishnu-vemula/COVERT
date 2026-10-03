@@ -67,7 +67,10 @@ export function Sheet({ visible, title, onClose, onDismiss, children }: SheetPro
           <Animated.View
             style={[
               styles.sheet,
-              { paddingBottom: Math.max(insets.bottom, space.md) + space.xs, transform: [{ translateY }] },
+              {
+                paddingBottom: Math.max(insets.bottom, space.md) + space.xs,
+                transform: [{ translateY }],
+              },
             ]}
             accessibilityViewIsModal>
             <View style={styles.handle} />

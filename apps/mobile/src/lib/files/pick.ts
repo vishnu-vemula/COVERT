@@ -49,7 +49,10 @@ export async function pickFile(): Promise<PickResult> {
     return { kind: 'pdf', pdf: { uri: asset.uri, name: asset.name, size: size ?? 0 } };
   }
   const dimensions = await imageSize(asset.uri);
-  return { kind: 'pages', pages: [await normalizeImage({ uri: asset.uri, ...dimensions }, 'files')] };
+  return {
+    kind: 'pages',
+    pages: [await normalizeImage({ uri: asset.uri, ...dimensions }, 'files')],
+  };
 }
 
 function imageSize(uri: string): Promise<{ width: number; height: number }> {

@@ -49,7 +49,10 @@ export function processDocument(files: UploadFile[], callbacks: ProcessCallbacks
   let cancelled = false;
 
   const attempt = async (forceRefresh: boolean): Promise<CovertDocument> => {
-    const [headers, body] = await Promise.all([authorizedHeaders(forceRefresh), buildUploadBody(files)]);
+    const [headers, body] = await Promise.all([
+      authorizedHeaders(forceRefresh),
+      buildUploadBody(files),
+    ]);
     if (cancelled) throw new CancelledError();
 
     return new Promise<CovertDocument>((resolve, reject) => {

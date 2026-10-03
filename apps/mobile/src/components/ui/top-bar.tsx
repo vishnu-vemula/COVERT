@@ -17,7 +17,14 @@ interface TopBarProps {
   left?: ReactNode;
 }
 
-export function TopBar({ label, onBack, backLabel = 'Back', backIcon = 'back', right, left }: TopBarProps) {
+export function TopBar({
+  label,
+  onBack,
+  backLabel = 'Back',
+  backIcon = 'back',
+  right,
+  left,
+}: TopBarProps) {
   const back = onBack ?? (() => (router.canGoBack() ? router.back() : router.replace('/')));
   return (
     <View style={styles.bar}>
