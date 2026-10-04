@@ -3,8 +3,12 @@
  * supplied yet. Replace those before publishing the site.
  */
 export const LINKS = {
-  /** PLACEHOLDER — replace with the App Store / Google Play listing. */
+  /** In-page anchor to the download section. */
   getApp: '#get-covert',
+  /** PLACEHOLDER — replace with the App Store listing. */
+  appStore: '#get-covert',
+  /** PLACEHOLDER — replace with the Google Play listing. */
+  googlePlay: '#get-covert',
   /** PLACEHOLDER — replace with the published terms of service. */
   terms: '#terms',
   /** The repository's own remote. */
