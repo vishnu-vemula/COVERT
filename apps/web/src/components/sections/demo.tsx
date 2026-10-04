@@ -71,7 +71,12 @@ export function Demo() {
           autoAlpha: 0.12,
           stagger: 0.05,
           ease: 'none',
-          scrollTrigger: { trigger: '[data-closing]', start: 'top 85%', end: 'bottom 60%', scrub: true },
+          scrollTrigger: {
+            trigger: '[data-closing]',
+            start: 'top 85%',
+            end: 'bottom 60%',
+            scrub: true,
+          },
         });
       });
       return () => mm.revert();
@@ -102,9 +107,6 @@ export function Demo() {
       </div>
 
       <div data-word className="relative mt-14 select-none lg:mt-20">
-        <h2 id="product-title" className="sr-only">
-          A photo of a bill becomes a table you can work with
-        </h2>
         <div aria-hidden className="relative">
           {/* Invisible copy holds the height; the bands sit on top of it. */}
           <p className="invisible whitespace-nowrap text-center font-condensed text-[19.5vw] leading-[0.86]">
@@ -136,18 +138,25 @@ export function Demo() {
           <ResultTable />
         </div>
 
-        <p
+        <div
           data-closing
           className="mx-auto mt-20 max-w-[64ch] text-center text-[13px] font-medium uppercase leading-[1.8] tracking-[0.06em] text-paper sm:text-[15px]">
-          {'A photo of a bill becomes a table you can work with. Values, order and currencies stay exactly as printed — edit any cell, copy the table or export it as CSV.'
-            .split(' ')
-            .map((word, index) => (
-              <span key={index}>{word} </span>
-            ))}
-        </p>
+          <h2 id="product-title" className="inline">
+            {splitWords('A photo of a bill becomes a table you can work with.')}
+          </h2>{' '}
+          <p className="inline">
+            {splitWords(
+              'Values, order and currencies stay exactly as printed — edit any cell in the app, copy the table or export it as CSV.',
+            )}
+          </p>
+        </div>
       </div>
     </section>
   );
+}
+
+function splitWords(text: string) {
+  return text.split(' ').map((word, index) => <span key={index}>{word} </span>);
 }
 
 function SourceDocument() {
@@ -203,7 +212,9 @@ function SourceDocument() {
           </p>
         </div>
       </div>
-      <figcaption className="eyebrow mt-5 text-center text-fog">/Before — a photographed bill</figcaption>
+      <figcaption className="eyebrow mt-5 text-center text-fog">
+        /Before — a photographed bill
+      </figcaption>
     </figure>
   );
 }
@@ -211,17 +222,11 @@ function SourceDocument() {
 function Connector() {
   return (
     <div aria-hidden className="flex items-center justify-center lg:flex-col">
-      <span
-        data-link
-        className="h-px w-10 origin-left bg-paper/30 lg:h-10 lg:w-px lg:origin-top"
-      />
+      <span data-link className="h-px w-10 origin-left bg-paper/30 lg:h-10 lg:w-px lg:origin-top" />
       <span className="mx-3 rounded-full bg-flare px-4 py-2 font-condensed text-[15px] tracking-[0.06em] text-night lg:mx-0 lg:my-3">
         COVERT
       </span>
-      <span
-        data-link
-        className="h-px w-10 origin-left bg-paper/30 lg:h-10 lg:w-px lg:origin-top"
-      />
+      <span data-link className="h-px w-10 origin-left bg-paper/30 lg:h-10 lg:w-px lg:origin-top" />
     </div>
   );
 }
@@ -280,7 +285,9 @@ function ResultTable() {
           </tbody>
         </table>
       </div>
-      <figcaption className="eyebrow mt-5 text-center text-fog">/After — an editable table</figcaption>
+      <figcaption className="eyebrow mt-5 text-center text-fog">
+        /After — an editable table
+      </figcaption>
     </figure>
   );
 }

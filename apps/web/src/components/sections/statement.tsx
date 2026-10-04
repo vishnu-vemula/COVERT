@@ -21,7 +21,12 @@ export function Statement() {
           opacity: 0.14,
           stagger: 0.1,
           ease: 'none',
-          scrollTrigger: { trigger: '[data-statement]', start: 'top 80%', end: 'bottom 45%', scrub: true },
+          scrollTrigger: {
+            trigger: '[data-statement]',
+            start: 'top 80%',
+            end: 'bottom 45%',
+            scrub: true,
+          },
         });
         gsap.fromTo(
           '[data-bolt]',
@@ -30,7 +35,12 @@ export function Statement() {
             rotate: 18,
             yPercent: -30,
             ease: 'none',
-            scrollTrigger: { trigger: root.current, start: 'top bottom', end: 'bottom top', scrub: true },
+            scrollTrigger: {
+              trigger: root.current,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: true,
+            },
           },
         );
       });
@@ -42,7 +52,7 @@ export function Statement() {
   return (
     <section
       ref={root}
-      aria-label="Accuracy"
+      aria-labelledby="statement-title"
       className="frame relative mt-2 overflow-hidden rounded-[28px] bg-night-2 px-6 py-24 text-paper md:mt-3 md:rounded-[36px] md:py-36">
       <div
         data-bolt
@@ -56,7 +66,8 @@ export function Statement() {
         className="absolute -left-14 bottom-6 size-32 opacity-80 sm:size-44">
         <Shape kind="capsule" className="size-full" />
       </div>
-      <p
+      <h2
+        id="statement-title"
         data-statement
         className="relative mx-auto max-w-[24ch] text-center text-[clamp(1.75rem,4.4vw,3.6rem)] font-semibold leading-[1.08] tracking-[-0.035em]">
         {STATEMENT.split(' ').map((word, index) => (
@@ -64,10 +75,10 @@ export function Statement() {
             {word}{' '}
           </span>
         ))}
-      </p>
+      </h2>
       <p className="relative mx-auto mt-8 max-w-[44ch] text-center text-[15px] leading-[1.6] text-fog sm:text-[16px]">
-        COVERT is instructed never to invent a value that isn’t on the page. Every result is
-        checked before it reaches your phone.
+        COVERT is instructed never to invent a value that isn’t on the page. Every result is checked
+        before it reaches your phone.
       </p>
     </section>
   );

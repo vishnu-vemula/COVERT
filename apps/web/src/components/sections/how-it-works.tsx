@@ -64,26 +64,28 @@ export function HowItWorks() {
 
       mm.add(DESKTOP_MOTION, () => {
         const timeline = build().pause();
-        gsap.timeline({
-          scrollTrigger: {
-            trigger: '[data-how-stage]',
-            start: 'center center',
-            end: '+=240%',
-            pin: true,
-            scrub: 0.7,
-            onUpdate: (self) => setActive(Math.min(STEPS.length - 1, Math.floor(self.progress * STEPS.length))),
-          },
-        }).to(timeline, { progress: 1, ease: 'none' });
+        gsap
+          .timeline({
+            scrollTrigger: {
+              trigger: '[data-how-stage]',
+              start: 'center center',
+              end: '+=240%',
+              pin: true,
+              scrub: 0.7,
+              onUpdate: (self) =>
+                setActive(Math.min(STEPS.length - 1, Math.floor(self.progress * STEPS.length))),
+            },
+          })
+          .to(timeline, { progress: 1, ease: 'none' });
         setActive(0);
         return () => setActive(-1);
       });
 
       mm.add(`(max-width: 1023.98px) and ${MOTION.motion}`, () => {
         const timeline = build().pause();
-        gsap.timeline({ scrollTrigger: { trigger: '[data-visual]', start: 'top 70%' } }).to(
-          timeline,
-          { progress: 1, duration: 4, ease: 'power1.inOut' },
-        );
+        gsap
+          .timeline({ scrollTrigger: { trigger: '[data-visual]', start: 'top 70%' } })
+          .to(timeline, { progress: 1, duration: 4, ease: 'power1.inOut' });
         gsap.from(steps, {
           autoAlpha: 0,
           y: 30,
@@ -150,7 +152,7 @@ function Visual() {
       <div aria-hidden className="absolute -bottom-24 -left-20 size-72 opacity-90">
         <Shape kind="flower" className="size-full" />
       </div>
-      <div aria-hidden className="absolute -right-8 top-8 size-28">
+      <div aria-hidden className="absolute right-6 top-6 size-24">
         <Shape kind="bolt" tone="chrome" className="size-full" />
       </div>
 
@@ -173,25 +175,35 @@ function Visual() {
               data-scan
               className="invisible absolute inset-x-[-6%] top-0 h-[3px] rounded-full bg-flare shadow-[0_0_18px_4px_rgba(255,79,31,0.6)]"
             />
-            {['-left-3 -top-3 border-l-4 border-t-4', '-right-3 -top-3 border-r-4 border-t-4', '-bottom-3 -left-3 border-b-4 border-l-4', '-bottom-3 -right-3 border-b-4 border-r-4'].map(
-              (corner) => (
-                <span
-                  key={corner}
-                  data-corner
-                  className={`absolute size-8 rounded-[6px] border-white ${corner}`}
-                />
-              ),
-            )}
+            {[
+              '-left-3 -top-3 border-l-4 border-t-4',
+              '-right-3 -top-3 border-r-4 border-t-4',
+              '-bottom-3 -left-3 border-b-4 border-l-4',
+              '-bottom-3 -right-3 border-b-4 border-r-4',
+            ].map((corner) => (
+              <span
+                key={corner}
+                data-corner
+                className={`absolute size-8 rounded-[6px] border-white ${corner}`}
+              />
+            ))}
           </div>
 
           {/* Structured table */}
           <div
             data-table
-            className="absolute -bottom-[34%] -right-[42%] w-[92%] rounded-[20px] bg-paper p-2 text-ink shadow-[0_30px_50px_-20px_rgba(0,0,0,0.5)]">
+            className="absolute -bottom-[38%] -right-[16%] w-[92%] sm:-bottom-[34%] sm:-right-[42%] rounded-[20px] bg-paper p-2 text-ink shadow-[0_30px_50px_-20px_rgba(0,0,0,0.5)]">
             <div
               data-check
               className="absolute -top-4 right-4 flex items-center gap-1.5 rounded-full bg-night px-3 py-1.5 text-[11px] font-semibold text-paper">
-              <svg viewBox="0 0 24 24" className="size-3.5 text-flare" fill="none" stroke="currentColor" strokeWidth={3} strokeLinecap="round" strokeLinejoin="round">
+              <svg
+                viewBox="0 0 24 24"
+                className="size-3.5 text-flare"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={3}
+                strokeLinecap="round"
+                strokeLinejoin="round">
                 <path d="m5 12 5 5 9-10" />
               </svg>
               Schema checked
@@ -228,7 +240,9 @@ function Visual() {
       </div>
 
       {/* What you can do with it */}
-      <div aria-hidden className="absolute inset-x-0 bottom-5 flex flex-wrap justify-center gap-2 px-4">
+      <div
+        aria-hidden
+        className="absolute inset-x-0 bottom-5 flex flex-wrap justify-center gap-2 px-4">
         {['Read aloud', 'Edit', 'Copy', 'Export CSV'].map((chip) => (
           <span
             key={chip}

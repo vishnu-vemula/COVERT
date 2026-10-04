@@ -51,7 +51,12 @@ export function Audio() {
         gsap.to('[data-audio-shape]', {
           rotate: 120,
           ease: 'none',
-          scrollTrigger: { trigger: root.current, start: 'top bottom', end: 'bottom top', scrub: true },
+          scrollTrigger: {
+            trigger: root.current,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: true,
+          },
         });
       });
       return () => mm.revert();
@@ -136,7 +141,7 @@ export function Audio() {
                 />
               ))}
             </div>
-            <p className="mx-2 mt-4 font-script text-[clamp(1.6rem,3vw,2.2rem)] leading-[1.15] text-cobalt">
+            <p className="mx-2 mt-4 text-[17px] font-medium leading-[1.5] text-cobalt sm:text-[19px]">
               “Row four. Date, September 4. Units, 41. Amount, 331 rupees.”
             </p>
             <div className="mt-4">

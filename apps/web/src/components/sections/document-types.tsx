@@ -16,12 +16,32 @@ interface DocType {
 }
 
 const TYPES: DocType[] = [
-  { title: 'Invoices', tag: 'Line items', card: 'bg-cobalt text-white', shape: { kind: 'clover', tone: 'pearl' } },
+  {
+    title: 'Invoices',
+    tag: 'Line items',
+    card: 'bg-cobalt text-white',
+    shape: { kind: 'clover', tone: 'pearl' },
+  },
   { title: 'Statements', tag: 'Transactions', card: 'bg-white' },
-  { title: 'Receipts', tag: 'Prices and totals', card: 'bg-white', shape: { kind: 'ring', tone: 'cobalt' } },
-  { title: 'Forms', tag: 'Labelled fields', card: 'bg-night-3 text-paper', shape: { kind: 'bolt', tone: 'chrome' } },
+  {
+    title: 'Receipts',
+    tag: 'Prices and totals',
+    card: 'bg-white',
+    shape: { kind: 'ring', tone: 'cobalt' },
+  },
+  {
+    title: 'Forms',
+    tag: 'Labelled fields',
+    card: 'bg-night-3 text-paper',
+    shape: { kind: 'bolt', tone: 'chrome' },
+  },
   { title: 'Schedules', tag: 'Dates and times', card: 'bg-cobalt text-white' },
-  { title: 'Reports', tag: 'Several tables', card: 'bg-white', shape: { kind: 'flower', tone: 'cobalt' } },
+  {
+    title: 'Reports',
+    tag: 'Several tables',
+    card: 'bg-white',
+    shape: { kind: 'flower', tone: 'cobalt' },
+  },
 ];
 
 const MARQUEE = ['Invoices', 'Statements', 'Receipts', 'Forms', 'Schedules', 'Reports', 'Lists'];
@@ -51,7 +71,11 @@ export function DocumentTypes() {
             const boost = Math.min(Math.abs(self.getVelocity()) / 250, 6);
             loop.timeScale((1 + boost) * self.direction);
             settle?.kill();
-            settle = gsap.to(loop, { timeScale: self.direction, duration: 1.2, ease: 'power2.out' });
+            settle = gsap.to(loop, {
+              timeScale: self.direction,
+              duration: 1.2,
+              ease: 'power2.out',
+            });
           },
         });
 
@@ -119,9 +143,7 @@ export function DocumentTypes() {
               <span className="rounded-full px-3 py-1 text-[12px] font-medium ring-1 ring-current/30">
                 {type.tag}
               </span>
-              {type.shape ? null : (
-                <span className="eyebrow tabular opacity-60">0{index + 1}</span>
-              )}
+              {type.shape ? null : <span className="eyebrow tabular opacity-60">0{index + 1}</span>}
             </div>
             <div className="relative">
               <h3 className="text-[clamp(1.6rem,2.4vw,2rem)] font-semibold leading-none tracking-[-0.035em]">

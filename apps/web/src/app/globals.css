@@ -93,6 +93,17 @@
   }
 }
 
+/* Transform-only entrance, so the content is painted from the first frame. */
+@keyframes hero-rise {
+  from {
+    transform: translateY(72px);
+  }
+}
+
+@utility hero-rise {
+  animation: hero-rise 1.3s var(--ease-out-expo) both;
+}
+
 @keyframes intro-failsafe {
   to {
     visibility: visible;

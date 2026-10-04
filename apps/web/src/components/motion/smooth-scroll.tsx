@@ -11,6 +11,12 @@ import { gsap, ScrollTrigger } from '@/lib/gsap';
  */
 export function SmoothScroll() {
   useEffect(() => {
+    // Passive effects run after every section's layout effect, so all
+    // ScrollTriggers (including the pinned one) exist by now. Re-measure them,
+    // and again once the display fonts have changed the page's height.
+    ScrollTrigger.refresh();
+    void document.fonts.ready.then(() => ScrollTrigger.refresh());
+
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
     const lenis = new Lenis({

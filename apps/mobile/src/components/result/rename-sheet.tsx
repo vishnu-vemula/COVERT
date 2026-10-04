@@ -52,6 +52,7 @@ function RenameBody({ title, onClose, onSave }: Omit<RenameSheetProps, 'visible'
     <View style={styles.body}>
       <TextField
         label="Name"
+        tinted
         value={value}
         onChangeText={(text) => {
           setValue(text);

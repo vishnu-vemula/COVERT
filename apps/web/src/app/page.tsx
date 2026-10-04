@@ -2,6 +2,7 @@ import { SiteNav } from '@/components/site-nav';
 import { Audio } from '@/components/sections/audio';
 import { Demo } from '@/components/sections/demo';
 import { DocumentTypes } from '@/components/sections/document-types';
+import { Faq } from '@/components/sections/faq';
 import { FinalCta } from '@/components/sections/final-cta';
 import { Hero } from '@/components/sections/hero';
 import { HowItWorks } from '@/components/sections/how-it-works';
@@ -13,7 +14,8 @@ export default function HomePage() {
   return (
     <>
       <SiteNav />
-      <main id="main">
+      {/* Clips sideways entrance animations so phones never get a wider page. */}
+      <main id="main" className="overflow-x-clip">
         <Hero />
         <Demo />
         <HowItWorks />
@@ -21,6 +23,7 @@ export default function HomePage() {
         <DocumentTypes />
         <Audio />
         <Privacy />
+        <Faq />
         <FinalCta />
       </main>
       <SiteFooter />

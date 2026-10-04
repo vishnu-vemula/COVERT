@@ -13,6 +13,8 @@ interface TextFieldProps extends Omit<TextInputProps, 'style'> {
   hint?: string;
   /** Adds a show/hide control for passwords. */
   secure?: boolean;
+  /** Grey fill, for fields on white sheets where a white box would disappear. */
+  tinted?: boolean;
   ref?: Ref<TextInput>;
 }
 
@@ -21,6 +23,7 @@ export function TextField({
   error,
   hint,
   secure = false,
+  tinted = false,
   ref,
   onFocus,
   onBlur,
@@ -29,20 +32,21 @@ export function TextField({
   const colors = useColors();
   const [focused, setFocused] = useState(false);
   const [hidden, setHidden] = useState(true);
+  const fill = tinted ? palette.canvas : palette.surface;
   const borderColor = error
     ? palette.danger
     : focused
       ? palette.ink
       : colors.increased
         ? colors.border
-        : palette.surface;
+        : fill;
 
   return (
     <View style={styles.field}>
       <Text variant="footnote" tone="secondary" aria-hidden>
         {label}
       </Text>
-      <View style={[styles.box, { borderColor }]}>
+      <View style={[styles.box, { borderColor, backgroundColor: fill }]}>
         <TextInput
           ref={ref}
           accessibilityLabel={label}
@@ -93,7 +97,6 @@ const styles = StyleSheet.create({
     minHeight: size.buttonLarge,
     borderRadius: radius.md,
     borderWidth: 2,
-    backgroundColor: palette.surface,
     flexDirection: 'row',
     alignItems: 'center',
     paddingLeft: space.md,
@@ -106,7 +109,8 @@ const styles = StyleSheet.create({
     fontFamily,
     ...type.body,
     color: palette.ink,
-    // The box border already shows focus; drop the browser's second ring in the web preview.
-    ...(Platform.OS === 'web' ? { outlineWidth: 0, outlineColor: 'transparent' } : null),
+    // The box border already shows focus. In the web preview, a zero-width solid outline
+    // replaces the browser's focus ring, whose white inner ring would cover the box border.
+    ...(Platform.OS === 'web' ? { outlineStyle: 'solid', outlineWidth: 0 } : null),
   },
 });

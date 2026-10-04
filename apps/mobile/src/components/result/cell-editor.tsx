@@ -70,6 +70,7 @@ function EditorBody({
       ) : null}
       <TextField
         label="Value"
+        tinted
         value={value}
         onChangeText={setValue}
         autoFocus

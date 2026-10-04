@@ -51,7 +51,12 @@ export function Privacy() {
             yPercent: -10,
             rotate: 25,
             ease: 'none',
-            scrollTrigger: { trigger: root.current, start: 'top bottom', end: 'bottom top', scrub: true },
+            scrollTrigger: {
+              trigger: root.current,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: true,
+            },
           },
         );
       });
@@ -71,7 +76,7 @@ export function Privacy() {
           <div
             data-privacy-shape
             aria-hidden
-            className="absolute -bottom-20 -right-16 size-72 sm:size-96">
+            className="absolute -right-20 -top-20 size-64 sm:size-80">
             <Shape kind="ring" tone="chrome" className="size-full" />
           </div>
           <p className="eyebrow relative text-fog">/Privacy</p>

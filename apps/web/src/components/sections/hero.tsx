@@ -36,16 +36,13 @@ export function Hero() {
             0,
           )
           .from('[data-hero-meta]', { autoAlpha: 0, y: 12, duration: 1 }, 0.3)
-          .from('[data-hero-card]', { y: 80, autoAlpha: 0, duration: 1.3, stagger: 0.12 }, 0.35)
-          .from('[data-hero-line]', { yPercent: 110, duration: 1.2, stagger: 0.08 }, 0.6)
           .from(
             '[data-hero-shape]',
             { scale: 0.3, rotate: -60, autoAlpha: 0, duration: 1.6, stagger: 0.1 },
             0.55,
           )
-          .from('[data-hero-pill]', { x: 40, autoAlpha: 0, duration: 1, stagger: 0.07 }, 0.75)
-          .from('[data-hero-fade]', { y: 16, autoAlpha: 0, duration: 1, stagger: 0.08 }, 0.95)
-          .from('[data-hero-phone]', { y: 220, duration: 1.6 }, 0.7);
+          .from('[data-hero-pill]', { x: 40, autoAlpha: 0, duration: 1, stagger: 0.07 }, 0.45)
+          .from('[data-hero-phone]', { y: 220, autoAlpha: 0, duration: 1.6 }, 0.4);
 
         // Leaving the hero: shapes spin away, the phone rises out of its card.
         const scroll = { trigger: root.current, start: 'top top', end: 'bottom top', scrub: 0.8 };
@@ -87,13 +84,13 @@ export function Hero() {
       ref={root}
       id="top"
       aria-labelledby="hero-title"
-      className="frame mt-2 rounded-[28px] bg-paper p-2 pt-[76px] md:mt-3 md:rounded-[36px] md:p-3 md:pt-[88px]">
+      className="frame mt-2 rounded-[28px] bg-paper p-2 pt-[80px] md:mt-3 md:rounded-[36px] md:p-3 md:pt-[92px]">
       <div
         data-hero-meta
         data-intro
         className="eyebrow flex justify-between gap-4 px-2 pb-3 text-ink/55 md:px-3">
         <span>Capture · OCR · Validate · Extract · Read · Tabulate</span>
-        <span className="hidden sm:block">For iPhone and Android</span>
+        <span className="hidden sm:block">Mobile app · iPhone &amp; Android</span>
       </div>
 
       <div data-hero-logo data-intro className="px-1 py-1 md:px-2">
@@ -101,42 +98,40 @@ export function Hero() {
       </div>
 
       <div className="mt-3 grid gap-2 md:mt-4 lg:grid-cols-[1.35fr_1fr]">
-        <div
-          data-hero-card
-          data-intro
-          className="relative flex min-h-[500px] flex-col justify-end overflow-hidden rounded-[22px] bg-cobalt p-6 text-white sm:p-8 lg:min-h-[540px] lg:rounded-[28px] lg:p-10">
+        {/* The cards rise with CSS so the headline paints at once (good for LCP). */}
+        <div className="hero-rise relative flex min-h-[520px] flex-col justify-end overflow-hidden rounded-[22px] bg-cobalt p-6 text-white sm:p-8 lg:min-h-[500px] lg:rounded-[28px] lg:p-10">
           <div data-hero-spin className="absolute -right-20 -top-24 size-[260px] sm:size-[340px]">
-            <div data-hero-shape className="size-full">
+            <div data-hero-shape data-intro className="size-full">
               <Shape kind="clover" className="size-full" />
             </div>
           </div>
-          <div
-            data-hero-spin
-            className="absolute right-[44%] top-8 hidden size-20 sm:block lg:right-[52%] lg:size-24">
-            <div data-hero-shape className="size-full">
+          <div data-hero-spin className="absolute right-[40%] top-6 hidden size-20 sm:block">
+            <div data-hero-shape data-intro className="size-full">
               <Shape kind="ring" tone="chrome" className="size-full" />
             </div>
           </div>
 
+          <p className="absolute left-6 top-6 flex items-center gap-2 rounded-full bg-white/12 py-1.5 pl-2 pr-3.5 text-[13px] font-semibold ring-1 ring-white/25 backdrop-blur-sm sm:left-8 sm:top-8 lg:left-10 lg:top-10">
+            <PhoneGlyph />
+            Mobile app for iPhone &amp; Android
+          </p>
+
           <h1
             id="hero-title"
-            className="relative max-w-[11ch] text-[clamp(2.6rem,6vw,4.6rem)] font-semibold leading-[0.92] tracking-[-0.055em]">
+            className="relative mt-24 max-w-[11ch] text-[clamp(2.6rem,6vw,4.6rem)] font-semibold leading-[0.92] tracking-[-0.055em]">
             {HEADLINE.map((line) => (
-              <span key={line} className="block overflow-hidden pb-[0.06em]">
-                <span data-hero-line className="block">
-                  {line}
-                </span>
+              <span key={line} className="block pb-[0.06em]">
+                {line}
               </span>
             ))}
           </h1>
-          <p
-            data-hero-fade
-            className="relative mt-6 max-w-[36ch] text-[17px] leading-[1.5] text-white/75 sm:text-[19px]">
-            Turn images and documents into organized tables you can review, hear, edit and export.
+          <p className="relative mt-6 max-w-[38ch] text-[17px] leading-[1.5] text-white/80 sm:text-[19px]">
+            COVERT is a mobile app that turns photos, scans and PDFs into organized tables you can
+            review, hear, edit and export.
           </p>
-          <div data-hero-fade className="relative mt-8 flex flex-wrap items-center gap-3">
+          <div className="relative mt-8 flex flex-wrap items-center gap-3">
             <ButtonLink href={LINKS.getApp} variant="paper">
-              Get COVERT
+              Get the app
               <ArrowBadge className="bg-cobalt text-white" />
             </ButtonLink>
             <a
@@ -145,17 +140,20 @@ export function Hero() {
               See how it works
             </a>
           </div>
+          <p className="relative mt-5 text-[13px] text-white/60">
+            This website is just the landing page — COVERT runs on your phone.
+          </p>
         </div>
 
         <div
-          data-hero-card
-          data-intro
-          className="relative flex min-h-[520px] flex-col overflow-hidden rounded-[22px] bg-paper-2 p-2 lg:min-h-[540px] lg:rounded-[28px] lg:p-3">
+          style={{ animationDelay: '120ms' }}
+          className="hero-rise relative flex min-h-[520px] flex-col overflow-hidden rounded-[22px] bg-paper-2 p-2 lg:min-h-[500px] lg:rounded-[28px] lg:p-3">
           <ul className="relative z-10 grid gap-1.5">
             {FEATURES.map((feature) => (
               <li
                 key={feature.label}
                 data-hero-pill
+                data-intro
                 className="flex items-center gap-3 rounded-full bg-paper/80 py-3 pl-3 pr-4 text-[15px] font-medium backdrop-blur-sm">
                 <span className="grid size-7 shrink-0 place-items-center rounded-full bg-ink text-paper">
                   <ArrowUpRight className="size-3.5" />
@@ -175,12 +173,29 @@ export function Hero() {
             <Shape kind="flower" tone="pearl" className="size-full" />
           </div>
           <div data-hero-rise className="relative mt-6 flex flex-1 justify-center">
-            <div data-hero-phone className="absolute top-0 w-[270px] sm:w-[300px]">
+            <div data-hero-phone data-intro className="absolute top-0 w-[270px] sm:w-[300px]">
               <PhoneDemo />
             </div>
           </div>
         </div>
       </div>
     </section>
+  );
+}
+
+function PhoneGlyph() {
+  return (
+    <svg
+      aria-hidden
+      viewBox="0 0 24 24"
+      className="size-4"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.8}
+      strokeLinecap="round"
+      strokeLinejoin="round">
+      <rect x="6.5" y="2.5" width="11" height="19" rx="2.5" />
+      <path d="M10.5 18.5h3" />
+    </svg>
   );
 }

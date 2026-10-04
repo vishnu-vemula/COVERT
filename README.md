@@ -35,7 +35,7 @@ firebase/         Firestore security rules and indexes (deployed with firebase.j
 | `EXPO_PUBLIC_FIREBASE_API_KEY`, `_AUTH_DOMAIN`, `_PROJECT_ID`, `_APP_ID`, `_MESSAGING_SENDER_ID` | Firebase web app config |
 | `EXPO_PUBLIC_FIREBASE_AUTH_EMULATOR_HOST` | Optional, use the Auth emulator |
 
-**Website** — none. Store, terms and repository links are placeholders in `apps/web/src/lib/links.ts`.
+**Website** — `NEXT_PUBLIC_SITE_URL`, the production URL used for the canonical link, sitemap, robots.txt and social images (on Vercel it falls back to the production domain). Store, terms and repository links are placeholders in `apps/web/src/lib/links.ts`.
 
 ## Local setup
 

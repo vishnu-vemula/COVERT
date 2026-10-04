@@ -13,6 +13,7 @@ const NAV = [
   { href: '#how-it-works', label: 'How it works' },
   { href: '#documents', label: 'Documents' },
   { href: '#privacy', label: 'Privacy' },
+  { href: '#faq', label: 'FAQ' },
 ] as const;
 
 const LEGAL = [
@@ -42,13 +43,15 @@ export function SiteFooter() {
   );
 
   return (
-    <footer ref={root} className="frame mb-2 mt-2 rounded-[28px] bg-night-2 text-paper md:mb-3 md:mt-3 md:rounded-[36px]">
+    <footer
+      ref={root}
+      className="frame mb-2 mt-2 rounded-[28px] bg-night-2 text-paper md:mb-3 md:mt-3 md:rounded-[36px]">
       <div className="grid gap-12 px-6 pb-6 pt-14 sm:px-8 lg:grid-cols-[1fr_auto] lg:gap-16 lg:px-10 lg:pt-16">
         <div className="flex flex-col justify-between gap-10">
           <p className="eyebrow text-fog">Capture · OCR · Validate · Extract · Read · Tabulate</p>
           <Logo className="h-auto w-full max-w-[900px] text-paper/15" />
         </div>
-        <div className="grid grid-cols-2 gap-10 sm:grid-cols-[auto_auto] lg:grid-cols-1 lg:content-between">
+        <div className="grid gap-10 sm:grid-cols-[auto_auto] lg:grid-cols-1 lg:content-between">
           <nav aria-label="Footer">
             <ul className="grid gap-2.5">
               {NAV.map((link) => (
@@ -64,7 +67,11 @@ export function SiteFooter() {
           </nav>
           <div>
             <p className="text-[14px] text-fog">Questions or ideas?</p>
-            <ButtonLink href={`${LINKS.github}/issues`} variant="paper" size="md" className="mt-3">
+            <ButtonLink
+              href={`${LINKS.github}/issues`}
+              variant="paper"
+              size="md"
+              className="mt-3 whitespace-nowrap">
               Open an issue
               <ArrowBadge size="md" className="bg-night text-paper" />
             </ButtonLink>
@@ -72,7 +79,7 @@ export function SiteFooter() {
         </div>
       </div>
       <div className="mx-6 flex flex-col gap-4 border-t border-white/10 py-6 text-[13px] text-fog sm:mx-8 sm:flex-row sm:items-center sm:justify-between lg:mx-10">
-        <p>COVERT · Documents in. Structured data out.</p>
+        <p>This website is the landing page for the COVERT mobile app for iPhone and Android.</p>
         <ul className="flex gap-6">
           {LEGAL.map((link) => (
             <li key={link.label}>
