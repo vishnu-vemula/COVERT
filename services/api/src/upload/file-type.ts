@@ -65,7 +65,8 @@ export function validateUpload(files: Buffer[]): ValidatedUpload {
 
   const [first] = files;
   if (first && types.includes('application/pdf')) {
-    if (files.length > 1) throw new AppError('TOO_MANY_FILES', { detail: 'PDF must be uploaded alone' });
+    if (files.length > 1)
+      throw new AppError('TOO_MANY_FILES', { detail: 'PDF must be uploaded alone' });
     return { kind: 'pdf', mimeType: 'application/pdf', pdf: first };
   }
 

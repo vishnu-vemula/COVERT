@@ -4,6 +4,7 @@ import { useCallback, useState } from 'react';
 import { RefreshControl, StyleSheet, View } from 'react-native';
 
 import { DocumentRow } from '@/components/document/document-row';
+import { ListPlaceholder } from '@/components/document/list-placeholder';
 import { RenameSheet } from '@/components/result/rename-sheet';
 import { Button } from '@/components/ui/button';
 import { Notice } from '@/components/ui/notice';
@@ -19,7 +20,7 @@ import { confirm } from '@/lib/confirm';
 import { groupByMonth, plural } from '@/lib/format';
 import { useCapture } from '@/stores/capture';
 import { useDocuments } from '@/stores/documents';
-import { palette, radius, space } from '@/theme/tokens';
+import { palette, scene, space } from '@/theme/tokens';
 
 export default function HistoryScreen() {
   const list = useDocuments((state) => state.list);
@@ -64,6 +65,7 @@ export default function HistoryScreen() {
 
   return (
     <Screen
+      background={scene.history}
       header={<TopBar label={list.length > 0 ? plural(list.length, 'document') : undefined} />}
       contentStyle={styles.content}
       refreshControl={
@@ -88,11 +90,7 @@ export default function HistoryScreen() {
           onAction={() => void loadList()}
         />
       ) : listState !== 'ready' && list.length === 0 ? (
-        <View style={styles.list} accessible accessibilityLabel="Loading history">
-          {[0, 1, 2, 3].map((index) => (
-            <View key={index} style={styles.placeholder} />
-          ))}
-        </View>
+        <ListPlaceholder rows={4} label="Loading history" />
       ) : list.length === 0 ? (
         <Notice
           title="Nothing here yet"
@@ -140,7 +138,7 @@ export default function HistoryScreen() {
           <Button
             label="Rename"
             icon="edit"
-            variant="secondary"
+            variant="tonal"
             onPress={() => {
               const item = selected;
               setSelected(null);
@@ -176,6 +174,5 @@ const styles = StyleSheet.create({
   content: { gap: space.lg, paddingTop: space.xs },
   group: { gap: space.sm },
   list: { gap: space.xs },
-  placeholder: { height: 76, borderRadius: radius.md, backgroundColor: palette.canvasDeep },
   menu: { gap: space.sm },
 });

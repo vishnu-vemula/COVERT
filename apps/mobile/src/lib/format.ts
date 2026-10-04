@@ -28,11 +28,9 @@ export function formatDateTime(iso: string): string {
   });
 }
 
-/** "12 rows · 5 columns", with the table count when there is more than one. */
+/** "12 rows · 5 columns" (the widest table's columns when there are several). */
 export function shapeLabel(stats: DocumentListItem['stats']): string {
-  const parts = [plural(stats.rowCount, 'row'), plural(stats.columnCount, 'column')];
-  if (stats.tableCount > 1) parts.push(plural(stats.tableCount, 'table'));
-  return parts.join(' · ');
+  return `${plural(stats.rowCount, 'row')} · ${plural(stats.columnCount, 'column')}`;
 }
 
 export function fileTypeLabel(type: MimeType): string {

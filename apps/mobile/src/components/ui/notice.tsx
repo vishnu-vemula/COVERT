@@ -49,12 +49,8 @@ export function Notice({
 }
 
 const styles = StyleSheet.create({
-  box: { borderRadius: radius.md, padding: space.md, gap: space.md },
-  neutral: {
-    borderWidth: 1,
-    borderStyle: 'dashed',
-    borderColor: palette.borderStrong,
-  },
+  box: { borderRadius: radius.lg, padding: space.lg, gap: space.md },
+  neutral: { backgroundColor: palette.glass },
   error: { backgroundColor: palette.dangerWash },
   row: { flexDirection: 'row', gap: space.sm, alignItems: 'flex-start' },
   copy: { flex: 1, gap: space.xxs },

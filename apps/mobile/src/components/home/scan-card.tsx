@@ -1,6 +1,7 @@
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import { Icon } from '@/components/ui/icon';
+import { Scallop } from '@/components/ui/shapes';
 import { Text } from '@/components/ui/text';
 import { useReducedMotion } from '@/theme/motion';
 import { motion, palette, radius, space } from '@/theme/tokens';
@@ -22,10 +23,12 @@ export function ScanCard({ onPress }: { onPress: () => void }) {
         },
       ]}>
       <View style={styles.top}>
-        <View style={styles.badge}>
+        <Scallop size={64} color={palette.signal} petals={9}>
           <Icon name="viewfinder" color={palette.ink} size={26} strokeWidth={2} />
+        </Scallop>
+        <View style={styles.arrow}>
+          <Icon name="arrowUpRight" color={palette.onInk} size={20} />
         </View>
-        <Icon name="arrowUpRight" color={palette.onInkMuted} size={22} />
       </View>
       <View style={styles.copy}>
         <Text variant="heading" tone="inverse" style={styles.title}>
@@ -41,21 +44,21 @@ export function ScanCard({ onPress }: { onPress: () => void }) {
 
 const styles = StyleSheet.create({
   card: {
-    borderRadius: radius.lg,
+    borderRadius: radius.xl,
     padding: space.lg,
-    minHeight: 176,
+    minHeight: 184,
     justifyContent: 'space-between',
     gap: space.lg,
   },
   top: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' },
-  badge: {
-    width: 52,
-    height: 52,
-    borderRadius: radius.md,
-    backgroundColor: palette.signal,
+  arrow: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: 'rgba(255,255,255,0.12)',
     alignItems: 'center',
     justifyContent: 'center',
   },
   copy: { gap: space.xxs },
-  title: { fontSize: 24, lineHeight: 29 },
+  title: { fontSize: 26, lineHeight: 31, letterSpacing: -0.5 },
 });

@@ -1,8 +1,11 @@
-import { Pressable, StyleSheet, Switch, View } from 'react-native';
+import { Platform, Pressable, StyleSheet, Switch, View } from 'react-native';
 
 import { palette, size, space } from '@/theme/tokens';
 
 import { Text } from './text';
+
+// React Native Web colours the "on" thumb separately (teal by default).
+const webThumb = Platform.OS === 'web' ? { activeThumbColor: palette.surface } : {};
 
 interface SwitchRowProps {
   label: string;
@@ -19,7 +22,7 @@ export function SwitchRow({ label, description, value, onChange }: SwitchRowProp
       accessibilityRole="switch"
       accessibilityLabel={label}
       accessibilityHint={description}
-      accessibilityState={{ checked: value }}
+      aria-checked={value}
       style={({ pressed }) => [styles.row, pressed && styles.pressed]}>
       <View style={styles.copy}>
         <Text variant="body">{label}</Text>
@@ -35,6 +38,7 @@ export function SwitchRow({ label, description, value, onChange }: SwitchRowProp
         trackColor={{ true: palette.ink, false: palette.border }}
         thumbColor={palette.surface}
         ios_backgroundColor={palette.border}
+        {...webThumb}
         aria-hidden
       />
     </Pressable>
@@ -47,7 +51,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: space.md,
     minHeight: size.buttonLarge + space.xs,
-    paddingHorizontal: space.md,
+    paddingHorizontal: space.lg,
     paddingVertical: space.sm,
   },
   pressed: { backgroundColor: palette.canvasDeep },

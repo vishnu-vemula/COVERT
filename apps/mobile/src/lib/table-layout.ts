@@ -30,8 +30,23 @@ export function layoutColumns(table: Table, fontScale = 1): ColumnLayout[] {
       Math.min(column.label.length, 24),
       ...values.map((value) => Math.min(value.length, 36)),
     );
-    const min = index === 0 ? 112 : 88;
+    // A text first column anchors each row while scrolling, so it gets more room.
+    const min = index === 0 && !numeric ? 112 : numeric ? 64 : 88;
     const width = Math.min(Math.max(longest * CHAR_WIDTH + PADDING, min), 300);
     return { width: Math.round(width * scale), numeric };
+  });
+}
+
+/** Widens columns proportionally when the table is narrower than the space it sits in. */
+export function fitColumns(columns: ColumnLayout[], available: number): ColumnLayout[] {
+  const total = columns.reduce((sum, column) => sum + column.width, 0);
+  if (available <= 0 || total >= available || total === 0) return columns;
+  const scale = available / total;
+  let used = 0;
+  return columns.map((column, index) => {
+    const width =
+      index === columns.length - 1 ? available - used : Math.floor(column.width * scale);
+    used += width;
+    return { ...column, width };
   });
 }

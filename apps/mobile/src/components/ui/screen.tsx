@@ -37,7 +37,7 @@ export function Screen({
   contentStyle,
   refreshControl,
   scrollRef,
-  background = palette.canvas,
+  background = palette.surface,
 }: ScreenProps) {
   return (
     <SafeAreaView edges={edges} style={[styles.root, { backgroundColor: background }]}>

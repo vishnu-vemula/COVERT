@@ -1,7 +1,7 @@
 import { Text as RNText, type TextProps as RNTextProps } from 'react-native';
 
 import { useColors } from '@/theme/contrast';
-import { fontFamily, maxScale, palette, type, type TypeVariant } from '@/theme/tokens';
+import { accent, fontFamily, maxScale, palette, type, type TypeVariant } from '@/theme/tokens';
 
 type Tone = 'primary' | 'secondary' | 'tertiary' | 'inverse' | 'inverseMuted' | 'danger' | 'review';
 
@@ -35,4 +35,9 @@ export function Text({ variant = 'body', tone = 'primary', align, style, ...rest
       {...rest}
     />
   );
+}
+
+/** One or two words of a headline set in serif italic. Nest inside a Text. */
+export function Accent({ children }: { children: string }) {
+  return <RNText style={accent}>{children}</RNText>;
 }

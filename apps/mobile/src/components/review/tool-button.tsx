@@ -29,12 +29,13 @@ export function ToolButton({
       accessibilityRole="button"
       accessibilityLabel={label}
       accessibilityHint={accessibilityHint}
-      accessibilityState={{ disabled }}
+      aria-disabled={disabled}
       style={({ pressed }) => [
         styles.tool,
         {
           borderColor: colors.border,
-          backgroundColor: pressed ? palette.canvasDeep : palette.surface,
+          borderWidth: colors.increased ? 1 : 0,
+          backgroundColor: pressed ? palette.canvas : palette.surface,
           opacity: disabled ? 0.4 : 1,
         },
       ]}>
@@ -50,8 +51,7 @@ const styles = StyleSheet.create({
   tool: {
     flex: 1,
     minHeight: 68,
-    borderRadius: radius.md,
-    borderWidth: 1,
+    borderRadius: radius.lg,
     alignItems: 'center',
     justifyContent: 'center',
     gap: space.xxs,

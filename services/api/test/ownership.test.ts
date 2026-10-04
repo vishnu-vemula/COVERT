@@ -50,13 +50,19 @@ describe('document ownership over HTTP', () => {
   });
   afterEach(() => harness.app.close());
 
-  const request = (method: 'GET' | 'PATCH' | 'DELETE', url: string, uid: string, payload?: object) =>
-    harness.app.inject({ method, url, headers: auth(uid), payload });
+  const request = (
+    method: 'GET' | 'PATCH' | 'DELETE',
+    url: string,
+    uid: string,
+    payload?: object,
+  ) => harness.app.inject({ method, url, headers: auth(uid), payload });
 
   it('lets the owner read, rename, edit and delete', async () => {
     expect((await request('GET', `/v1/documents/${aliceDoc}`, 'alice')).statusCode).toBe(200);
 
-    const renamed = await request('PATCH', `/v1/documents/${aliceDoc}`, 'alice', { title: 'Groceries' });
+    const renamed = await request('PATCH', `/v1/documents/${aliceDoc}`, 'alice', {
+      title: 'Groceries',
+    });
     expect(renamed.json().document.title).toBe('Groceries');
 
     const edited = await request('PATCH', `/v1/documents/${aliceDoc}/cells`, 'alice', {

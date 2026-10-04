@@ -36,6 +36,12 @@ const paths = {
       <Path d="M13.5 3.5V9H19M9 13h6M9 16.5h4" />
     </>
   ),
+  table: (
+    <>
+      <Rect x={3.5} y={4.5} width={17} height={15} rx={2} />
+      <Path d="M3.5 9.5h17M3.5 14.5h17M9.5 9.5v10" />
+    </>
+  ),
   history: (
     <>
       <Path d="M4 12a8 8 0 102.4-5.7M4 4.5v3.5h3.5" />

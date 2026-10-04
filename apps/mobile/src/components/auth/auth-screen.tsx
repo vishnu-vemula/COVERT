@@ -2,9 +2,11 @@ import type { ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { Screen } from '@/components/ui/screen';
+import { Scallop } from '@/components/ui/shapes';
 import { Text } from '@/components/ui/text';
 import { TopBar } from '@/components/ui/top-bar';
-import { space } from '@/theme/tokens';
+import { Mark } from '@/components/ui/wordmark';
+import { palette, radius, scene, space } from '@/theme/tokens';
 
 interface AuthScreenProps {
   title: string;
@@ -13,11 +15,14 @@ interface AuthScreenProps {
   footer?: ReactNode;
 }
 
-/** Shared frame for the sign-in, sign-up and reset screens. */
+/** Shared frame for the sign-in, sign-up and reset screens: blue screen, white form card. */
 export function AuthScreen({ title, subtitle, children, footer }: AuthScreenProps) {
   return (
-    <Screen header={<TopBar />} contentStyle={styles.content}>
+    <Screen background={scene.auth} header={<TopBar />} contentStyle={styles.content}>
       <View style={styles.heading}>
+        <Scallop size={72} color={palette.greenDeep} petals={9}>
+          <Mark size={30} />
+        </Scallop>
         <Text variant="title" accessibilityRole="header">
           {title}
         </Text>
@@ -30,8 +35,13 @@ export function AuthScreen({ title, subtitle, children, footer }: AuthScreenProp
 }
 
 const styles = StyleSheet.create({
-  content: { paddingTop: space.lg, gap: space.xl },
-  heading: { gap: space.xs },
-  form: { gap: space.md },
-  footer: { alignItems: 'center', gap: space.xs },
+  content: { paddingTop: space.md, gap: space.lg },
+  heading: { gap: space.sm },
+  form: {
+    gap: space.md,
+    backgroundColor: palette.glass,
+    borderRadius: radius.xl,
+    padding: space.md,
+  },
+  footer: { alignItems: 'center', gap: space.xxs },
 });

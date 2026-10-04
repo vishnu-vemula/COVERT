@@ -1,0 +1,128 @@
+@import 'tailwindcss';
+@import 'lenis/dist/lenis.css';
+
+@theme {
+  /* Site palette: dark frame, cream panels, cobalt and flare accents. */
+  --color-night: #0b0b0a;
+  --color-night-2: #151513;
+  --color-night-3: #22221f;
+  --color-paper: #efece4;
+  --color-paper-2: #e2dfd6;
+  --color-paper-3: #d3d0c6;
+  --color-fog: #a3a199;
+  --color-cobalt: #2d4ff0;
+  --color-cobalt-deep: #1b33c4;
+  --color-cobalt-soft: #7d92ff;
+  --color-flare: #ff4f1f;
+
+  /* App palette: used where the site depicts the mobile app's own screens. */
+  --color-ink: #111311;
+  --color-ink-pressed: #2a2d29;
+  --color-canvas: #f6f5f0;
+  --color-canvas-deep: #ecebe4;
+  --color-surface: #ffffff;
+  --color-border: #ddded8;
+  --color-border-strong: #b9bbb3;
+  --color-secondary: #4f534c;
+  --color-muted: #70736d;
+  --color-signal: #b8f332;
+  --color-review: #8a6a1e;
+  --color-review-wash: #f8edcb;
+  --color-yellow: #f5dc74;
+  --color-yellow-soft: #faedb8;
+  --color-blue-deep: #b6cbf1;
+  --color-green: #d3e5c5;
+  --color-on-ink: #f6f5f0;
+  --color-on-ink-muted: #a9aca5;
+
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --font-condensed: var(--font-anton), 'Arial Narrow', Impact, sans-serif;
+  --font-script: var(--font-script-face), 'Brush Script MT', cursive;
+  --font-serif: Georgia, 'Times New Roman', ui-serif, serif;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    background: var(--color-night);
+  }
+
+  body {
+    background: var(--color-night);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: var(--color-flare);
+    color: var(--color-night);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-flare);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  /*
+   * Elements the intro animates in start hidden once scripts are running.
+   * If the animation never starts, the fail-safe shows them after 4s.
+   */
+  .js [data-intro] {
+    visibility: hidden;
+    animation: intro-failsafe 0s linear 4s forwards;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .js [data-intro] {
+      visibility: visible;
+      animation: none;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@keyframes intro-failsafe {
+  to {
+    visibility: visible;
+  }
+}
+
+@utility tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* The cream and dark panels sit inside the page with a thin dark frame. */
+@utility frame {
+  margin-inline: 8px;
+  @media (width >= 48rem) {
+    margin-inline: 12px;
+  }
+}
+
+@utility container-page {
+  width: 100%;
+  max-width: 1320px;
+  margin-inline: auto;
+  padding-inline: 16px;
+  @media (width >= 48rem) {
+    padding-inline: 32px;
+  }
+}
+
+@utility eyebrow {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.02em;
+}

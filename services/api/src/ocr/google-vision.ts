@@ -28,7 +28,9 @@ export class GoogleVisionOcr implements OcrProvider {
 
   async recognize(input: OcrInput): Promise<OcrResult> {
     try {
-      return input.kind === 'pdf' ? await this.readPdf(input.pdf) : await this.readImages(input.images);
+      return input.kind === 'pdf'
+        ? await this.readPdf(input.pdf)
+        : await this.readImages(input.images);
     } catch (error) {
       if (error instanceof OcrError) throw error;
       throw new OcrError(statusCode(error) === INVALID_ARGUMENT ? 'corrupt' : 'failed', {
@@ -82,13 +84,14 @@ export class GoogleVisionOcr implements OcrProvider {
     );
     const file = batch.responses?.[0];
     if (!file) throw new OcrError('failed');
-    if (file.error?.code) throw new OcrError(file.error.code === INVALID_ARGUMENT ? 'corrupt' : 'failed');
+    if (file.error?.code)
+      throw new OcrError(file.error.code === INVALID_ARGUMENT ? 'corrupt' : 'failed');
 
     const responses = file.responses ?? [];
     return {
       totalPages: file.totalPages ?? responses.length,
       pages: responses.map((response, index) => ({
-        pageNumber: response.context?.pageNumber ?? (pages[index] ?? index + 1),
+        pageNumber: response.context?.pageNumber ?? pages[index] ?? index + 1,
         text: readResponse(response),
       })),
     };

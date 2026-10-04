@@ -80,9 +80,10 @@ function EditorBody({
         onSubmitEditing={save}
       />
       <View style={styles.actions}>
-        <Button label="Cancel" variant="secondary" onPress={onClose} style={styles.action} />
+        <Button label="Cancel" variant="tonal" onPress={onClose} style={styles.action} />
         <Button
-          label={changed ? 'Save' : uncertain ? 'Mark as correct' : 'Done'}
+          label={changed ? 'Save' : uncertain ? 'Confirm' : 'Done'}
+          accessibilityHint={!changed && uncertain ? 'Marks this value as checked' : undefined}
           onPress={save}
           style={styles.action}
         />

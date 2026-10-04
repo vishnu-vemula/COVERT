@@ -30,7 +30,10 @@ export interface TextAnnotation {
         blocks?:
           | {
               paragraphs?:
-                | { words?: { boundingBox?: VisionBox | null; symbols?: VisionSymbol[] | null }[] | null }[]
+                | {
+                    words?:
+                      { boundingBox?: VisionBox | null; symbols?: VisionSymbol[] | null }[] | null;
+                  }[]
                 | null;
             }[]
           | null;
@@ -81,7 +84,11 @@ function collectWords(annotation: TextAnnotation): PlacedWord[] {
           const points = boxPoints(word.boundingBox);
           if (!text.trim() || points.length < 4) continue;
           const breakType = symbols.at(-1)?.property?.detectedBreak?.type;
-          raw.push({ text, points, spaceAfter: breakType != null && !NO_SPACE_BREAKS.has(breakType) });
+          raw.push({
+            text,
+            points,
+            spaceAfter: breakType != null && !NO_SPACE_BREAKS.has(breakType),
+          });
         }
       }
     }

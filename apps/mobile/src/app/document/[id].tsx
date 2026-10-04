@@ -9,7 +9,8 @@ import { ExportSheet } from '@/components/result/export-sheet';
 import { OriginalText } from '@/components/result/original-text';
 import { ReaderBar } from '@/components/result/reader-bar';
 import { RenameSheet } from '@/components/result/rename-sheet';
-import { StatStrip } from '@/components/result/stat-strip';
+import { ActionTiles } from '@/components/result/action-tiles';
+import { DocumentCard } from '@/components/result/document-card';
 import { Button } from '@/components/ui/button';
 import { IconButton } from '@/components/ui/icon-button';
 import { Notice } from '@/components/ui/notice';
@@ -27,7 +28,7 @@ import { toApiError } from '@/lib/api/client';
 import { confirm } from '@/lib/confirm';
 import { fileTypeLabel, formatDateTime, plural } from '@/lib/format';
 import { useDocuments } from '@/stores/documents';
-import { palette, radius, space } from '@/theme/tokens';
+import { palette, radius, scene, space } from '@/theme/tokens';
 
 export default function DocumentScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -81,7 +82,7 @@ export default function DocumentScreen() {
 
   if (!document) {
     return (
-      <Screen header={<TopBar />} contentStyle={styles.center}>
+      <Screen background={scene.result} header={<TopBar />} contentStyle={styles.center}>
         {loadError ? (
           <Notice
             tone="error"
@@ -172,6 +173,7 @@ export default function DocumentScreen() {
 
   return (
     <Screen
+      background={scene.result}
       scrollRef={scrollRef}
       header={
         <TopBar
@@ -209,30 +211,22 @@ export default function DocumentScreen() {
         </Text>
       </View>
 
-      <StatStrip stats={document.stats} onReview={reviewNext} />
+      <DocumentCard
+        document={document}
+        onRename={() => setRenameOpen(true)}
+        onReview={reviewNext}
+      />
 
-      <View style={styles.actions}>
-        <Button
-          label="Read"
-          icon="speaker"
-          accessibilityHint="Reads the summary aloud and opens audio controls"
-          onPress={() => {
-            setReaderOpen(true);
-            reader.choose('summary');
-          }}
-          style={styles.action}
-        />
-        <Button
-          label="Export"
-          icon="share"
-          variant="secondary"
-          onPress={() => {
-            reader.stop();
-            setExportOpen(true);
-          }}
-          style={styles.action}
-        />
-      </View>
+      <ActionTiles
+        onRead={() => {
+          setReaderOpen(true);
+          reader.choose('summary');
+        }}
+        onExport={() => {
+          reader.stop();
+          setExportOpen(true);
+        }}
+      />
 
       {tables.length > 1 ? (
         <Segmented
@@ -276,7 +270,7 @@ export default function DocumentScreen() {
         </View>
       ) : null}
 
-      <View style={styles.section}>
+      <View style={[styles.section, styles.summary]}>
         <Text variant="eyebrow" tone="secondary" accessibilityRole="header">
           Summary
         </Text>
@@ -318,7 +312,7 @@ export default function DocumentScreen() {
           <Button
             label="Rename"
             icon="edit"
-            variant="secondary"
+            variant="tonal"
             onPress={() => {
               setMenuOpen(false);
               menu.schedule(() => setRenameOpen(true));
@@ -350,17 +344,16 @@ const styles = StyleSheet.create({
   center: { flexGrow: 1, justifyContent: 'center' },
   loading: { paddingVertical: space.xxl, alignItems: 'center' },
   heading: { gap: space.xs },
-  actions: { flexDirection: 'row', gap: space.sm },
-  action: { flex: 1 },
   tableBlock: { gap: space.sm },
   tableHeading: { gap: 2 },
   tableTitle: { marginTop: space.xxs },
   section: { gap: space.sm },
+  summary: { backgroundColor: palette.surface, borderRadius: radius.xl, padding: space.lg },
   warning: {
     flexDirection: 'row',
     gap: space.sm,
     padding: space.md,
-    borderRadius: radius.md,
+    borderRadius: radius.lg,
     backgroundColor: palette.reviewWash,
   },
   warningRule: { width: 3, borderRadius: 2, backgroundColor: palette.review },

@@ -11,7 +11,7 @@ export function OriginalText({ text }: { text: string }) {
   const colors = useColors();
   const [open, setOpen] = useState(false);
   return (
-    <View style={[styles.box, { borderColor: colors.border }]}>
+    <View style={[styles.box, colors.increased && { borderWidth: 1, borderColor: colors.border }]}>
       <Pressable
         onPress={() => setOpen((value) => !value)}
         accessibilityRole="button"
@@ -19,7 +19,7 @@ export function OriginalText({ text }: { text: string }) {
         accessibilityHint={
           open ? 'Hides the recognized text' : 'Shows the text read from the document'
         }
-        accessibilityState={{ expanded: open }}
+        aria-expanded={open}
         style={({ pressed }) => [styles.toggle, pressed && styles.pressed]}>
         <Text variant="headline" style={styles.label}>
           Original text
@@ -41,8 +41,7 @@ export function OriginalText({ text }: { text: string }) {
 
 const styles = StyleSheet.create({
   box: {
-    borderWidth: 1,
-    borderRadius: radius.md,
+    borderRadius: radius.xl,
     backgroundColor: palette.surface,
     overflow: 'hidden',
   },

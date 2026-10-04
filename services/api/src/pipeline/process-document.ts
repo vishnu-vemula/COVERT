@@ -60,12 +60,14 @@ export async function processDocument(
 
   onStage('structuring');
   const structureStarted = Date.now();
-  const extraction = await deps.extractor.extract(text.modelText, signal).catch((error: unknown) => {
-    throw new AppError('EXTRACTION_FAILED', {
-      cause: error,
-      detail: error instanceof ExtractionError ? `Extraction ${error.kind}` : undefined,
+  const extraction = await deps.extractor
+    .extract(text.modelText, signal)
+    .catch((error: unknown) => {
+      throw new AppError('EXTRACTION_FAILED', {
+        cause: error,
+        detail: error instanceof ExtractionError ? `Extraction ${error.kind}` : undefined,
+      });
     });
-  });
   const structureMs = Date.now() - structureStarted;
   throwIfAborted(signal);
 

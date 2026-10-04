@@ -6,6 +6,7 @@ import { useEffect, useRef } from 'react';
 import { AccessibilityInfo, StyleSheet, View } from 'react-native';
 
 import { STAGE_LABELS, StageList } from '@/components/processing/stage-list';
+import { WorkingBadge } from '@/components/processing/working-badge';
 import { Button } from '@/components/ui/button';
 import { Notice } from '@/components/ui/notice';
 import { Screen } from '@/components/ui/screen';
@@ -17,7 +18,7 @@ import { useDocuments } from '@/stores/documents';
 import { useProcessing } from '@/stores/processing';
 import { useSettings } from '@/stores/settings';
 import { useScreenReader } from '@/theme/motion';
-import { palette, radius, space } from '@/theme/tokens';
+import { palette, radius, scene, space } from '@/theme/tokens';
 
 export default function ProcessingScreen() {
   const status = useProcessing((state) => state.status);
@@ -96,6 +97,7 @@ export default function ProcessingScreen() {
 
   return (
     <Screen
+      background={scene.processing}
       header={
         <TopBar
           backIcon="close"
@@ -126,6 +128,7 @@ export default function ProcessingScreen() {
         ) : null
       }>
       <View style={styles.heading}>
+        <WorkingBadge stage={stage} failed={failed} />
         <Text
           variant="display"
           accessibilityRole="header"
@@ -145,7 +148,9 @@ export default function ProcessingScreen() {
         ) : null}
       </View>
 
-      <StageList current={stage} failed={failed} detail={uploadDetail} />
+      <View style={styles.card}>
+        <StageList current={stage} failed={failed} detail={uploadDetail} />
+      </View>
 
       {failed && error ? <Notice tone="error" icon="alert" title={error.message} /> : null}
     </Screen>
@@ -153,13 +158,20 @@ export default function ProcessingScreen() {
 }
 
 const styles = StyleSheet.create({
-  content: { gap: space.xl, paddingTop: space.lg },
-  heading: { gap: space.md, minHeight: 96 },
+  content: { gap: space.lg, paddingTop: space.sm },
+  heading: { gap: space.md },
+  card: {
+    backgroundColor: palette.surface,
+    borderRadius: radius.xl,
+    paddingHorizontal: space.lg,
+    paddingTop: space.lg,
+    paddingBottom: space.xs,
+  },
   title: { maxWidth: 420 },
   track: {
     height: 4,
     borderRadius: radius.sm,
-    backgroundColor: palette.canvasDeep,
+    backgroundColor: palette.glass,
     overflow: 'hidden',
   },
   fill: { height: 4, backgroundColor: palette.ink },

@@ -4,7 +4,7 @@ import { Animated, Pressable, StyleSheet, View, useWindowDimensions } from 'reac
 
 import { Button } from '@/components/ui/button';
 import { Text } from '@/components/ui/text';
-import { layoutColumns, type ColumnLayout } from '@/lib/table-layout';
+import { fitColumns, layoutColumns, type ColumnLayout } from '@/lib/table-layout';
 import { useColors } from '@/theme/contrast';
 import { palette, radius, size, space } from '@/theme/tokens';
 
@@ -29,7 +29,9 @@ export function DataTable({ table, activeRow, onEdit, onRowLayout }: DataTablePr
   const { fontScale } = useWindowDimensions();
   const [limit, setLimit] = useState(PAGE);
   const [scrollX] = useState(() => new Animated.Value(0));
-  const columns = useMemo(() => layoutColumns(table, fontScale), [table, fontScale]);
+  const [frameWidth, setFrameWidth] = useState(0);
+  const natural = useMemo(() => layoutColumns(table, fontScale), [table, fontScale]);
+  const columns = fitColumns(natural, frameWidth);
 
   const pinned = {
     transform: [
@@ -52,7 +54,11 @@ export function DataTable({ table, activeRow, onEdit, onRowLayout }: DataTablePr
 
   return (
     <View style={styles.wrap}>
-      <View style={[styles.frame, { borderColor: colors.border }]}>
+      <View
+        style={[styles.frame, colors.increased && { borderWidth: 1, borderColor: colors.border }]}
+        onLayout={(event) =>
+          setFrameWidth(Math.floor(event.nativeEvent.layout.width) - (colors.increased ? 2 : 0))
+        }>
         <Animated.ScrollView
           horizontal
           bounces={false}
@@ -62,12 +68,13 @@ export function DataTable({ table, activeRow, onEdit, onRowLayout }: DataTablePr
           })}
           accessibilityLabel={`${table.title} table`}>
           <View>
-            <View style={styles.row} accessibilityRole="header">
+            <View style={styles.row}>
               {table.columns.map((column, index) => {
                 const layout = columns[index];
                 const cell = (
                   <View
                     key={column.id}
+                    role="columnheader"
                     style={[
                       styles.headCell,
                       { width: layout?.width, borderBottomColor: palette.ink },
@@ -183,13 +190,18 @@ function DataCell({ row, rowIndex, column, layout, active, divider, onPress }: D
 const styles = StyleSheet.create({
   wrap: { gap: space.sm },
   frame: {
-    borderRadius: radius.md,
-    borderWidth: 1,
+    borderRadius: radius.lg,
     overflow: 'hidden',
     backgroundColor: palette.surface,
   },
   row: { flexDirection: 'row' },
-  pinned: { zIndex: 1, borderRightWidth: 1, borderRightColor: palette.border },
+  // Row direction lets the pinned cell stretch to the height of the tallest cell in its row.
+  pinned: {
+    zIndex: 1,
+    flexDirection: 'row',
+    borderRightWidth: 1,
+    borderRightColor: palette.border,
+  },
   headCell: {
     minHeight: size.tableRow,
     justifyContent: 'flex-end',
@@ -210,7 +222,7 @@ const styles = StyleSheet.create({
   },
   figures: { fontVariant: ['tabular-nums'] },
   uncertain: { backgroundColor: palette.reviewWash },
-  active: { backgroundColor: palette.paperLime },
+  active: { backgroundColor: palette.green },
   pressed: { backgroundColor: palette.canvasDeep },
   flag: {
     position: 'absolute',

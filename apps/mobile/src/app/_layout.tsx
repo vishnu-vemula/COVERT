@@ -58,7 +58,7 @@ function RootNavigator() {
   if (initializing) {
     return (
       <View style={styles.loading} accessible accessibilityLabel="Loading COVERT">
-        <Wordmark />
+        <Wordmark height={36} />
         <ActivityIndicator color={palette.ink} />
       </View>
     );
@@ -68,7 +68,7 @@ function RootNavigator() {
     <Stack
       screenOptions={{
         headerShown: false,
-        contentStyle: { backgroundColor: palette.canvas },
+        contentStyle: { backgroundColor: palette.surface },
         animation: reducedMotion ? 'none' : 'default',
       }}>
       <Stack.Protected guard={!user}>
@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: space.lg,
-    backgroundColor: palette.canvas,
+    backgroundColor: palette.surface,
   },
   config: { paddingTop: space.xl, gap: space.md },
   error: { justifyContent: 'center', gap: space.sm },

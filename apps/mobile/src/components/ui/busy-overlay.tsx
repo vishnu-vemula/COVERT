@@ -14,11 +14,7 @@ export function BusyOverlay({ visible, label }: { visible: boolean; label: strin
   return (
     <Modal visible={visible} transparent animationType="fade" statusBarTranslucent>
       <View style={styles.root}>
-        <View
-          style={styles.box}
-          accessible
-          accessibilityLabel={label}
-          accessibilityState={{ busy: true }}>
+        <View style={styles.box} accessible accessibilityLabel={label} aria-busy>
           <ActivityIndicator color={palette.onInk} />
           <Text variant="callout" tone="inverse">
             {label}

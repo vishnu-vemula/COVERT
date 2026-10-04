@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: space.sm,
     backgroundColor: palette.ink,
-    borderRadius: radius.md,
+    borderRadius: radius.round,
     paddingVertical: space.sm,
     paddingHorizontal: space.md,
     maxWidth: 520,

@@ -25,10 +25,10 @@ const CELLS_ROUTE = `${DOCUMENT_ROUTE}/cells`;
 const IdParams = z.object({ id: z.string().min(1) });
 const ListQuery = z.object({ limit: z.coerce.number().int().min(1).max(100).default(50) });
 
-export const documentRoutes: FastifyPluginAsync<{ deps: AppDeps; limiter: ConversionLimiter }> = async (
-  app,
-  { deps, limiter },
-) => {
+export const documentRoutes: FastifyPluginAsync<{
+  deps: AppDeps;
+  limiter: ConversionLimiter;
+}> = async (app, { deps, limiter }) => {
   // Every route in this plugin requires a verified Firebase ID token.
   app.addHook('onRequest', requireUser(deps.verifyToken));
 
@@ -107,7 +107,8 @@ export const documentRoutes: FastifyPluginAsync<{ deps: AppDeps; limiter: Conver
 };
 
 async function readUploads(request: FastifyRequest): Promise<Buffer[]> {
-  if (!request.isMultipart()) throw new AppError('INVALID_REQUEST', { detail: 'Expected multipart' });
+  if (!request.isMultipart())
+    throw new AppError('INVALID_REQUEST', { detail: 'Expected multipart' });
   const buffers: Buffer[] = [];
   for await (const part of request.parts()) {
     if (part.type !== 'file') continue;
@@ -122,6 +123,7 @@ async function readUploads(request: FastifyRequest): Promise<Buffer[]> {
 
 function parse<T>(schema: z.ZodType<T>, value: unknown): T {
   const result = schema.safeParse(value);
-  if (!result.success) throw new AppError('INVALID_REQUEST', { detail: result.error.issues[0]?.message });
+  if (!result.success)
+    throw new AppError('INVALID_REQUEST', { detail: result.error.issues[0]?.message });
   return result.data;
 }

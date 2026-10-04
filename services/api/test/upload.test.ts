@@ -12,13 +12,17 @@ describe('sniffMimeType', () => {
   });
 
   it('accepts a PDF header after leading junk bytes', () => {
-    expect(sniffMimeType(Buffer.concat([Buffer.from('\n\n  '), PDF_BYTES]))).toBe('application/pdf');
+    expect(sniffMimeType(Buffer.concat([Buffer.from('\n\n  '), PDF_BYTES]))).toBe(
+      'application/pdf',
+    );
   });
 
   it('rejects other formats', () => {
     expect(sniffMimeType(Buffer.from('GIF89a......'))).toBeNull();
     expect(sniffMimeType(Buffer.from('<html><body>hi</body></html>'))).toBeNull();
-    expect(sniffMimeType(Buffer.from([0x52, 0x49, 0x46, 0x46, 0, 0, 0, 0, 0x57, 0x45, 0x42, 0x50]))).toBeNull();
+    expect(
+      sniffMimeType(Buffer.from([0x52, 0x49, 0x46, 0x46, 0, 0, 0, 0, 0x57, 0x45, 0x42, 0x50])),
+    ).toBeNull();
     expect(sniffMimeType(Buffer.alloc(0))).toBeNull();
   });
 });
@@ -61,7 +65,11 @@ describe('validateUpload', () => {
     ['an unsupported file', [Buffer.from('GIF89a, not supported')], 'UNSUPPORTED_FILE'],
     ['a damaged PDF', [PDF_BYTES.subarray(0, 20)], 'CORRUPT_FILE'],
     ['a PDF with photos', [PDF_BYTES, JPEG_BYTES], 'TOO_MANY_FILES'],
-    ['too many pages', Array.from({ length: LIMITS.maxImagePages + 1 }, () => JPEG_BYTES), 'TOO_MANY_FILES'],
+    [
+      'too many pages',
+      Array.from({ length: LIMITS.maxImagePages + 1 }, () => JPEG_BYTES),
+      'TOO_MANY_FILES',
+    ],
     [
       'an oversized file',
       [Buffer.concat([JPEG_BYTES, Buffer.alloc(LIMITS.maxFileBytes)])],

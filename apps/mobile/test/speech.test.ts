@@ -2,8 +2,14 @@ import type { CovertDocument, Table } from '@covert/shared';
 import { computeStats } from '@covert/shared';
 import { describe, expect, it } from 'vitest';
 
-import { rowPhrase, speakableLabel, splitForSpeech, summaryPhrase, tableIntro } from '@/lib/speech/phrases';
-import { speakableValue } from '@/lib/speech/speakable';
+import {
+  rowPhrase,
+  speakableLabel,
+  splitForSpeech,
+  summaryPhrase,
+  tableIntro,
+} from '@/lib/speech/phrases';
+import { speakableProse, speakableValue } from '@/lib/speech/speakable';
 import { numberToWords } from '@/lib/speech/words';
 
 const readings: Table = {
@@ -88,6 +94,20 @@ describe('speakableValue', () => {
   });
 });
 
+describe('speakableProse', () => {
+  it('rewrites amounts and percentages inside sentences', () => {
+    expect(speakableProse('Totalling ₹2,737.60 including 18% GST, down from $1 and Rs. 40.')).toBe(
+      'Totalling 2,737.60 rupees including 18 percent GST, down from 1 dollar and 40 rupees.',
+    );
+  });
+
+  it('leaves other text alone', () => {
+    expect(speakableProse('Invoice INV-2024-0193 for 4 items.')).toBe(
+      'Invoice INV-2024-0193 for 4 items.',
+    );
+  });
+});
+
 describe('speakableLabel', () => {
   it('expands abbreviations engines spell out', () => {
     expect(speakableLabel('#')).toBe('Number');
@@ -108,7 +128,9 @@ describe('rowPhrase', () => {
   });
 
   it('says blank for empty cells instead of skipping them', () => {
-    expect(rowPhrase(readings, 1, true)).toBe('Row two. Date, September 3. Units, blank. Amount, 0 rupees.');
+    expect(rowPhrase(readings, 1, true)).toBe(
+      'Row two. Date, September 3. Units, blank. Amount, 0 rupees.',
+    );
   });
 
   it('returns nothing for rows that do not exist', () => {

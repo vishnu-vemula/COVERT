@@ -1,5 +1,5 @@
 import { useState, type Ref } from 'react';
-import { StyleSheet, TextInput, View, type TextInputProps } from 'react-native';
+import { Platform, StyleSheet, TextInput, View, type TextInputProps } from 'react-native';
 
 import { useColors } from '@/theme/contrast';
 import { fontFamily, palette, radius, size, space, type } from '@/theme/tokens';
@@ -29,14 +29,20 @@ export function TextField({
   const colors = useColors();
   const [focused, setFocused] = useState(false);
   const [hidden, setHidden] = useState(true);
-  const borderColor = error ? palette.danger : focused ? palette.ink : colors.border;
+  const borderColor = error
+    ? palette.danger
+    : focused
+      ? palette.ink
+      : colors.increased
+        ? colors.border
+        : palette.surface;
 
   return (
     <View style={styles.field}>
       <Text variant="footnote" tone="secondary" aria-hidden>
         {label}
       </Text>
-      <View style={[styles.box, { borderColor, borderWidth: focused || error ? 1.5 : 1 }]}>
+      <View style={[styles.box, { borderColor }]}>
         <TextInput
           ref={ref}
           accessibilityLabel={label}
@@ -86,6 +92,7 @@ const styles = StyleSheet.create({
   box: {
     minHeight: size.buttonLarge,
     borderRadius: radius.md,
+    borderWidth: 2,
     backgroundColor: palette.surface,
     flexDirection: 'row',
     alignItems: 'center',
@@ -99,5 +106,7 @@ const styles = StyleSheet.create({
     fontFamily,
     ...type.body,
     color: palette.ink,
+    // The box border already shows focus; drop the browser's second ring in the web preview.
+    ...(Platform.OS === 'web' ? { outlineWidth: 0, outlineColor: 'transparent' } : null),
   },
 });

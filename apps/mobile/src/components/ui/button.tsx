@@ -14,8 +14,11 @@ import { motion, palette, radius, size, space } from '@/theme/tokens';
 import { Icon, type IconName } from './icon';
 import { Text } from './text';
 
-/** `signal` and `onDark` are for dark surfaces such as the camera and crop views. */
-type Variant = 'primary' | 'secondary' | 'quiet' | 'danger' | 'signal' | 'onDark';
+/**
+ * `secondary` is white, for coloured screens; `tonal` is its counterpart on white cards and
+ * sheets. `signal` and `onDark` are for dark surfaces such as the camera and crop views.
+ */
+type Variant = 'primary' | 'secondary' | 'tonal' | 'quiet' | 'danger' | 'signal' | 'onDark';
 
 interface ButtonProps {
   label: string;
@@ -23,6 +26,8 @@ interface ButtonProps {
   variant?: Variant;
   size?: 'large' | 'medium';
   icon?: IconName;
+  /** Arrows read better after the label; other icons before it. */
+  iconPosition?: 'start' | 'end';
   loading?: boolean;
   disabled?: boolean;
   accessibilityLabel?: string;
@@ -33,6 +38,7 @@ interface ButtonProps {
 const fills: Record<Variant, { base: string; pressed: string; text: string }> = {
   primary: { base: palette.ink, pressed: palette.inkPressed, text: palette.onInk },
   secondary: { base: palette.surface, pressed: palette.canvasDeep, text: palette.ink },
+  tonal: { base: palette.canvas, pressed: palette.canvasDeep, text: palette.ink },
   quiet: { base: 'transparent', pressed: palette.canvasDeep, text: palette.ink },
   danger: { base: palette.surface, pressed: palette.dangerWash, text: palette.danger },
   signal: { base: palette.signal, pressed: palette.signalDark, text: palette.ink },
@@ -45,6 +51,7 @@ export function Button({
   variant = 'primary',
   size: buttonSize = 'large',
   icon,
+  iconPosition = 'start',
   loading = false,
   disabled = false,
   accessibilityLabel,
@@ -55,7 +62,8 @@ export function Button({
   const reducedMotion = useReducedMotion();
   const fill = fills[variant];
   const inactive = disabled || loading;
-  const bordered = variant === 'secondary' || variant === 'danger' || variant === 'onDark';
+  const bordered =
+    variant === 'danger' || variant === 'onDark' || (colors.increased && variant === 'secondary');
 
   return (
     <Pressable
@@ -64,7 +72,8 @@ export function Button({
       accessibilityRole="button"
       accessibilityLabel={accessibilityLabel ?? label}
       accessibilityHint={accessibilityHint}
-      accessibilityState={{ disabled: inactive, busy: loading }}
+      aria-disabled={inactive}
+      aria-busy={loading}
       style={({ pressed }) => [
         styles.base,
         {
@@ -86,12 +95,15 @@ export function Button({
         <ActivityIndicator color={fill.text} aria-hidden />
       ) : (
         <View style={styles.content}>
-          {icon ? (
+          {icon && iconPosition === 'start' ? (
             <Icon name={icon} color={fill.text} size={size.iconSmall} strokeWidth={2} />
           ) : null}
           <Text variant="headline" style={{ color: fill.text }} numberOfLines={2}>
             {label}
           </Text>
+          {icon && iconPosition === 'end' ? (
+            <Icon name={icon} color={fill.text} size={size.iconSmall} strokeWidth={2} />
+          ) : null}
         </View>
       )}
     </Pressable>
@@ -100,7 +112,7 @@ export function Button({
 
 const styles = StyleSheet.create({
   base: {
-    borderRadius: radius.md,
+    borderRadius: radius.round,
     paddingHorizontal: space.lg,
     paddingVertical: space.xs,
     alignItems: 'center',

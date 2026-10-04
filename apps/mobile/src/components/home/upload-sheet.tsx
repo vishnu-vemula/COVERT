@@ -20,14 +20,14 @@ const OPTIONS: {
     title: 'Photos',
     detail: 'Choose up to 6 images as pages',
     icon: 'image',
-    tint: palette.paperSand,
+    tint: palette.green,
   },
   {
     source: 'files',
     title: 'Files',
     detail: 'PDF, JPG or PNG up to 10 MB',
     icon: 'file',
-    tint: palette.paperSky,
+    tint: palette.blue,
   },
 ];
 
@@ -59,7 +59,8 @@ export function UploadSheet({ visible, onClose, onChoose }: UploadSheetProps) {
               styles.option,
               {
                 borderColor: colors.border,
-                backgroundColor: pressed ? palette.canvasDeep : palette.surface,
+                borderWidth: colors.increased ? 1 : 0,
+                backgroundColor: pressed ? palette.canvasDeep : palette.canvas,
               },
             ]}>
             <View style={[styles.tile, { backgroundColor: option.tint }]}>
@@ -85,15 +86,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: space.md,
-    padding: space.md,
-    borderRadius: radius.md,
-    borderWidth: 1,
+    padding: space.xs,
+    paddingRight: space.md,
+    borderRadius: radius.round,
     minHeight: 72,
   },
   tile: {
-    width: 44,
-    height: 44,
-    borderRadius: radius.sm,
+    width: 56,
+    height: 56,
+    borderRadius: 28,
     alignItems: 'center',
     justifyContent: 'center',
   },

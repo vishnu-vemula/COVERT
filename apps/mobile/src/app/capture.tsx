@@ -21,7 +21,7 @@ import { TopBar } from '@/components/ui/top-bar';
 import { normalizeImage } from '@/lib/files/images';
 import { FileRejectedError } from '@/lib/files/validate';
 import { useCapture } from '@/stores/capture';
-import { palette, radius, space } from '@/theme/tokens';
+import { palette, radius, scene, space } from '@/theme/tokens';
 
 const FLASH_ORDER: FlashMode[] = ['off', 'auto', 'on'];
 const FLASH_LABEL: Record<string, string> = {
@@ -150,7 +150,8 @@ function Camera({ retakeIndex }: { retakeIndex: number | null }) {
           disabled={!ready || busy}
           accessibilityRole="button"
           accessibilityLabel="Take photo"
-          accessibilityState={{ disabled: !ready || busy, busy }}
+          aria-disabled={!ready || busy}
+          aria-busy={busy}
           style={({ pressed }) => [styles.shutter, pressed && styles.shutterPressed]}>
           {busy ? <ActivityIndicator color={palette.ink} /> : <View style={styles.shutterCore} />}
         </Pressable>
@@ -162,6 +163,7 @@ function Camera({ retakeIndex }: { retakeIndex: number | null }) {
 function PermissionNeeded({ canAsk, onAllow }: { canAsk: boolean; onAllow: () => void }) {
   return (
     <Screen
+      background={scene.review}
       header={<TopBar backIcon="close" backLabel="Close" />}
       contentStyle={styles.permission}
       footer={

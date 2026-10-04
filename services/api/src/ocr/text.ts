@@ -15,7 +15,9 @@ export function prepareOcrText(result: OcrResult): PreparedText {
   const multiPage = result.pages.length > 1;
   const sections = result.pages
     .filter((page) => page.text.trim().length > 0)
-    .map((page) => (multiPage ? `[Page ${page.pageNumber}]\n${page.text.trim()}` : page.text.trim()));
+    .map((page) =>
+      multiPage ? `[Page ${page.pageNumber}]\n${page.text.trim()}` : page.text.trim(),
+    );
   const displayText = sections.join('\n\n');
   const truncated = displayText.length > MAX_MODEL_CHARS;
   return {

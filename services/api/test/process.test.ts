@@ -4,7 +4,13 @@ import { afterEach, describe, expect, it } from 'vitest';
 import { ConversionLimiter } from '../src/pipeline/conversion-limiter';
 import { ExtractionError } from '../src/extraction/extractor';
 import { OcrError } from '../src/ocr/types';
-import { JPEG_BYTES, loadOcrText, loadRawExtraction, PDF_BYTES, PNG_BYTES } from './support/fixtures';
+import {
+  JPEG_BYTES,
+  loadOcrText,
+  loadRawExtraction,
+  PDF_BYTES,
+  PNG_BYTES,
+} from './support/fixtures';
 import {
   auth,
   createHarness,
@@ -75,7 +81,12 @@ describe('POST /v1/documents', () => {
   });
 
   it.each([
-    ['unsupported files', [{ buffer: Buffer.from('GIF89a not an accepted file') }], 415, 'UNSUPPORTED_FILE'],
+    [
+      'unsupported files',
+      [{ buffer: Buffer.from('GIF89a not an accepted file') }],
+      415,
+      'UNSUPPORTED_FILE',
+    ],
     ['damaged files', [{ buffer: PDF_BYTES.subarray(0, 24) }], 422, 'CORRUPT_FILE'],
     ['empty uploads', [], 400, 'INVALID_REQUEST'],
     [

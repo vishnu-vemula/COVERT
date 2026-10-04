@@ -13,6 +13,8 @@ export interface Colors {
   textTertiary: string;
   border: string;
   divider: string;
+  /** True when the system asks for increased contrast: outline translucent controls. */
+  increased: boolean;
 }
 
 const standard: Colors = {
@@ -21,6 +23,7 @@ const standard: Colors = {
   textTertiary: palette.muted,
   border: palette.border,
   divider: palette.border,
+  increased: false,
 };
 
 const highContrast: Colors = {
@@ -29,6 +32,7 @@ const highContrast: Colors = {
   textTertiary: palette.textSecondary,
   border: palette.borderStrong,
   divider: palette.borderStrong,
+  increased: true,
 };
 
 const ColorsContext = createContext<Colors>(standard);

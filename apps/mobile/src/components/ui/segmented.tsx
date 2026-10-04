@@ -38,17 +38,19 @@ export function Segmented<T extends string | number>({
         onPress={() => onChange(option.value)}
         accessibilityRole="radio"
         accessibilityLabel={option.accessibilityLabel ?? option.label}
-        accessibilityState={{ checked: selected, selected }}
+        aria-checked={selected}
         style={({ pressed }) => [
           styles.item,
           !scrollable && styles.equal,
           selected && { backgroundColor: dark ? palette.signal : palette.ink },
           !selected &&
-            pressed && { backgroundColor: dark ? 'rgba(255,255,255,0.08)' : palette.border },
+            pressed && { backgroundColor: dark ? 'rgba(255,255,255,0.08)' : palette.glassPressed },
         ]}>
         <Text
           variant="footnote"
           numberOfLines={1}
+          adjustsFontSizeToFit
+          minimumFontScale={0.8}
           maxFontSizeMultiplier={1.4}
           style={[
             styles.label,
@@ -70,7 +72,7 @@ export function Segmented<T extends string | number>({
 
   const container = [
     styles.track,
-    { backgroundColor: dark ? 'rgba(255,255,255,0.08)' : palette.canvasDeep },
+    { backgroundColor: dark ? 'rgba(255,255,255,0.08)' : palette.glass },
   ];
 
   if (scrollable) {
@@ -95,15 +97,15 @@ export function Segmented<T extends string | number>({
 const styles = StyleSheet.create({
   track: {
     flexDirection: 'row',
-    borderRadius: radius.md,
+    borderRadius: radius.round,
     padding: space.xxs,
     gap: space.xxs,
   },
   item: {
     minHeight: size.touch - space.xs,
     minWidth: size.touch,
-    paddingHorizontal: space.sm,
-    borderRadius: radius.md - space.xxs,
+    paddingHorizontal: space.xs,
+    borderRadius: radius.round,
     alignItems: 'center',
     justifyContent: 'center',
   },

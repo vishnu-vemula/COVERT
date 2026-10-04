@@ -91,9 +91,9 @@ export function Sheet({ visible, title, onClose, onDismiss, children }: SheetPro
 const styles = StyleSheet.create({
   root: { flex: 1, justifyContent: 'flex-end', backgroundColor: palette.scrim },
   sheet: {
-    backgroundColor: palette.canvas,
-    borderTopLeftRadius: radius.lg,
-    borderTopRightRadius: radius.lg,
+    backgroundColor: palette.surface,
+    borderTopLeftRadius: radius.xl,
+    borderTopRightRadius: radius.xl,
     paddingHorizontal: space.gutter,
     gap: space.md,
     maxWidth: 640,

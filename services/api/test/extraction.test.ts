@@ -73,9 +73,13 @@ describe('transformExtraction', () => {
     expect(result.tables.map((table) => table.rows.length)).toEqual(expectedRows);
 
     sourceValues(extraction).forEach((values, index) => {
-      const output = result.tables[index]!.rows.flatMap((row) => row.cells.map((cell) => cell.value));
+      const output = result.tables[index]!.rows.flatMap((row) =>
+        row.cells.map((cell) => cell.value),
+      );
       for (const value of values) {
-        expect(output.some((cell) => cell === value || cell.split(' · ').includes(value))).toBe(true);
+        expect(output.some((cell) => cell === value || cell.split(' · ').includes(value))).toBe(
+          true,
+        );
       }
     });
   });
@@ -107,7 +111,13 @@ describe('transformExtraction', () => {
   it('keeps missing values empty', () => {
     const [schedule] = transformExtraction(loadExtraction('missing-values')).tables;
     const wednesday = schedule!.rows[3]!;
-    expect(wednesday.cells.map((cell) => cell.value)).toEqual(['Wednesday', '', 'Library', '—', '']);
+    expect(wednesday.cells.map((cell) => cell.value)).toEqual([
+      'Wednesday',
+      '',
+      'Library',
+      '—',
+      '',
+    ]);
   });
 
   it('keeps uncertainty and the raw OCR source for corrected values', () => {
@@ -168,7 +178,12 @@ describe('transformExtraction', () => {
           id: 'y',
           title: '',
           columns: [{ id: 'a', label: '' }],
-          rows: [{ id: 'r', cells: [{ columnId: 'a', value: '42', uncertain: false, sourceText: null }] }],
+          rows: [
+            {
+              id: 'r',
+              cells: [{ columnId: 'a', value: '42', uncertain: false, sourceText: null }],
+            },
+          ],
         },
       ],
     });
@@ -190,7 +205,9 @@ describe('createExtractor', () => {
       calls += 1;
       return valid;
     });
-    await expect(extractor.extract('text')).resolves.toMatchObject({ title: 'Grocery list — week 41' });
+    await expect(extractor.extract('text')).resolves.toMatchObject({
+      title: 'Grocery list — week 41',
+    });
     expect(calls).toBe(1);
   });
 

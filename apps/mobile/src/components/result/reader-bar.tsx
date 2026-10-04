@@ -112,7 +112,7 @@ export function ReaderBar({ reader, table, onClose }: ReaderBarProps) {
 const styles = StyleSheet.create({
   bar: {
     backgroundColor: palette.ink,
-    borderRadius: radius.lg,
+    borderRadius: radius.xl,
     padding: space.sm,
     gap: space.sm,
     ...shadow.raised,
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     minWidth: size.touch,
     minHeight: size.touch - space.xs,
     paddingHorizontal: space.sm,
-    borderRadius: radius.md - space.xxs,
+    borderRadius: radius.round,
     borderWidth: 1,
     borderColor: 'rgba(246,245,240,0.3)',
     alignItems: 'center',

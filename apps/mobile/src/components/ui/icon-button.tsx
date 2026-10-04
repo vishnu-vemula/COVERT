@@ -5,7 +5,7 @@ import { palette, radius, size } from '@/theme/tokens';
 
 import { Icon, type IconName } from './icon';
 
-type Variant = 'surface' | 'ink' | 'signal' | 'glass' | 'plain';
+type Variant = 'soft' | 'tonal' | 'surface' | 'ink' | 'signal' | 'glass' | 'plain';
 
 interface IconButtonProps {
   icon: IconName;
@@ -21,6 +21,9 @@ interface IconButtonProps {
 }
 
 const variants: Record<Variant, { bg: string; pressed: string; fg: string }> = {
+  soft: { bg: palette.glass, pressed: palette.glassPressed, fg: palette.ink },
+  /** For white screens, where `soft` would disappear. */
+  tonal: { bg: palette.canvas, pressed: palette.canvasDeep, fg: palette.ink },
   surface: { bg: palette.surface, pressed: palette.canvasDeep, fg: palette.ink },
   ink: { bg: palette.ink, pressed: palette.inkPressed, fg: palette.onInk },
   signal: { bg: palette.signal, pressed: palette.signalDark, fg: palette.ink },
@@ -32,7 +35,7 @@ export function IconButton({
   icon,
   label,
   onPress,
-  variant = 'surface',
+  variant = 'soft',
   diameter = size.iconButton,
   disabled = false,
   selected,
@@ -50,15 +53,19 @@ export function IconButton({
       accessibilityRole="button"
       accessibilityLabel={label}
       accessibilityHint={accessibilityHint}
-      accessibilityState={{ disabled, selected }}
+      aria-disabled={disabled}
+      aria-selected={selected}
       style={({ pressed }) => [
         styles.base,
         {
           width: diameter,
           height: diameter,
           backgroundColor: pressed ? look.pressed : look.bg,
-          borderColor: colors.border,
-          borderWidth: variant === 'surface' ? StyleSheet.hairlineWidth * 2 : 0,
+          borderColor: palette.ink,
+          borderWidth:
+            colors.increased && (variant === 'soft' || variant === 'tonal' || variant === 'surface')
+              ? 1
+              : 0,
           opacity: disabled ? 0.35 : 1,
         },
         style,

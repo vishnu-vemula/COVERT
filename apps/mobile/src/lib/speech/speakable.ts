@@ -47,6 +47,15 @@ export function speakableValue(raw: string): string {
     .trim();
 }
 
+/** Applies the same currency and percent wording inside sentences (summaries, titles). */
+export function speakableProse(text: string): string {
+  return text
+    .replace(/(?:₹|\$|€|£|¥|\b(?:rs\.?|inr|usd|eur|gbp)\s?)\s?\d[\d,]*(?:\.\d+)?/gi, (match) => {
+      return speakCurrency(match.trim()) ?? match;
+    })
+    .replace(/(\d)\s*%/g, '$1 percent');
+}
+
 function speakCurrency(value: string): string | null {
   const negative = /^[-−]/.test(value) || /^\(.*\)$/.test(value);
   const unsigned = value.replace(/^[-−]\s*/, '').replace(/^\((.*)\)$/, '$1');

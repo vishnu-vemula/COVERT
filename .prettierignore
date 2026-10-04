@@ -6,3 +6,5 @@ package-lock.json
 apps/mobile/ios
 apps/mobile/android
 services/api/test/fixtures
+apps/mobile/.expo
+*.md

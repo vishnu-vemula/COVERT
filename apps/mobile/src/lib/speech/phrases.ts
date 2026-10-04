@@ -1,6 +1,6 @@
 import { findCell, type CovertDocument, type Table } from '@covert/shared';
 
-import { BLANK, speakableValue } from './speakable';
+import { BLANK, speakableProse, speakableValue } from './speakable';
 import { numberToWords } from './words';
 
 /** Column headers that speech engines would otherwise spell out letter by letter. */
@@ -65,7 +65,12 @@ export function summaryPhrase(document: CovertDocument): string {
     stats.uncertainCount > 0
       ? `${plural(stats.uncertainCount, 'value')} ${stats.uncertainCount === 1 ? 'is' : 'are'} marked uncertain`
       : '';
-  return sentence([document.title, document.summary, contents, uncertain]);
+  return sentence([
+    speakableProse(document.title),
+    speakableProse(document.summary),
+    contents,
+    uncertain,
+  ]);
 }
 
 /**

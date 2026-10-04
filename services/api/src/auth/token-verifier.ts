@@ -14,7 +14,11 @@ export class TokenError extends Error {
 /** Resolves a bearer token to a user or throws `TokenError`. */
 export type TokenVerifier = (token: string) => Promise<VerifiedUser>;
 
-const EXPIRED_CODES = new Set(['auth/id-token-expired', 'auth/id-token-revoked', 'auth/user-disabled']);
+const EXPIRED_CODES = new Set([
+  'auth/id-token-expired',
+  'auth/id-token-revoked',
+  'auth/user-disabled',
+]);
 
 export function firebaseTokenVerifier(auth: Auth): TokenVerifier {
   return async (token) => {

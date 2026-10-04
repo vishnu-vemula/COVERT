@@ -21,7 +21,15 @@ import {
 } from './repository';
 
 const COLLECTION = 'documents';
-const LIST_FIELDS = ['ownerUid', 'title', 'fileType', 'pageCount', 'stats', 'createdAt', 'updatedAt'];
+const LIST_FIELDS = [
+  'ownerUid',
+  'title',
+  'fileType',
+  'pageCount',
+  'stats',
+  'createdAt',
+  'updatedAt',
+];
 
 interface StoredDocument {
   schemaVersion: 1;

@@ -15,7 +15,12 @@ import { buildApp } from '../../src/app';
 import { firebaseTokenVerifier } from '../../src/auth/token-verifier';
 import { createExtractor } from '../../src/extraction/extractor';
 import type { OcrProvider, OcrResult } from '../../src/ocr/types';
-import { FIXTURE_NAMES, loadOcrText, loadRawExtraction, type FixtureName } from '../support/fixtures';
+import {
+  FIXTURE_NAMES,
+  loadOcrText,
+  loadRawExtraction,
+  type FixtureName,
+} from '../support/fixtures';
 import { MemoryDocuments } from '../support/memory-documents';
 
 if (!process.env.FIREBASE_AUTH_EMULATOR_HOST) {

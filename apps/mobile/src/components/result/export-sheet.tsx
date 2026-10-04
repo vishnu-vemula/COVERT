@@ -10,7 +10,7 @@ import { useAfterDismiss } from '@/hooks/use-after-dismiss';
 import { copyTable, ExportError, shareCsv } from '@/lib/export';
 import { plural } from '@/lib/format';
 import { useColors } from '@/theme/contrast';
-import { palette, radius, size, space } from '@/theme/tokens';
+import { palette, radius, space } from '@/theme/tokens';
 
 interface ExportSheetProps {
   document: CovertDocument;
@@ -82,9 +82,9 @@ export function ExportSheet({ document, initialTableId, visible, onClose }: Expo
                 key={item.id}
                 onPress={() => setTableId(item.id)}
                 accessibilityRole="radio"
-                accessibilityState={{ checked: selected }}
+                aria-checked={selected}
                 accessibilityLabel={`${item.title}, ${plural(item.rows.length, 'row')}`}
-                style={[styles.choice, { borderColor: selected ? palette.ink : colors.border }]}>
+                style={[styles.choice, { borderColor: selected ? palette.ink : palette.canvas }]}>
                 <View style={[styles.radio, selected && styles.radioOn]}>
                   {selected ? <View style={styles.radioDot} /> : null}
                 </View>
@@ -113,7 +113,8 @@ export function ExportSheet({ document, initialTableId, visible, onClose }: Expo
               styles.option,
               {
                 borderColor: colors.border,
-                backgroundColor: pressed ? palette.canvasDeep : palette.surface,
+                borderWidth: colors.increased ? 1 : 0,
+                backgroundColor: pressed ? palette.canvasDeep : palette.canvas,
               },
             ]}>
             <View style={styles.tile}>
@@ -141,9 +142,9 @@ const styles = StyleSheet.create({
     minHeight: 60,
     paddingHorizontal: space.md,
     paddingVertical: space.sm,
-    borderRadius: radius.md,
-    borderWidth: 1.5,
-    backgroundColor: palette.surface,
+    borderRadius: radius.round,
+    borderWidth: 2,
+    backgroundColor: palette.canvas,
   },
   radio: {
     width: 22,
@@ -161,15 +162,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: space.md,
     minHeight: 72,
-    padding: space.md,
-    borderRadius: radius.md,
-    borderWidth: 1,
+    padding: space.xs,
+    paddingRight: space.md,
+    borderRadius: radius.round,
   },
   tile: {
-    width: size.iconButton,
-    height: size.iconButton,
-    borderRadius: radius.sm,
-    backgroundColor: palette.paperLime,
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    backgroundColor: palette.green,
     alignItems: 'center',
     justifyContent: 'center',
   },

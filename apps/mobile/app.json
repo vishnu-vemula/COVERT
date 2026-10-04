@@ -7,7 +7,7 @@
     "icon": "./assets/images/icon.png",
     "scheme": "covert",
     "userInterfaceStyle": "light",
-    "backgroundColor": "#F6F5F0",
+    "backgroundColor": "#FFFFFF",
     "ios": {
       "bundleIdentifier": "com.example.covert",
       "supportsTablet": true,
@@ -16,7 +16,7 @@
     "android": {
       "package": "com.example.covert",
       "adaptiveIcon": {
-        "backgroundColor": "#111311",
+        "backgroundColor": "#FFFFFF",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
@@ -32,9 +32,9 @@
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#F6F5F0",
+          "backgroundColor": "#FFFFFF",
           "image": "./assets/images/splash-icon.png",
-          "imageWidth": 88
+          "imageWidth": 200
         }
       ],
       [

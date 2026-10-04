@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     gap: space.sm,
     padding: space.md,
     borderRadius: radius.md,
-    backgroundColor: palette.paperLime,
+    backgroundColor: palette.greenSoft,
   },
   sentText: { flex: 1 },
 });

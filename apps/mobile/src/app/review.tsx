@@ -19,7 +19,7 @@ import { normalizeImage, type CropRect } from '@/lib/files/images';
 import { plural } from '@/lib/format';
 import { useCapture } from '@/stores/capture';
 import { useProcessing } from '@/stores/processing';
-import { palette, radius, space } from '@/theme/tokens';
+import { palette, radius, scene, space } from '@/theme/tokens';
 
 export default function ReviewScreen() {
   const pages = useCapture((state) => state.pages);
@@ -56,7 +56,7 @@ export default function ReviewScreen() {
 
   if (!pdf && !page) {
     return (
-      <Screen header={<TopBar />} contentStyle={styles.empty}>
+      <Screen background={scene.review} header={<TopBar />} contentStyle={styles.empty}>
         <Notice
           title="Nothing to review"
           message="Scan or upload a document to get started."
@@ -71,12 +71,14 @@ export default function ReviewScreen() {
 
   return (
     <Screen
+      background={scene.review}
       header={<TopBar label={meta} />}
       contentStyle={styles.content}
       footer={
         <Button
           label="Convert"
           icon="arrowUpRight"
+          iconPosition="end"
           accessibilityHint="Reads the document and builds a table"
           onPress={convert}
         />
@@ -123,7 +125,7 @@ export default function ReviewScreen() {
                   onPress={() => setSelected(position)}
                   accessibilityRole="button"
                   accessibilityLabel={`Page ${position + 1}`}
-                  accessibilityState={{ selected: position === index }}
+                  aria-selected={position === index}
                   style={[styles.thumb, position === index && styles.thumbSelected]}>
                   <Image source={{ uri: item.uri }} style={styles.thumbImage} contentFit="cover" />
                 </Pressable>
@@ -196,8 +198,8 @@ const styles = StyleSheet.create({
   empty: { paddingTop: space.lg },
   preview: {
     height: 380,
-    borderRadius: radius.lg,
-    backgroundColor: palette.canvasDeep,
+    borderRadius: radius.xl,
+    backgroundColor: palette.glass,
     padding: space.sm,
   },
   image: { flex: 1 },
@@ -209,7 +211,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     borderWidth: 2,
     borderColor: 'transparent',
-    backgroundColor: palette.canvasDeep,
+    backgroundColor: palette.glass,
   },
   thumbSelected: { borderColor: palette.ink },
   thumbImage: { flex: 1 },
@@ -217,26 +219,24 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderStyle: 'dashed',
-    borderColor: palette.borderStrong,
+    borderColor: palette.ink,
     backgroundColor: 'transparent',
   },
-  addPagePressed: { backgroundColor: palette.canvasDeep },
+  addPagePressed: { backgroundColor: palette.glass },
   tools: { flexDirection: 'row', gap: space.xs },
   pdf: {
     flexDirection: 'row',
     gap: space.md,
     alignItems: 'center',
     padding: space.md,
-    borderRadius: radius.lg,
+    borderRadius: radius.xl,
     backgroundColor: palette.surface,
-    borderWidth: 1,
-    borderColor: palette.border,
   },
   pdfTile: {
     width: 72,
     height: 92,
-    borderRadius: radius.sm,
-    backgroundColor: palette.paperClay,
+    borderRadius: radius.md,
+    backgroundColor: palette.green,
     alignItems: 'center',
     justifyContent: 'flex-end',
     paddingBottom: space.sm,

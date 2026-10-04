@@ -1,11 +1,12 @@
 import Constants from 'expo-constants';
-import { useState, type ReactNode } from 'react';
+import { Children, Fragment, useState, type ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { Button } from '@/components/ui/button';
+import { Scallop } from '@/components/ui/shapes';
 import { Mark } from '@/components/ui/wordmark';
 import { Screen } from '@/components/ui/screen';
-import { Segmented } from '@/components/ui/segmented';
+import { CircleChoice } from '@/components/ui/circle-choice';
 import { SwitchRow } from '@/components/ui/switch-row';
 import { Text } from '@/components/ui/text';
 import { useToast } from '@/components/ui/toast';
@@ -16,7 +17,7 @@ import { confirm } from '@/lib/confirm';
 import { useDocuments } from '@/stores/documents';
 import { rateLabel, SPEECH_RATES, useSettings } from '@/stores/settings';
 import { useColors } from '@/theme/contrast';
-import { palette, radius, space } from '@/theme/tokens';
+import { palette, radius, scene, space } from '@/theme/tokens';
 
 export default function SettingsScreen() {
   const { user } = useAuth();
@@ -57,7 +58,7 @@ export default function SettingsScreen() {
   };
 
   return (
-    <Screen header={<TopBar />} contentStyle={styles.content}>
+    <Screen background={scene.settings} header={<TopBar />} contentStyle={styles.content}>
       <Text variant="title" accessibilityRole="header">
         Settings
       </Text>
@@ -72,7 +73,7 @@ export default function SettingsScreen() {
         <View style={styles.row}>
           <Button
             label="Sign out"
-            variant="secondary"
+            variant="tonal"
             size="medium"
             loading={signingOut}
             onPress={() => void leave()}
@@ -83,7 +84,7 @@ export default function SettingsScreen() {
       <Section title="Audio">
         <View style={styles.row}>
           <Text>Default speech speed</Text>
-          <Segmented
+          <CircleChoice
             label="Default speech speed"
             options={SPEECH_RATES.map((rate) => ({
               value: rate,
@@ -125,7 +126,9 @@ export default function SettingsScreen() {
 
       <Section title="About">
         <View style={[styles.row, styles.about]}>
-          <Mark cell={9} />
+          <Scallop size={56} color={palette.blueDeep} petals={9}>
+            <Mark size={24} />
+          </Scallop>
           <View style={styles.aboutCopy}>
             <Text variant="headline">COVERT {version}</Text>
             <Text variant="footnote" tone="secondary">
@@ -145,7 +148,17 @@ function Section({ title, children }: { title: string; children: ReactNode }) {
       <Text variant="eyebrow" tone="secondary" accessibilityRole="header">
         {title}
       </Text>
-      <View style={[styles.card, { borderColor: colors.border }]}>{children}</View>
+      <View
+        style={[styles.card, colors.increased && { borderWidth: 1, borderColor: colors.border }]}>
+        {Children.toArray(children).map((child, index) => (
+          <Fragment key={index}>
+            {index > 0 ? (
+              <View style={[styles.divider, { backgroundColor: colors.divider }]} />
+            ) : null}
+            {child}
+          </Fragment>
+        ))}
+      </View>
     </View>
   );
 }
@@ -155,11 +168,11 @@ const styles = StyleSheet.create({
   section: { gap: space.sm },
   card: {
     backgroundColor: palette.surface,
-    borderRadius: radius.md,
-    borderWidth: 1,
+    borderRadius: radius.xl,
     overflow: 'hidden',
   },
-  row: { paddingHorizontal: space.md, paddingVertical: space.md, gap: space.sm },
+  row: { paddingHorizontal: space.lg, paddingVertical: space.md, gap: space.sm },
+  divider: { height: StyleSheet.hairlineWidth * 2, marginHorizontal: space.lg },
   about: { flexDirection: 'row', alignItems: 'center', gap: space.md },
   aboutCopy: { flex: 1, gap: 2 },
 });

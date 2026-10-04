@@ -4,7 +4,7 @@ import { describe, expect, it } from 'vitest';
 import { createEventReader } from '@/lib/api/ndjson';
 import { FileRejectedError, assertSize, resolveMimeType } from '@/lib/files/validate';
 import { groupByMonth, shapeLabel } from '@/lib/format';
-import { isNumericLike, layoutColumns } from '@/lib/table-layout';
+import { fitColumns, isNumericLike, layoutColumns } from '@/lib/table-layout';
 
 describe('createEventReader', () => {
   it('returns complete events as they arrive', () => {
@@ -12,9 +12,9 @@ describe('createEventReader', () => {
     expect(read('{"type":"stage","stage":"reading"}\n{"type":"sta')).toEqual([
       { type: 'stage', stage: 'reading' },
     ]);
-    expect(read('{"type":"stage","stage":"reading"}\n{"type":"stage","stage":"structuring"}\n')).toEqual([
-      { type: 'stage', stage: 'structuring' },
-    ]);
+    expect(
+      read('{"type":"stage","stage":"reading"}\n{"type":"stage","stage":"structuring"}\n'),
+    ).toEqual([{ type: 'stage', stage: 'structuring' }]);
   });
 
   it('reads a final line without a trailing newline', () => {
@@ -94,6 +94,20 @@ describe('table layout', () => {
     expect(layoutColumns(table).map((column) => column.numeric)).toEqual([false, true]);
   });
 
+  it('fills the available width exactly when the table is narrow', () => {
+    const fitted = fitColumns(
+      [
+        { width: 120, numeric: false },
+        { width: 100, numeric: true },
+      ],
+      331,
+    );
+    expect(fitted.reduce((sum, column) => sum + column.width, 0)).toBe(331);
+    expect(fitted[1]!.numeric).toBe(true);
+    const wide = [{ width: 400, numeric: false }];
+    expect(fitColumns(wide, 331)).toBe(wide);
+  });
+
   it('widens columns with the system text size', () => {
     const normal = layoutColumns(table, 1);
     const large = layoutColumns(table, 1.5);
@@ -108,7 +122,7 @@ describe('format', () => {
       '12 rows · 5 columns',
     );
     expect(shapeLabel({ tableCount: 2, rowCount: 1, columnCount: 1, uncertainCount: 0 })).toBe(
-      '1 row · 1 column · 2 tables',
+      '1 row · 1 column',
     );
   });
 
