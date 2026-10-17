@@ -23,7 +23,10 @@ const DOCUMENT_ROUTE = `${API_PATHS.documents}/:id`;
 const CELLS_ROUTE = `${DOCUMENT_ROUTE}/cells`;
 
 const IdParams = z.object({ id: z.string().min(1) });
-const ListQuery = z.object({ limit: z.coerce.number().int().min(1).max(100).default(50) });
+const ListQuery = z.object({
+  limit: z.coerce.number().int().min(1).max(100).default(50),
+  cursor: z.string().min(1).max(512).optional(),
+});
 
 export const documentRoutes: FastifyPluginAsync<{
   deps: AppDeps;
@@ -33,8 +36,8 @@ export const documentRoutes: FastifyPluginAsync<{
   app.addHook('onRequest', requireUser(deps.verifyToken));
 
   app.get(API_PATHS.documents, async (request) => {
-    const { limit } = parse(ListQuery, request.query);
-    return { documents: await deps.documents.list(currentUid(request), limit) };
+    const { limit, cursor } = parse(ListQuery, request.query);
+    return deps.documents.list(currentUid(request), limit, cursor);
   });
 
   app.get(DOCUMENT_ROUTE, async (request) => {

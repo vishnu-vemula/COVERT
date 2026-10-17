@@ -3,16 +3,23 @@ import {
   DocumentListItemSchema,
   DocumentListResponseSchema,
   DocumentResponseSchema,
+  type DocumentListItem,
   type UpdateCellRequest,
 } from '@covert/shared';
 import { z } from 'zod';
 
 import { jsonBody, request } from './client';
 
-export function listDocuments(limit = 100) {
-  return request(`${API_PATHS.documents}?limit=${limit}`, DocumentListResponseSchema).then(
-    (response) => response.documents,
-  );
+export async function listDocuments(limit = 100): Promise<DocumentListItem[]> {
+  const documents = new Map<string, DocumentListItem>();
+  let cursor: string | undefined;
+  do {
+    const query = `limit=${limit}${cursor ? `&cursor=${encodeURIComponent(cursor)}` : ''}`;
+    const page = await request(`${API_PATHS.documents}?${query}`, DocumentListResponseSchema);
+    for (const document of page.documents) documents.set(document.id, document);
+    cursor = page.nextCursor;
+  } while (cursor);
+  return [...documents.values()];
 }
 
 export function getDocument(id: string) {

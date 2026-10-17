@@ -1,6 +1,7 @@
 import type {
   CovertDocument,
   DocumentListItem,
+  DocumentListResponse,
   MimeType,
   Table,
   UpdateCellRequest,
@@ -25,7 +26,7 @@ export type CellTarget = Omit<UpdateCellRequest, 'value'>;
  */
 export interface DocumentRepository {
   create(input: NewDocument): Promise<CovertDocument>;
-  list(ownerUid: string, limit: number): Promise<DocumentListItem[]>;
+  list(ownerUid: string, limit: number, cursor?: string): Promise<DocumentListResponse>;
   get(ownerUid: string, id: string): Promise<CovertDocument | null>;
   rename(ownerUid: string, id: string, title: string): Promise<DocumentListItem | null>;
   /** `null` when the document is missing or not owned; `'no-cell'` when the cell is unknown. */

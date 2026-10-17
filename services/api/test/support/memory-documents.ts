@@ -3,6 +3,7 @@ import {
   updateCellValue,
   type CovertDocument,
   type DocumentListItem,
+  type DocumentListResponse,
 } from '@covert/shared';
 
 import {
@@ -11,6 +12,7 @@ import {
   type DocumentRepository,
   type NewDocument,
 } from '../../src/documents/repository';
+import { decodeCursor, encodeCursor } from '../../src/documents/cursor';
 
 type Stored = CovertDocument & { ownerUid: string };
 
@@ -41,13 +43,21 @@ export class MemoryDocuments implements DocumentRepository {
     return strip(record);
   }
 
-  async list(ownerUid: string, limit: number): Promise<DocumentListItem[]> {
+  async list(ownerUid: string, limit: number, cursor?: string): Promise<DocumentListResponse> {
     this.check();
-    return [...this.records.values()]
+    const after = cursor ? decodeCursor(cursor) : undefined;
+    const afterTime = after ? after.seconds * 1000 + after.nanoseconds / 1_000_000 : 0;
+    const records = [...this.records.values()]
       .filter((record) => isOwnedBy(record, ownerUid))
-      .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
-      .slice(0, limit)
-      .map(({ id, title, fileType, pageCount, stats, createdAt, updatedAt }) => ({
+      .filter((record) => {
+        if (!after) return true;
+        const time = Date.parse(record.createdAt);
+        return time < afterTime || (time === afterTime && record.id < after.id);
+      })
+      .sort((a, b) => b.createdAt.localeCompare(a.createdAt) || (a.id < b.id ? 1 : -1));
+    const page = records.slice(0, limit);
+    const documents = page.map(
+      ({ id, title, fileType, pageCount, stats, createdAt, updatedAt }) => ({
         id,
         title,
         fileType,
@@ -55,7 +65,19 @@ export class MemoryDocuments implements DocumentRepository {
         stats,
         createdAt,
         updatedAt,
-      }));
+      }),
+    );
+    const last = page.at(-1);
+    if (records.length <= limit || !last) return { documents };
+    const millis = Date.parse(last.createdAt);
+    return {
+      documents,
+      nextCursor: encodeCursor({
+        id: last.id,
+        seconds: Math.floor(millis / 1000),
+        nanoseconds: (millis % 1000) * 1_000_000,
+      }),
+    };
   }
 
   async get(ownerUid: string, id: string): Promise<CovertDocument | null> {

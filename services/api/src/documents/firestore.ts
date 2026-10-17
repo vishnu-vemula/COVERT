@@ -5,13 +5,15 @@ import {
   updateCellValue,
   type CovertDocument,
   type DocumentListItem,
+  type DocumentListResponse,
   type DocumentStats,
   type MimeType,
   type Table,
 } from '@covert/shared';
-import { Timestamp, type DocumentData, type Firestore } from 'firebase-admin/firestore';
+import { FieldPath, Timestamp, type DocumentData, type Firestore } from 'firebase-admin/firestore';
 
 import { AppError, isAppError } from '../errors';
+import { decodeCursor, encodeCursor } from './cursor';
 import {
   isOwnedBy,
   isValidDocumentId,
@@ -69,18 +71,37 @@ export class FirestoreDocuments implements DocumentRepository {
     });
   }
 
-  list(ownerUid: string, limit: number): Promise<DocumentListItem[]> {
+  list(ownerUid: string, limit: number, cursor?: string): Promise<DocumentListResponse> {
     return guard(async () => {
-      const snapshot = await this.collection
+      let query = this.collection
         .where('ownerUid', '==', ownerUid)
         .orderBy('createdAt', 'desc')
-        .limit(limit)
+        .orderBy(FieldPath.documentId(), 'desc');
+      if (cursor) {
+        const after = decodeCursor(cursor);
+        query = query.startAfter(new Timestamp(after.seconds, after.nanoseconds), after.id);
+      }
+      const snapshot = await query
+        .limit(limit + 1)
         .select(...LIST_FIELDS)
         .get();
-      return snapshot.docs
+      const page = snapshot.docs.slice(0, limit);
+      const documents = page
         .filter((doc) => isOwnedBy(doc.data(), ownerUid))
         .map((doc) => toListItem(doc.id, doc.data()))
         .filter((item): item is DocumentListItem => item !== null);
+      const last = page.at(-1);
+      if (snapshot.size <= limit || !last) return { documents };
+      const createdAt = last.data().createdAt;
+      if (!(createdAt instanceof Timestamp)) throw new AppError('STORAGE_FAILED');
+      return {
+        documents,
+        nextCursor: encodeCursor({
+          id: last.id,
+          seconds: createdAt.seconds,
+          nanoseconds: createdAt.nanoseconds,
+        }),
+      };
     });
   }
 

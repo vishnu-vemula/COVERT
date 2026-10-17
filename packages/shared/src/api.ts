@@ -34,6 +34,8 @@ export type ProcessEvent = z.infer<typeof ProcessEventSchema>;
 
 export const DocumentListResponseSchema = z.object({
   documents: z.array(DocumentListItemSchema),
+  /** Opaque continuation token; omitted on the final page. */
+  nextCursor: z.string().min(1).optional(),
 });
 export type DocumentListResponse = z.infer<typeof DocumentListResponseSchema>;
 
