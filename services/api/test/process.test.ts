@@ -188,7 +188,7 @@ describe('POST /v1/documents', () => {
     harness.documents.failWith = new Error('DEADLINE_EXCEEDED firestore.googleapis.com');
     const response = await upload(harness, [{ buffer: JPEG_BYTES }]);
     const last = parseEvents(response.body).at(-1);
-    expect(last).toMatchObject({ type: 'error', error: { code: 'INTERNAL' } });
+    expect(last).toMatchObject({ type: 'error', error: { code: 'STORAGE_FAILED' } });
     expect(response.body).not.toContain('firestore');
   });
 
@@ -204,6 +204,42 @@ describe('POST /v1/documents', () => {
       type: 'ready',
       document: { warnings: ['Only the first 1 of 40 pages were read.'] },
     });
+  });
+
+  it('does not mistake page markers for readable content', async () => {
+    harness = await createHarness({
+      ocr: new FakeOcr({
+        pages: [
+          { pageNumber: 1, text: '. |' },
+          { pageNumber: 2, text: '~ —' },
+        ],
+        totalPages: 2,
+      }),
+    });
+    const response = await upload(harness, [{ buffer: PDF_BYTES }]);
+    expect(parseEvents(response.body).at(-1)).toMatchObject({
+      type: 'error',
+      error: { code: 'NO_TEXT_FOUND' },
+    });
+    expect(harness.completions.count).toBe(0);
+  });
+
+  it('warns separately when original text is too long to retain in full', async () => {
+    harness = await createHarness({
+      ocr: new FakeOcr(ocrOf(loadOcrText('clean-invoice') + ' padding'.repeat(15_000))),
+    });
+    const response = await upload(harness, [{ buffer: JPEG_BYTES }]);
+    const ready = parseEvents(response.body).at(-1);
+    expect(ready).toMatchObject({
+      type: 'ready',
+      document: {
+        warnings: [
+          'This document is long; only its first part was organized.',
+          'The original text is long; only its first part was saved.',
+        ],
+      },
+    });
+    if (ready?.type === 'ready') expect(ready.document.ocrText).toHaveLength(100_000);
   });
 
   it('limits conversions per user', async () => {

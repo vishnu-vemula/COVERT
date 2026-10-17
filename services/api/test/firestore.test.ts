@@ -1,8 +1,12 @@
 import { FieldPath, Timestamp, type Firestore } from 'firebase-admin/firestore';
+import { computeStats, LIMITS } from '@covert/shared';
 import { describe, expect, it, vi } from 'vitest';
 
 import { FirestoreDocuments } from '../src/documents/firestore';
 import { decodeCursor, encodeCursor } from '../src/documents/cursor';
+import { estimateRecordBytes, MAX_RECORD_BYTES } from '../src/documents/repository';
+import { transformExtraction } from '../src/extraction/transform';
+import { loadExtraction } from './support/fixtures';
 
 function deletionHarness(count: number, failId?: string) {
   const records = new Map(
@@ -104,5 +108,46 @@ describe('Firestore history pagination', () => {
       }),
     );
     expect(query.startAfter).toHaveBeenCalledWith(createdAt, 'deleted');
+  });
+});
+
+describe('Firestore write size limits', () => {
+  it('refuses an edit that would overflow storage before writing it', async () => {
+    const result = transformExtraction(loadExtraction('simple-list'));
+    const record = {
+      ...result,
+      ownerUid: 'alice',
+      fileType: 'image/jpeg',
+      pageCount: 1,
+      stats: computeStats(result.tables),
+      ocrText: '',
+      createdAt: Timestamp.now(),
+      updatedAt: Timestamp.now(),
+    };
+    record.ocrText = 'x'.repeat(MAX_RECORD_BYTES - estimateRecordBytes(record) - 100);
+    const update = vi.fn();
+    const tx = {
+      get: async () => ({ exists: true, data: () => record }),
+      update,
+    };
+    const repository = new FirestoreDocuments({
+      collection: () => ({ doc: () => ({ id: 'document' }) }),
+      runTransaction: async (operation: (transaction: typeof tx) => Promise<unknown>) =>
+        operation(tx),
+    } as unknown as Firestore);
+    await expect(
+      repository.updateCell(
+        'alice',
+        'document',
+        {
+          tableId: 't1',
+          rowId: 'r1',
+          columnId: 'c1',
+        },
+        'y'.repeat(LIMITS.maxCellLength),
+      ),
+    ).rejects.toMatchObject({ code: 'DOCUMENT_TOO_LARGE' });
+    expect(update).not.toHaveBeenCalled();
+    expect(record.tables[0]!.rows[0]!.cells[0]!.value).toBe('Basmati rice');
   });
 });

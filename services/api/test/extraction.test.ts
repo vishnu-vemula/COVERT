@@ -1,10 +1,11 @@
 import { describe, expect, it } from 'vitest';
+import { LIMITS } from '@covert/shared';
 import { zodTextFormat } from 'openai/helpers/zod';
 
 import { createExtractor, ExtractionError } from '../src/extraction/extractor';
 import { ExtractionSchema, type Extraction } from '../src/extraction/schema';
 import { transformExtraction } from '../src/extraction/transform';
-import { FIXTURE_NAMES, loadExtraction, loadRawExtraction } from './support/fixtures';
+import { FIXTURE_NAMES, loadExtraction, loadOcrText, loadRawExtraction } from './support/fixtures';
 
 /** Every non-blank value the model produced, per table. */
 function sourceValues(extraction: Extraction): string[][] {
@@ -63,6 +64,53 @@ describe('structured response validation', () => {
 });
 
 describe('transformExtraction', () => {
+  it('checks unsupported values independently of the model’s uncertainty flag', () => {
+    const extraction = loadExtraction('clean-invoice');
+    extraction.tables[0]!.rows[0]!.cells[1]!.value = 'INVENTED-INVOICE-999';
+    const result = transformExtraction(extraction, loadOcrText('clean-invoice'));
+    expect(result.tables[0]!.rows[0]!.cells[1]).toMatchObject({
+      value: 'INVENTED-INVOICE-999',
+      uncertain: true,
+    });
+    expect(result.warnings.some((warning) => warning.includes('verified'))).toBe(true);
+  });
+
+  it('does not flag exact source values or harmless spacing normalization', () => {
+    const source = loadOcrText('clean-invoice').replace('₹2,737.60', '₹2 ,737.60');
+    const result = transformExtraction(loadExtraction('clean-invoice'), source);
+    expect(
+      result.tables
+        .flatMap((table) => table.rows.flatMap((row) => row.cells))
+        .every((cell) => !cell.uncertain),
+    ).toBe(true);
+  });
+
+  it('flags substantive OCR corrections even if the model marked them certain', () => {
+    const extraction = loadExtraction('messy-receipt');
+    extraction.tables[0]!.rows[1]!.cells[1]!.uncertain = false;
+    const result = transformExtraction(extraction, loadOcrText('messy-receipt'));
+    expect(result.tables[0]!.rows[1]!.cells[1]!.uncertain).toBe(true);
+  });
+
+  it('rejects oversized values rather than silently cutting off data', () => {
+    const extraction = loadExtraction('simple-list');
+    extraction.tables[0]!.rows[0]!.cells[0]!.value = 'x'.repeat(LIMITS.maxCellLength + 1);
+    expect(() => transformExtraction(extraction)).toThrow(
+      expect.objectContaining({ code: 'DOCUMENT_TOO_LARGE' }),
+    );
+  });
+
+  it('keeps long column labels and OCR evidence intact', () => {
+    const extraction = loadExtraction('simple-list');
+    const label = 'A long original column header '.repeat(5).trim();
+    const evidence = 'Original evidence '.repeat(200).trim();
+    extraction.tables[0]!.columns[0]!.label = label;
+    extraction.tables[0]!.rows[0]!.cells[0]!.sourceText = evidence;
+    const table = transformExtraction(extraction).tables[0]!;
+    expect(table.columns[0]!.label).toBe(label);
+    expect(table.rows[0]!.cells[0]!.sourceText).toBe(evidence);
+  });
+
   it.each(FIXTURE_NAMES)('keeps every record and value from %s', (name) => {
     const extraction = loadExtraction(name);
     const result = transformExtraction(extraction);

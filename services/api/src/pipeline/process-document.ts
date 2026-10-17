@@ -1,14 +1,13 @@
 import type { CovertDocument, ProcessingStage } from '@covert/shared';
 
-import { AppError } from '../errors';
+import { AppError, isAppError } from '../errors';
 import { ExtractionError, type Extractor } from '../extraction/extractor';
 import { transformExtraction } from '../extraction/transform';
 import { hasMeaningfulText, prepareOcrText } from '../ocr/text';
 import { OcrError, type OcrProvider } from '../ocr/types';
 import type { ValidatedUpload } from '../upload/file-type';
 import {
-  estimateRecordBytes,
-  MAX_RECORD_BYTES,
+  assertRecordFits,
   type DocumentRepository,
   type NewDocument,
 } from '../documents/repository';
@@ -55,7 +54,9 @@ export async function processDocument(
   const ocrMs = Date.now() - ocrStarted;
 
   const text = prepareOcrText(ocr);
-  if (!hasMeaningfulText(text.displayText)) throw new AppError('NO_TEXT_FOUND');
+  // Page markers are presentation metadata, not evidence that OCR found text.
+  if (!hasMeaningfulText(ocr.pages.map((page) => page.text).join('\n')))
+    throw new AppError('NO_TEXT_FOUND');
   throwIfAborted(signal);
 
   onStage('structuring');
@@ -72,7 +73,7 @@ export async function processDocument(
   throwIfAborted(signal);
 
   onStage('checking');
-  const result = transformExtraction(extraction);
+  const result = transformExtraction(extraction, text.modelText);
   if (result.tables.length === 0) throw new AppError('NO_TABLE_FOUND');
 
   const warnings = [...result.warnings];
@@ -81,6 +82,8 @@ export async function processDocument(
     warnings.push(`Only the first ${readPages} of ${ocr.totalPages} pages were read.`);
   }
   if (text.truncated) warnings.push('This document is long; only its first part was organized.');
+  if (text.displayText.length > MAX_STORED_OCR_CHARS)
+    warnings.push('The original text is long; only its first part was saved.');
 
   const record: NewDocument = {
     ownerUid,
@@ -92,9 +95,12 @@ export async function processDocument(
     tables: result.tables,
     ocrText: text.displayText.slice(0, MAX_STORED_OCR_CHARS),
   };
-  if (estimateRecordBytes(record) > MAX_RECORD_BYTES) throw new AppError('DOCUMENT_TOO_LARGE');
+  assertRecordFits(record);
 
-  const document = await deps.documents.create(record);
+  const document = await deps.documents.create(record).catch((error: unknown) => {
+    if (isAppError(error)) throw error;
+    throw new AppError('STORAGE_FAILED', { cause: error });
+  });
   return {
     document,
     metrics: {

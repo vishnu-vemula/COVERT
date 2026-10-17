@@ -7,6 +7,8 @@ import type {
   UpdateCellRequest,
 } from '@covert/shared';
 
+import { AppError } from '../errors';
+
 export interface NewDocument {
   ownerUid: string;
   title: string;
@@ -57,6 +59,10 @@ export function isValidDocumentId(id: string): boolean {
 /** Firestore documents are capped at 1 MiB; stay comfortably below it. */
 export const MAX_RECORD_BYTES = 900_000;
 
-export function estimateRecordBytes(input: NewDocument): number {
+export function estimateRecordBytes(input: unknown): number {
   return Buffer.byteLength(JSON.stringify(input), 'utf8');
+}
+
+export function assertRecordFits(input: unknown): void {
+  if (estimateRecordBytes(input) > MAX_RECORD_BYTES) throw new AppError('DOCUMENT_TOO_LARGE');
 }

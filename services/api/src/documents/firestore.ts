@@ -15,6 +15,7 @@ import { FieldPath, Timestamp, type DocumentData, type Firestore } from 'firebas
 import { AppError, isAppError } from '../errors';
 import { decodeCursor, encodeCursor } from './cursor';
 import {
+  assertRecordFits,
   isOwnedBy,
   isValidDocumentId,
   type CellTarget,
@@ -66,6 +67,7 @@ export class FirestoreDocuments implements DocumentRepository {
         createdAt: now,
         updatedAt: now,
       };
+      assertRecordFits(record);
       await ref.set(record);
       return toDocument(ref.id, record);
     });
@@ -124,6 +126,7 @@ export class FirestoreDocuments implements DocumentRepository {
         const data = snapshot.data();
         if (!snapshot.exists || !isOwnedBy(data, ownerUid)) return null;
         const updatedAt = Timestamp.now();
+        assertRecordFits({ ...data, title, updatedAt });
         tx.update(ref, { title, updatedAt });
         return toListItem(id, { ...data, title, updatedAt });
       }),
@@ -141,7 +144,9 @@ export class FirestoreDocuments implements DocumentRepository {
         const tables = updateCellValue(data.tables, target, value);
         if (!tables) return 'no-cell' as const;
         const updatedAt = Timestamp.now();
-        tx.update(ref, { tables, stats: computeStats(tables), updatedAt });
+        const stats = computeStats(tables);
+        assertRecordFits({ ...data, tables, stats, updatedAt });
+        tx.update(ref, { tables, stats, updatedAt });
         return { updatedAt: updatedAt.toDate().toISOString() };
       }),
     );

@@ -1,5 +1,6 @@
 import { LIMITS, type Cell, type Column, type Row, type Table } from '@covert/shared';
 
+import { AppError } from '../errors';
 import type { ExtractedCell, ExtractedTable, Extraction } from './schema';
 
 export interface StructuredResult {
@@ -20,13 +21,35 @@ const MAX_WARNINGS = 8;
  * already-filled column are kept in an "Other" column and marked uncertain.
  * Only rows without any value are removed.
  */
-export function transformExtraction(extraction: Extraction): StructuredResult {
+export function transformExtraction(extraction: Extraction, ocrText?: string): StructuredResult {
   const warnings: string[] = [];
   const tables: Table[] = [];
 
   for (const source of extraction.tables) {
     const table = toTable(source, tables.length + 1, warnings);
     if (table) tables.push(table);
+  }
+
+  if (ocrText !== undefined) {
+    const source = comparable(ocrText);
+    let flagged = false;
+    for (const table of tables) {
+      for (const row of table.rows) {
+        for (const cell of row.cells) {
+          if (!cell.value) continue;
+          const value = comparable(cell.value);
+          const corrected = cell.sourceText !== undefined && comparable(cell.sourceText) !== value;
+          if (corrected || !source.includes(value)) {
+            cell.uncertain = true;
+            flagged = true;
+          }
+        }
+      }
+    }
+    if (flagged)
+      warnings.push(
+        'Some values could not be verified against the recognized text. Review the flagged cells.',
+      );
   }
 
   const title = clean(extraction.title, LIMITS.maxTitleLength) || 'Untitled document';
@@ -52,7 +75,7 @@ function toTable(source: ExtractedTable, tableNumber: number, warnings: string[]
   const idsBySource = new Map<string, string[]>();
   declared.forEach((column, index) => {
     const id = `c${index + 1}`;
-    columns.push({ id, label: clean(column.label, 80) || `Column ${index + 1}` });
+    columns.push({ id, label: clean(column.label) || `Column ${index + 1}` });
     const key = column.id.trim();
     idsBySource.set(key, [...(idsBySource.get(key) ?? []), id]);
   });
@@ -79,7 +102,7 @@ function toTable(source: ExtractedTable, tableNumber: number, warnings: string[]
     const otherId = `c${columns.length + 1}`;
     columns.push({ id: otherId, label: OTHER_COLUMN_LABEL });
     for (const row of built) {
-      const value = row.leftovers.map((cell) => clean(cell.value)).join(' · ');
+      const value = checkedValue(row.leftovers.map((cell) => clean(cell.value)).join(' · '));
       row.cells.push(
         value
           ? { columnId: otherId, value, uncertain: true }
@@ -103,7 +126,7 @@ function toTable(source: ExtractedTable, tableNumber: number, warnings: string[]
 }
 
 function toCell(columnId: string, source: ExtractedCell): Cell {
-  const value = clean(source.value);
+  const value = checkedValue(clean(source.value));
   const sourceText = source.sourceText === null ? '' : clean(source.sourceText);
   const cell: Cell = { columnId, value, uncertain: source.uncertain };
   if (sourceText && sourceText !== value) cell.sourceText = sourceText;
@@ -121,8 +144,19 @@ function uniqueColumnIds(table: ExtractedTable): string[] {
   return ids;
 }
 
-function clean(value: string, max: number = LIMITS.maxCellLength): string {
+function clean(value: string, max: number = Infinity): string {
   return value.replace(/\r\n?/g, '\n').trim().slice(0, max);
+}
+
+/** Fail explicitly instead of saving a value that has silently lost its ending. */
+function checkedValue(value: string): string {
+  if (value.length > LIMITS.maxCellLength) throw new AppError('DOCUMENT_TOO_LARGE');
+  return value;
+}
+
+/** Only whitespace normalization is allowed when matching a value to OCR. */
+function comparable(value: string): string {
+  return value.replace(/\s+/gu, '');
 }
 
 function humanize(id: string): string {
