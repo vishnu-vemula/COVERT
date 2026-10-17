@@ -13,7 +13,9 @@ export function toCsv(table: Table): string {
 /** Tab-separated text for pasting into spreadsheets and notes. */
 export function toTsv(table: Table): string {
   return toMatrix(table)
-    .map((record) => record.map((value) => value.replace(/[\t\r\n]+/g, ' ').trim()).join('\t'))
+    .map((record) =>
+      record.map((value) => neutralizeFormula(value.replace(/[\t\r\n]+/g, ' ').trim())).join('\t'),
+    )
     .join('\n');
 }
 
@@ -27,8 +29,9 @@ export function escapeCsvField(raw: string): string {
  * with an apostrophe unless the value is plainly a number such as "-42.50".
  */
 function neutralizeFormula(value: string): string {
-  if (!/^[=+\-@\t\r]/.test(value)) return value;
-  if (/^[+-]?[\d\s.,]+%?$/.test(value)) return value;
+  const content = value.trimStart();
+  if (!/^[=+\-@]/.test(content) && !/^[\t\r\n]/.test(value)) return value;
+  if (/^[+-]?[\d\s.,]+%?$/.test(content)) return value;
   return `'${value}`;
 }
 

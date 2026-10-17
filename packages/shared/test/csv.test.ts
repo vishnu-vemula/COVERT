@@ -41,6 +41,15 @@ describe('escapeCsvField', () => {
     expect(escapeCsvField('+1 000')).toBe('+1 000');
     expect(escapeCsvField('-12%')).toBe('-12%');
   });
+
+  it.each([' =HYPERLINK("https://example.com")', '\n=1+1', '\t@SUM(A1:A2)', '\uFEFF+cmd'])(
+    'neutralizes formulas hidden behind whitespace: %j',
+    (value) => {
+      expect(escapeCsvField(value).startsWith("'") || escapeCsvField(value).startsWith('"\'')).toBe(
+        true,
+      );
+    },
+  );
 });
 
 describe('toCsv', () => {
@@ -77,6 +86,14 @@ describe('toCsv', () => {
 describe('toTsv', () => {
   it('flattens tabs and line breaks inside values', () => {
     expect(toTsv(table([['A\tB', 'one\ntwo', '3']]))).toBe('Item\tNote\tAmount\nA B\tone two\t3');
+  });
+
+  it('protects copied cells and headers as well as CSV exports', () => {
+    const value = table(
+      [[' =1+1', '@SUM(A1:A2)', '-42.50']],
+      ['=HYPERLINK("url")', 'Note', 'Amount'],
+    );
+    expect(toTsv(value)).toBe("'=HYPERLINK(\"url\")\tNote\tAmount\n'=1+1\t'@SUM(A1:A2)\t-42.50");
   });
 });
 
