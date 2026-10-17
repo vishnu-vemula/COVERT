@@ -141,11 +141,25 @@ export class FirestoreDocuments implements DocumentRepository {
 
   deleteAll(ownerUid: string): Promise<number> {
     return guard(async () => {
-      const snapshot = await this.collection.where('ownerUid', '==', ownerUid).select().get();
-      const writer = this.db.bulkWriter();
-      for (const doc of snapshot.docs) void writer.delete(doc.ref);
-      await writer.close();
-      return snapshot.size;
+      let deleted = 0;
+      while (true) {
+        const snapshot = await this.collection
+          .where('ownerUid', '==', ownerUid)
+          .limit(500)
+          .select()
+          .get();
+        if (snapshot.empty) return deleted;
+
+        const writer = this.db.bulkWriter();
+        // close() never rejects. Observe every operation before it can reject,
+        // and never tell the client history was cleared if a delete failed.
+        const pending = Promise.allSettled(snapshot.docs.map((doc) => writer.delete(doc.ref)));
+        await writer.close();
+        const results = await pending;
+        const failed = results.find((result) => result.status === 'rejected');
+        if (failed?.status === 'rejected') throw failed.reason;
+        deleted += snapshot.size;
+      }
     });
   }
 }

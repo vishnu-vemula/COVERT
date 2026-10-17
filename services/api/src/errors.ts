@@ -50,7 +50,6 @@ export function logFailure(log: FastifyBaseLogger, error: AppError): void {
       cause instanceof Error
         ? {
             name: cause.name,
-            message: cause.message,
             code: 'code' in cause ? cause.code : undefined,
             status: 'status' in cause ? cause.status : undefined,
           }

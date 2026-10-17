@@ -23,7 +23,7 @@ const EXPIRED_CODES = new Set([
 export function firebaseTokenVerifier(auth: Auth): TokenVerifier {
   return async (token) => {
     try {
-      const decoded = await auth.verifyIdToken(token);
+      const decoded = await auth.verifyIdToken(token, true);
       return { uid: decoded.uid };
     } catch (error) {
       const code = typeof error === 'object' && error && 'code' in error ? String(error.code) : '';

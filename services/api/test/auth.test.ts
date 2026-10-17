@@ -1,5 +1,5 @@
 import type { Auth } from 'firebase-admin/auth';
-import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 
 import { firebaseTokenVerifier, readBearerToken, TokenError } from '../src/auth/token-verifier';
 import { createHarness, type Harness } from './support/harness';
@@ -23,13 +23,16 @@ describe('firebaseTokenVerifier', () => {
     ({ verifyIdToken: behaviour }) as unknown as Auth;
 
   it('returns the uid from the verified token', async () => {
-    const verify = firebaseTokenVerifier(fakeAuth(async () => ({ uid: 'user-1' })));
+    const verifyIdToken = vi.fn(async () => ({ uid: 'user-1' }));
+    const verify = firebaseTokenVerifier(fakeAuth(verifyIdToken));
     await expect(verify('token')).resolves.toEqual({ uid: 'user-1' });
+    expect(verifyIdToken).toHaveBeenCalledWith('token', true);
   });
 
   it.each([
     ['auth/id-token-expired', 'expired'],
     ['auth/id-token-revoked', 'expired'],
+    ['auth/user-disabled', 'expired'],
     ['auth/argument-error', 'invalid'],
     ['auth/invalid-id-token', 'invalid'],
   ])('maps %s to %s', async (code, reason) => {
