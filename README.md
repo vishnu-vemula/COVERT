@@ -73,6 +73,8 @@ npm run build          # API bundle and website
 
 The API tests exercise the HTTP document journey with fixture OCR/model providers, ownership, pagination beyond 100 documents, cancellation, PDF page coverage and failed Firestore writes. Firestore adapter tests use controlled SDK doubles. These checks do not prove live cloud credentials, IAM, deployed indexes or real OCR/model quality; verify those against a configured staging project before release.
 
+The API dependency audit is clean. Its `gaxios` dependency uses a scoped `uuid` override to the CommonJS-compatible patched 11.x release. The whole-workspace audit on 17 October 2026 still reports 38 findings (26 high, 12 moderate) in the mobile/client dependency graph and website lint tooling. Its suggested automatic fixes include incompatible Expo/React Native downgrades; these require a separate SDK compatibility and native-build review before mobile release.
+
 History is returned in pages of up to 100 documents with an opaque `nextCursor`; pass it as `cursor` to fetch the next page. The mobile client follows these pages automatically. Cell values over 2,000 characters or records over the storage safety limit fail explicitly instead of being silently shortened. Unmatched values and substantive OCR corrections are flagged for review; matching text is a cross-check, not a guarantee of extraction accuracy.
 
 ## Deployment notes
