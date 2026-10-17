@@ -1,16 +1,21 @@
-/**
- * Outbound links. PLACEHOLDERS: no store listing or terms page has been
- * supplied yet. Replace those before publishing the site.
- */
+/** Missing release destinations render as unavailable instead of dead links. */
+function releaseUrl(value: string | undefined): string | null {
+  if (!value) return null;
+  try {
+    const url = new URL(value);
+    if (url.protocol === 'https:' && !url.username && !url.password) return url.toString();
+  } catch {
+    // A malformed release URL must never become a download link.
+  }
+  return null;
+}
+
 export const LINKS = {
   /** In-page anchor to the download section. */
   getApp: '#get-covert',
-  /** PLACEHOLDER — replace with the App Store listing. */
-  appStore: '#get-covert',
-  /** PLACEHOLDER — replace with the Google Play listing. */
-  googlePlay: '#get-covert',
-  /** PLACEHOLDER — replace with the published terms of service. */
-  terms: '#terms',
+  appStore: releaseUrl(process.env.NEXT_PUBLIC_APP_STORE_URL),
+  googlePlay: releaseUrl(process.env.NEXT_PUBLIC_GOOGLE_PLAY_URL),
+  terms: releaseUrl(process.env.NEXT_PUBLIC_TERMS_URL),
   /** The repository's own remote. */
   github: 'https://github.com/vishnu-vemula/COVERT',
   privacy: '#privacy',

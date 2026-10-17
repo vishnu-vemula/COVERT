@@ -18,7 +18,7 @@ const NAV = [
 
 const LEGAL = [
   { href: LINKS.privacy, label: 'Privacy' },
-  { href: LINKS.terms, label: 'Terms' },
+  ...(LINKS.terms ? [{ href: LINKS.terms, label: 'Terms' }] : []),
   { href: LINKS.github, label: 'GitHub' },
 ] as const;
 

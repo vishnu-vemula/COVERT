@@ -210,24 +210,34 @@ export function SiteNav() {
           </ul>
           <div className="mt-2 grid gap-2 sm:grid-cols-2">
             <a
-              href={LINKS.appStore}
-              onClick={() => setOpen(false)}
+              href={LINKS.appStore ?? undefined}
+              aria-disabled={!LINKS.appStore || undefined}
+              onClick={LINKS.appStore ? () => setOpen(false) : undefined}
               className="flex items-center justify-between rounded-[20px] bg-paper px-4 py-3 text-ink">
               <span>
                 <span className="block text-[12px] text-ink/60">For iPhone</span>
                 <span className="block text-[17px] font-semibold">App Store</span>
               </span>
-              <ArrowUpRight className="size-4" />
+              {LINKS.appStore ? (
+                <ArrowUpRight className="size-4" />
+              ) : (
+                <span className="text-[12px]">Coming soon</span>
+              )}
             </a>
             <a
-              href={LINKS.googlePlay}
-              onClick={() => setOpen(false)}
+              href={LINKS.googlePlay ?? undefined}
+              aria-disabled={!LINKS.googlePlay || undefined}
+              onClick={LINKS.googlePlay ? () => setOpen(false) : undefined}
               className="flex items-center justify-between rounded-[20px] bg-cobalt px-4 py-3 text-white">
               <span>
                 <span className="block text-[12px] text-white/70">For Android</span>
                 <span className="block text-[17px] font-semibold">Google Play</span>
               </span>
-              <ArrowUpRight className="size-4" />
+              {LINKS.googlePlay ? (
+                <ArrowUpRight className="size-4" />
+              ) : (
+                <span className="text-[12px]">Coming soon</span>
+              )}
             </a>
           </div>
           <p className="px-4 pb-2 pt-4 text-[13px] text-fog">

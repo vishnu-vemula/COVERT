@@ -35,13 +35,13 @@ firebase/         Firestore security rules and indexes (deployed with firebase.j
 | `EXPO_PUBLIC_FIREBASE_API_KEY`, `_AUTH_DOMAIN`, `_PROJECT_ID`, `_APP_ID`, `_MESSAGING_SENDER_ID` | Firebase web app config |
 | `EXPO_PUBLIC_FIREBASE_AUTH_EMULATOR_HOST` | Optional, use the Auth emulator |
 
-**Website** — `NEXT_PUBLIC_SITE_URL`, the production URL used for the canonical link, sitemap, robots.txt and social images (on Vercel it falls back to the production domain). Store, terms and repository links are placeholders in `apps/web/src/lib/links.ts`.
+**Website** — `NEXT_PUBLIC_SITE_URL`, the production URL used for the canonical link, sitemap, robots.txt and social images (on Vercel it falls back to the production domain). Set `NEXT_PUBLIC_APP_STORE_URL`, `NEXT_PUBLIC_GOOGLE_PLAY_URL` and `NEXT_PUBLIC_TERMS_URL` to the published HTTPS destinations at build time. Unconfigured stores show “Coming soon”; the Terms link appears once configured. The GitHub link points to this repository.
 
 ## Local setup
 
 1. Node 22.12+. Run `npm install` at the repository root.
 2. In Firebase: create a project, enable **Email/Password** sign-in, create a **Firestore** database, register a **Web app** for the mobile config.
-3. In Google Cloud (same project): enable the **Cloud Vision API** and create a service account with *Cloud Datastore User* and *Cloud Vision* access for local development.
+3. In Google Cloud (same project): enable the **Cloud Vision API** and create a service account with *Cloud Datastore User*, *Cloud Vision* access and permission to look up Firebase Auth users for revoked-session and disabled-account checks.
 4. Deploy the Firestore rules and index: `npx firebase-tools deploy --only firestore --project <id>`.
 5. Copy `services/api/.env.example` and `apps/mobile/.env.example` to `.env` and fill them in. On a physical phone, `EXPO_PUBLIC_API_URL` must be your computer's LAN address.
 
@@ -71,9 +71,13 @@ npm run lint
 npm run build          # API bundle and website
 ```
 
+The API tests exercise the HTTP document journey with fixture OCR/model providers, ownership, pagination beyond 100 documents, cancellation, PDF page coverage and failed Firestore writes. Firestore adapter tests use controlled SDK doubles. These checks do not prove live cloud credentials, IAM, deployed indexes or real OCR/model quality; verify those against a configured staging project before release.
+
+History is returned in pages of up to 100 documents with an opaque `nextCursor`; pass it as `cursor` to fetch the next page. The mobile client follows these pages automatically. Cell values over 2,000 characters or records over the storage safety limit fail explicitly instead of being silently shortened. Unmatched values and substantive OCR corrections are flagged for review; matching text is a cross-check, not a guarantee of extraction accuracy.
+
 ## Deployment notes
 
 - **API → Cloud Run.** Build from the repository root: `docker build -f services/api/Dockerfile .` (or `gcloud run deploy --source .` with that Dockerfile). Attach a service account with Firestore and Vision access, put `OPENAI_API_KEY` in Secret Manager, and set `FIREBASE_PROJECT_ID`. A request timeout of 300 s covers long PDFs. Rate limits are kept per instance.
 - **Firestore.** Deploy `firebase/firestore.rules` and `firebase/firestore.indexes.json` before first use; the index on `ownerUid` + `createdAt` powers History, and `tables`/`ocrText` are excluded from indexing.
-- **Website → Vercel** (or any Next.js host) with `apps/web` as the root directory. Replace the placeholder links first.
+- **Website → Vercel** (or any Next.js host) with `apps/web` as the root directory. Configure the production site URL and published store/terms URLs before the release build.
 - **Mobile → EAS Build.** Set the `EXPO_PUBLIC_*` variables as EAS environment variables and replace the placeholder bundle identifier `com.example.covert` in `app.json`.

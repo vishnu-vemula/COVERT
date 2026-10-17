@@ -121,21 +121,33 @@ export function FinalCta() {
         <ul className="grid gap-2 sm:grid-cols-2" aria-label="Download COVERT">
           {STORES.map((store) => (
             <li key={store.name}>
-              <a
-                href={store.href}
-                className="group flex items-center justify-between gap-4 rounded-[22px] bg-white px-5 py-4 text-ink transition-colors duration-300 hover:bg-paper">
-                <span>
-                  <span className="block text-[13px] text-ink/60">{store.device}</span>
-                  <span className="block text-[20px] font-semibold tracking-[-0.02em]">
-                    {store.name}
+              {store.href ? (
+                <a
+                  href={store.href}
+                  className="group flex items-center justify-between gap-4 rounded-[22px] bg-white px-5 py-4 text-ink transition-colors duration-300 hover:bg-paper">
+                  <span>
+                    <span className="block text-[13px] text-ink/60">{store.device}</span>
+                    <span className="block text-[20px] font-semibold tracking-[-0.02em]">
+                      {store.name}
+                    </span>
                   </span>
-                </span>
-                <span
-                  aria-hidden
-                  className="grid size-11 shrink-0 place-items-center rounded-full bg-cobalt text-white transition-transform duration-500 ease-out-expo group-hover:rotate-45">
-                  <ArrowUpRight className="size-5" />
-                </span>
-              </a>
+                  <span
+                    aria-hidden
+                    className="grid size-11 shrink-0 place-items-center rounded-full bg-cobalt text-white transition-transform duration-500 ease-out-expo group-hover:rotate-45">
+                    <ArrowUpRight className="size-5" />
+                  </span>
+                </a>
+              ) : (
+                <div className="flex h-full items-center justify-between gap-4 rounded-[22px] bg-white/10 px-5 py-4 text-white">
+                  <span>
+                    <span className="block text-[13px] text-white/65">{store.device}</span>
+                    <span className="block text-[20px] font-semibold tracking-[-0.02em]">
+                      {store.name}
+                    </span>
+                    <span className="mt-1 block text-[13px] text-white/75">Coming soon</span>
+                  </span>
+                </div>
+              )}
             </li>
           ))}
         </ul>
