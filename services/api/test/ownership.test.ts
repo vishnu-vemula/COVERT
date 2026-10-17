@@ -109,6 +109,7 @@ describe('document ownership over HTTP', () => {
     expect(await harness.documents.get('alice', aliceDoc)).not.toBeNull();
 
     const aliceList = await request('GET', '/v1/documents', 'alice');
+    expect(aliceList.headers['cache-control']).toBe('no-store');
     expect(aliceList.json().documents).toHaveLength(1);
     expect(aliceList.json().documents[0]).not.toHaveProperty('tables');
   });

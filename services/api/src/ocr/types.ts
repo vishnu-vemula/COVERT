@@ -18,7 +18,7 @@ export interface OcrResult {
 }
 
 export interface OcrProvider {
-  recognize(input: OcrInput): Promise<OcrResult>;
+  recognize(input: OcrInput, signal?: AbortSignal): Promise<OcrResult>;
 }
 
 export class OcrError extends Error {

@@ -41,11 +41,14 @@ export async function processDocument(
   onStage: (stage: ProcessingStage) => void,
   signal?: AbortSignal,
 ): Promise<{ document: CovertDocument; metrics: PipelineMetrics }> {
+  throwIfAborted(signal);
   onStage('reading');
+  throwIfAborted(signal);
   const ocrStarted = Date.now();
   const ocr = await deps.ocr
-    .recognize(upload.kind === 'pdf' ? { kind: 'pdf', pdf: upload.pdf } : upload)
+    .recognize(upload.kind === 'pdf' ? { kind: 'pdf', pdf: upload.pdf } : upload, signal)
     .catch((error: unknown) => {
+      throwIfAborted(signal);
       if (error instanceof OcrError && error.kind === 'corrupt') {
         throw new AppError('CORRUPT_FILE', { cause: error });
       }
@@ -60,10 +63,12 @@ export async function processDocument(
   throwIfAborted(signal);
 
   onStage('structuring');
+  throwIfAborted(signal);
   const structureStarted = Date.now();
   const extraction = await deps.extractor
     .extract(text.modelText, signal)
     .catch((error: unknown) => {
+      throwIfAborted(signal);
       throw new AppError('EXTRACTION_FAILED', {
         cause: error,
         detail: error instanceof ExtractionError ? `Extraction ${error.kind}` : undefined,
@@ -73,6 +78,7 @@ export async function processDocument(
   throwIfAborted(signal);
 
   onStage('checking');
+  throwIfAborted(signal);
   const result = transformExtraction(extraction, text.modelText);
   if (result.tables.length === 0) throw new AppError('NO_TABLE_FOUND');
 

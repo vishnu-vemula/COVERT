@@ -33,6 +33,9 @@ export const documentRoutes: FastifyPluginAsync<{
   limiter: ConversionLimiter;
 }> = async (app, { deps, limiter }) => {
   // Every route in this plugin requires a verified Firebase ID token.
+  app.addHook('onRequest', async (_request, reply) => {
+    reply.header('cache-control', 'no-store');
+  });
   app.addHook('onRequest', requireUser(deps.verifyToken));
 
   app.get(API_PATHS.documents, async (request) => {
@@ -82,11 +85,15 @@ export const documentRoutes: FastifyPluginAsync<{
     // From here the response is a stream of NDJSON events describing real progress.
     const stream = new PassThrough();
     const abort = new AbortController();
-    reply.raw.on('close', () => {
-      if (!reply.raw.writableFinished) abort.abort();
+    reply.raw.once('close', () => {
+      if (!reply.raw.writableFinished) {
+        abort.abort();
+        stream.destroy();
+      }
     });
     const send = (event: ProcessEvent) => {
-      if (!stream.writableEnded) stream.write(`${JSON.stringify(event)}\n`);
+      if (!abort.signal.aborted && !stream.destroyed && !stream.writableEnded)
+        stream.write(`${JSON.stringify(event)}\n`);
     };
 
     void processDocument(uid, upload, deps, (stage) => send({ type: 'stage', stage }), abort.signal)

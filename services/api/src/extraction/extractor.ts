@@ -28,6 +28,7 @@ export function createExtractor(complete: StructuredCompletion): Extractor {
     async extract(ocrText, signal) {
       let lastIssue: unknown;
       for (let attempt = 1; attempt <= 2; attempt += 1) {
+        signal?.throwIfAborted();
         const output = await complete(ocrText, signal);
         const parsed = ExtractionSchema.safeParse(output);
         if (parsed.success) return parsed.data;

@@ -26,12 +26,14 @@ interface VisionImageResponse {
 export class GoogleVisionOcr implements OcrProvider {
   constructor(private readonly client: ImageAnnotatorClient = new ImageAnnotatorClient()) {}
 
-  async recognize(input: OcrInput): Promise<OcrResult> {
+  async recognize(input: OcrInput, signal?: AbortSignal): Promise<OcrResult> {
     try {
+      signal?.throwIfAborted();
       return input.kind === 'pdf'
-        ? await this.readPdf(input.pdf)
-        : await this.readImages(input.images);
+        ? await this.readPdf(input.pdf, signal)
+        : await this.readImages(input.images, signal);
     } catch (error) {
+      if (signal?.aborted) throw error;
       if (error instanceof OcrError) throw error;
       throw new OcrError(statusCode(error) === INVALID_ARGUMENT ? 'corrupt' : 'failed', {
         cause: error,
@@ -39,14 +41,16 @@ export class GoogleVisionOcr implements OcrProvider {
     }
   }
 
-  private async readImages(images: Buffer[]): Promise<OcrResult> {
+  private async readImages(images: Buffer[], signal?: AbortSignal): Promise<OcrResult> {
     const pages: OcrPage[] = [];
     // Sequential keeps memory flat and stays well inside per-user quotas.
     for (const [index, content] of images.entries()) {
+      signal?.throwIfAborted();
       const [batch] = await this.client.batchAnnotateImages(
         { requests: [{ image: { content }, features: FEATURES }] },
         CALL_OPTIONS,
       );
+      signal?.throwIfAborted();
       const response = batch.responses?.[0];
       if (!response) throw new OcrError('failed');
       pages.push({ pageNumber: index + 1, text: readResponse(response) });
@@ -54,15 +58,18 @@ export class GoogleVisionOcr implements OcrProvider {
     return { pages, totalPages: images.length };
   }
 
-  private async readPdf(pdf: Buffer): Promise<OcrResult> {
+  private async readPdf(pdf: Buffer, signal?: AbortSignal): Promise<OcrResult> {
     const first = await this.annotatePdf(pdf, []);
+    signal?.throwIfAborted();
     const totalPages = first.totalPages;
     const pages = [...first.pages];
     const lastPage = Math.min(totalPages, LIMITS.maxPdfPages);
 
     for (let start = PDF_PAGES_PER_REQUEST + 1; start <= lastPage; start += PDF_PAGES_PER_REQUEST) {
+      signal?.throwIfAborted();
       const numbers = range(start, Math.min(start + PDF_PAGES_PER_REQUEST - 1, lastPage));
       const next = await this.annotatePdf(pdf, numbers);
+      signal?.throwIfAborted();
       pages.push(...next.pages);
     }
     return { pages: pages.sort((a, b) => a.pageNumber - b.pageNumber), totalPages };
@@ -88,13 +95,18 @@ export class GoogleVisionOcr implements OcrProvider {
       throw new OcrError(file.error.code === INVALID_ARGUMENT ? 'corrupt' : 'failed');
 
     const responses = file.responses ?? [];
-    return {
-      totalPages: file.totalPages ?? responses.length,
-      pages: responses.map((response, index) => ({
-        pageNumber: response.context?.pageNumber ?? pages[index] ?? index + 1,
-        text: readResponse(response),
-      })),
-    };
+    const totalPages = file.totalPages ?? responses.length;
+    if (!Number.isInteger(totalPages) || totalPages < 1) throw new OcrError('failed');
+    const expected =
+      pages.length > 0 ? pages : range(1, Math.min(PDF_PAGES_PER_REQUEST, totalPages));
+    const recognized = responses.map((response, index) => ({
+      pageNumber: response.context?.pageNumber ?? pages[index] ?? index + 1,
+      text: readResponse(response),
+    }));
+    const returned = new Set(recognized.map((page) => page.pageNumber));
+    if (recognized.length !== expected.length || expected.some((number) => !returned.has(number)))
+      throw new OcrError('failed');
+    return { totalPages, pages: recognized };
   }
 }
 
