@@ -5,7 +5,6 @@ import { useRef } from 'react';
 import { gsap, MOTION, useGSAP } from '@/lib/gsap';
 import { LINKS } from '@/lib/links';
 
-import { ArrowBadge, ButtonLink } from '../button-link';
 import { Logo } from '../logo';
 
 const NAV = [
@@ -19,7 +18,6 @@ const NAV = [
 const LEGAL = [
   { href: LINKS.privacy, label: 'Privacy' },
   ...(LINKS.terms ? [{ href: LINKS.terms, label: 'Terms' }] : []),
-  { href: LINKS.github, label: 'GitHub' },
 ] as const;
 
 export function SiteFooter() {
@@ -51,32 +49,19 @@ export function SiteFooter() {
           <p className="eyebrow text-fog">Capture · OCR · Validate · Extract · Read · Tabulate</p>
           <Logo className="h-auto w-full max-w-[900px] text-paper/15" />
         </div>
-        <div className="grid gap-10 sm:grid-cols-[auto_auto] lg:grid-cols-1 lg:content-between">
-          <nav aria-label="Footer">
-            <ul className="grid gap-2.5">
-              {NAV.map((link) => (
-                <li key={link.label}>
-                  <a
-                    href={link.href}
-                    className="text-[16px] font-medium text-paper/85 transition-colors hover:text-flare">
-                    {link.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </nav>
-          <div>
-            <p className="text-[14px] text-fog">Questions or ideas?</p>
-            <ButtonLink
-              href={`${LINKS.github}/issues`}
-              variant="paper"
-              size="md"
-              className="mt-3 whitespace-nowrap">
-              Open an issue
-              <ArrowBadge size="md" className="bg-night text-paper" />
-            </ButtonLink>
-          </div>
-        </div>
+        <nav aria-label="Footer">
+          <ul className="grid gap-2.5">
+            {NAV.map((link) => (
+              <li key={link.label}>
+                <a
+                  href={link.href}
+                  className="text-[16px] font-medium text-paper/85 transition-colors hover:text-flare">
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
       </div>
       <div className="mx-6 flex flex-col gap-4 border-t border-white/10 py-6 text-[13px] text-fog sm:mx-8 sm:flex-row sm:items-center sm:justify-between lg:mx-10">
         <p>This website is the landing page for the COVERT mobile app for iPhone and Android.</p>

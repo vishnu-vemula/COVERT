@@ -16,7 +16,5 @@ export const LINKS = {
   appStore: releaseUrl(process.env.NEXT_PUBLIC_APP_STORE_URL),
   googlePlay: releaseUrl(process.env.NEXT_PUBLIC_GOOGLE_PLAY_URL),
   terms: releaseUrl(process.env.NEXT_PUBLIC_TERMS_URL),
-  /** The repository's own remote. */
-  github: 'https://github.com/vishnu-vemula/COVERT',
   privacy: '#privacy',
 } as const;

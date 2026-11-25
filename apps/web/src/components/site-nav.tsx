@@ -162,12 +162,6 @@ export function SiteNav() {
         </a>
 
         <div className="flex items-center justify-end gap-1.5">
-          <a
-            href={LINKS.github}
-            className="hidden h-10 items-center gap-1.5 rounded-full px-4 text-[14px] font-medium text-fog transition-colors hover:bg-white/10 hover:text-paper xl:inline-flex">
-            GitHub
-            <ArrowUpRight className="size-3.5" />
-          </a>
           <ButtonLink href={LINKS.getApp} variant="paper" size="md">
             Get the app
             <ArrowBadge size="md" className="bg-night text-paper" />

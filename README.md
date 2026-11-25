@@ -35,7 +35,7 @@ firebase/         Firestore security rules and indexes (deployed with firebase.j
 | `EXPO_PUBLIC_FIREBASE_API_KEY`, `_AUTH_DOMAIN`, `_PROJECT_ID`, `_APP_ID`, `_MESSAGING_SENDER_ID` | Firebase web app config |
 | `EXPO_PUBLIC_FIREBASE_AUTH_EMULATOR_HOST` | Optional, use the Auth emulator |
 
-**Website** — `NEXT_PUBLIC_SITE_URL`, the production URL used for the canonical link, sitemap, robots.txt and social images (on Vercel it falls back to the production domain). Set `NEXT_PUBLIC_APP_STORE_URL`, `NEXT_PUBLIC_GOOGLE_PLAY_URL` and `NEXT_PUBLIC_TERMS_URL` to the published HTTPS destinations at build time. Unconfigured stores show “Coming soon”; the Terms link appears once configured. The GitHub link points to this repository.
+**Website** — `NEXT_PUBLIC_SITE_URL`, the production URL used for the canonical link, sitemap, robots.txt and social images (on Vercel it falls back to the production domain). Set `NEXT_PUBLIC_APP_STORE_URL`, `NEXT_PUBLIC_GOOGLE_PLAY_URL` and `NEXT_PUBLIC_TERMS_URL` to the published HTTPS destinations at build time. Unconfigured stores show “Coming soon”; the Terms link appears once configured.
 
 ## Local setup
 
